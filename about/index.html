@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png?v=20260812" />
+    <link rel="icon" href="../favicon.ico?v=20260812" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png?v=20260812" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPG534ELL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SZPG534ELL');
+    </script>
+    <title>About Choicer Voicer — A Browser Dubbing Studio</title>
+    <meta name="description" content="What Choicer Voicer is, how the dubbing studio works in the browser, which browsers it supports, and its known limits." />
+    <link rel="canonical" href="https://thechoicervoicer.app/about/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Choicer Voicer" />
+    <meta property="og:title" content="About Choicer Voicer" />
+    <meta property="og:description" content="A browser-based dubbing studio: how it works, what it supports, and where it falls short." />
+    <meta property="og:url" content="https://thechoicervoicer.app/about/" />
+    <meta property="og:image" content="https://thechoicervoicer.app/social-preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://thechoicervoicer.app/social-preview.png" />
+    <link rel="preload" href="../fonts/bowlby-one-sc-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../content.css?v=20260814-8" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="Choicer Voicer home">
+        <img class="brand-mark" src="../brand-mark.webp?v=20260813" width="96" height="96" alt="" />
+        <span class="brand-name">CHOICER <i>VOICER</i> STUDIO</span>
+      </a>
+      <nav class="site-nav" aria-label="Site">
+        <a class="nav-dub-maker" href="../pack-maker/">Dub Pack Maker</a>
+        <a href="../">Studio</a>
+        <a href="../how-to-play/">How to play</a>
+        <a href="../tutorials/">Tutorials</a>
+        <a href="./" aria-current="page">About</a>
+      </nav>
+    </header>
+
+    <main class="page-content" id="main-content">
+      <p class="breadcrumbs"><a href="../">Home</a><span>/</span>About</p>
+
+      <h1>About Choicer Voicer Studio</h1>
+      <p>This website is not affiliated with or endorsed by The Choicer Voicer on itch.io or its creator, YeahMaybe.</p>
+      <p class="lede">Choicer Voicer Studio lets you dub video scenes right in your browser. You load a scene with the dialogue removed, record your own lines over it, and export the result as a video. There is nothing to install and no account to make.</p>
+
+      <h2>How it works</h2>
+      <p>The studio loads a voice pack — a bundle of clips, each holding the original line's audio, a visual for the scene, and the line as written. You hear the original delivery, record your version, and the studio lines your take up against the clip it belongs to. Once every line has a take, it plays the scene back with your voice in place of the dialogue and can render that to a file.</p>
+      <p>Solo recording, playback, mixing, and export happen on your machine. In multiplayer, only player-recorded takes are shared temporarily with the room so every device can build the complete dub. Voice pack media is never uploaded.</p>
+
+      <h2>What you can dub</h2>
+      <p>The studio ships empty and you bring the pack. Community packs are published as ZIPs on <a href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer">GameBanana</a>; once imported they are stored in your browser and stay on the tape rack between visits. You can also use the <a href="../pack-maker/">Pack Maker</a> to turn a video you have the right to use into an importable ZIP.</p>
+
+      <h2>Browser support</h2>
+      <dl class="spec-list">
+        <div><dt>Recommended</dt><dd>A recent Chrome or Edge. Export is fastest and most reliable here.</dd></div>
+        <div><dt>Also works</dt><dd>Firefox and Safari, including iOS and iPadOS. Exported files may use a different container.</dd></div>
+        <div><dt>Required</dt><dd>An HTTPS connection. Browsers refuse microphone access otherwise.</dd></div>
+        <div><dt>Mobile</dt><dd>Supported. The layout adapts, though a longer pack is easier on a larger screen.</dd></div>
+      </dl>
+
+      <h2>Known limits</h2>
+      <ul>
+        <li><b>Export speed depends on the device.</b> A long pack on an older phone takes a while to render, and the tab needs to stay open while it does.</li>
+        <li><b>Storage is per browser.</b> Imported packs and takes do not follow you to another browser or another device, and clearing site data removes them.</li>
+        <li><b>Video format varies.</b> The exported container depends on what your browser can encode, so a file from Safari may differ from one produced by Chrome.</li>
+        <li><b>Timing scoring is a guide.</b> The score compares your take to the original; a deliberately different reading will score lower without being worse.</li>
+      </ul>
+
+      <h2>Content and credits</h2>
+      <p>Voice packs are assembled by the community and each credits its author in the studio. No pack content is hosted here — packs are fan-made, often built from existing comedy and animation sources, and the underlying material belongs to its rights holders. A pack being importable is not an affiliation or endorsement, and many contain strong language.</p>
+      <p>If you hold rights to material in a community pack, raise it with the pack's author on the GameBanana page linked above.</p>
+
+      <h2>Privacy</h2>
+      <p>Recordings stay on your device and nothing is uploaded. The <a href="../privacy/">privacy page</a> sets out what is stored, where, and how to remove it.</p>
+
+      <h2>Contact</h2>
+      <p>For questions about the studio, bug reports, or copyright concerns, email <a href="mailto:hello@mail.thechoicervoicer.app">hello@mail.thechoicervoicer.app</a>.</p>
+
+      <div class="cta-row">
+        <a class="cta-button" href="../">Open the studio</a>
+        <a class="cta-button is-quiet" href="../pack-maker/">Make a pack</a>
+      </div>
+    </main>
+
+    <nav class="site-footer-nav" aria-label="Pages">
+      <a href="../">Studio</a>
+      <a href="../pack-maker/">Pack maker</a>
+      <a href="../how-to-play/">How to play</a>
+      <a href="../voice-packs/">Voice packs</a>
+      <a href="../tutorials/">Tutorials</a>
+      <a href="./">About</a>
+      <a href="../privacy/">Privacy</a>
+    </nav>
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a34e52653ed414aa',t:'MTc4ODM3MTA1Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

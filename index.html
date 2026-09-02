@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon.png?v=20260812" />
+    <link rel="icon" href="favicon.ico?v=20260812" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20260812" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZPG534ELL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SZPG534ELL');
+    </script>
+    <title>Choicer Voicer Studio — Free Online Voice-Over Game</title>
+    <meta name="description" content="Play Choicer Voicer in your browser. Import a voice pack, record your lines, and make a finished dub solo or with friends. Voice packs stay on your device." />
+    <link rel="canonical" href="https://thechoicervoicer.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Choicer Voicer" />
+    <meta property="og:title" content="Choicer Voicer Studio — Free Online Voice-Over Game" />
+    <meta property="og:description" content="Import a voice pack, record your lines, and watch your own dub in the browser. Free, no account needed." />
+    <meta property="og:url" content="https://thechoicervoicer.app/" />
+    <meta property="og:image" content="https://thechoicervoicer.app/social-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Choicer Voicer dub studio: a CRT monitor showing a scene with a recording waveform below it." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Choicer Voicer Studio — Free Online Voice-Over Game" />
+    <meta name="twitter:description" content="Import a voice pack, record your lines, and watch your own dub in the browser. Free, no account needed." />
+    <meta name="twitter:image" content="https://thechoicervoicer.app/social-preview.png" />
+    <link rel="preload" href="fonts/bowlby-one-sc-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <style data-critical>@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/barlow-condensed-600-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/barlow-condensed-700-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Bowlby One SC'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/bowlby-one-sc-latin.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 500 700; font-display: swap; src: url('fonts/dm-sans-500-700-latin.woff2') format('woff2'); }
+
+:root {
+  --studio-black: oklch(14% 0.008 195);
+  --studio-deep: oklch(18% 0.012 190);
+  --screen: oklch(7% 0.01 190);
+  --ink: oklch(17% 0.012 190);
+  --paper: oklch(94% 0.012 95);
+  --muted: oklch(69% 0.015 190);
+  --cyan: oklch(82% 0.16 205);
+  --cyan-deep: oklch(57% 0.12 205);
+  --coral: oklch(68% 0.2 24);
+  --amber: oklch(79% 0.15 83);
+  --green: oklch(73% 0.16 150);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+html { background: var(--studio-black); }
+body {
+  min-height: 100svh;
+  padding-bottom: 52px;
+  overflow-x: hidden;
+  background-color: var(--studio-deep);
+  background-image: repeating-radial-gradient(ellipse 110% 80% at 50% -22%, transparent 0 62px, oklch(23% 0.012 190) 64px 78px, transparent 80px 116px), linear-gradient(180deg, oklch(18% 0.012 190), oklch(13% 0.008 190));
+  color: var(--paper);
+  font-family: 'DM Sans', sans-serif;
+}
+body::before { content: ''; position: fixed; z-index: -1; inset: 0; pointer-events: none; background: linear-gradient(90deg, oklch(8% 0.01 190 / .35), transparent 25%, transparent 75%, oklch(8% 0.01 190 / .35)); }
+button, select { font: inherit; }
+button { color: inherit; }
+audio { display: none; }
+.skip-link { position: fixed; z-index: 100; left: 16px; top: 12px; padding: 10px 14px; background: var(--paper); color: var(--ink); transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; margin: -1px; padding: 0; border: 0; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+.topbar { position: relative; z-index: 15; min-height: 64px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; padding: 8px max(24px, env(safe-area-inset-left)) 8px max(24px, env(safe-area-inset-right)); border-bottom: 1px solid oklch(38% 0.01 190); background: oklch(13% 0.008 190); box-shadow: 0 3px 0 oklch(8% 0.006 190); }
+.brand { width: max-content; display: flex; align-items: center; gap: 12px; color: var(--paper); text-decoration: none; }
+.brand-mark { width: 42px; height: 42px; flex: 0 0 42px; display: block; border: 2px solid oklch(58% 0.012 190); border-radius: 3px; object-fit: cover; box-shadow: inset 0 0 0 1px var(--studio-black); }
+.brand-name { font: 14px/1 'Bowlby One SC'; }
+.brand-name i { color: var(--cyan); font-style: normal; }
+.pack-tools { position: relative; display: flex; align-items: center; gap: 7px; }
+.pack-picker { display: flex; align-items: center; gap: 10px; color: var(--muted); font: 700 .75rem 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.pack-picker select { min-width: 220px; appearance: none; border: 1px solid oklch(43% 0.012 190); border-radius: 3px; padding: 8px 34px 8px 11px; background-color: oklch(21% 0.012 190); background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 15px) 13px, calc(100% - 11px) 13px; background-repeat: no-repeat; background-size: 4px 4px; color: var(--paper); font: .75rem 'DM Sans', sans-serif; text-transform: none; }
+.top-actions { justify-self: end; display: flex; align-items: center; gap: 9px; }
+.multiplayer-top-controls { display: flex; align-items: center; gap: 6px; }
+.multiplayer-button { min-height: 40px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid oklch(90% 0.1 205); border-radius: 3px; padding: 0 12px; background: var(--cyan); color: var(--studio-black); font: 700 .72rem 'Barlow Condensed', sans-serif; text-transform: uppercase; box-shadow: 0 0 0 1px oklch(8% 0.008 190), 0 3px 0 oklch(51% 0.12 205), inset 0 1px 0 oklch(96% 0.035 205 / .65); }
+.multiplayer-button-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.9; }
+.multiplayer-button-copy { min-width: 0; display: grid; gap: 1px; text-align: left; line-height: 1; }
+.multiplayer-button-copy b { font-weight: 700; }
+.multiplayer-button-copy small { color: currentColor; font: 700 .58rem/1 'DM Sans', sans-serif; letter-spacing: 0; }
+.multiplayer-button.has-room { min-width: 112px; border-color: oklch(67% 0.14 148); background: oklch(27% 0.055 148); color: oklch(91% 0.1 148); box-shadow: inset 0 0 0 1px oklch(61% 0.1 148 / .35), 0 0 0 2px oklch(61% 0.1 148 / .12); }
+.multiplayer-button.has-room .multiplayer-button-icon { stroke: oklch(86% 0.15 148); }
+.multiplayer-top-leave { min-height: 38px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid oklch(54% 0.12 25); border-radius: 3px; padding: 0 10px; background: oklch(25% 0.025 25); color: oklch(86% 0.1 25); font: 700 .66rem 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.multiplayer-top-leave svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.site-nav { display: flex; align-items: center; gap: 14px; }
+.site-nav a { color: var(--muted); font: 600 .75rem 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; }
+.site-nav .nav-dub-maker { min-height: 40px; display: inline-flex; align-items: center; padding: 0 9px; border: 1px solid oklch(88% 0.13 83); border-radius: 3px; background: var(--amber); color: var(--studio-black); font-weight: 700; box-shadow: 0 0 0 1px oklch(18% 0.012 190), 0 2px 0 oklch(54% 0.11 76); }
+.help-button { width: 36px; min-height: 36px; border: 1px solid oklch(43% 0.012 190); border-radius: 3px; padding: 0; background: oklch(20% 0.01 190); color: var(--muted); font: 700 .75rem 'DM Sans', sans-serif; }
+
+.layout { width: min(980px, 100%); margin: 0 auto; padding: 14px 18px 18px; display: grid; grid-template-columns: minmax(0, 1fr) 198px; grid-template-areas: 'intro intro-action' 'studio controls' 'rundown .' 'tapes .' 'native-ad .'; align-items: start; column-gap: 24px; row-gap: 0; }
+.main-column { min-width: 0; display: grid; grid-area: studio; align-content: start; }
+.studio-intro { grid-area: intro; margin: 0 0 12px; }
+.studio-intro h1 { margin: 0 0 4px; color: var(--paper); font: 400 1.15rem/1.2 'Bowlby One SC'; }
+.studio-intro p { max-width: 62ch; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.5; }
+.studio-intro-links { margin-top: 5px !important; }
+.studio-intro-links a { color: var(--cyan); text-decoration: underline; text-underline-offset: 2px; }
+.studio-intro-links .faq-jump { min-height: 34px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid oklch(48% 0.06 195); border-radius: 3px; padding: 6px 9px; background: oklch(17% 0.016 195); color: var(--cyan); font: 700 .67rem/1 'Barlow Condensed', sans-serif; text-decoration: none; text-transform: uppercase; }
+.studio-intro-links .faq-jump svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.multiplayer-promo { grid-area: intro-action; min-width: 0; min-height: 0; display: grid; align-content: space-between; gap: 7px; margin: 0 0 12px; border: 1px solid oklch(66% 0.12 82); border-top: 3px solid var(--amber); padding: 11px 12px 12px; background-color: oklch(23% 0.035 78); background-image: repeating-linear-gradient(-45deg, transparent 0 9px, oklch(86% 0.1 82 / .07) 9px 10px); box-shadow: 0 4px 0 oklch(8% 0.008 190), inset 0 0 0 1px oklch(93% 0.08 82 / .12); }
+.multiplayer-promo-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.multiplayer-promo-icon { width: 31px; height: 31px; fill: none; stroke: var(--amber); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.multiplayer-promo-signal { display: inline-flex; align-items: center; gap: 5px; color: oklch(88% 0.1 82); font: 700 .57rem/1 'Barlow Condensed', sans-serif; }
+.multiplayer-promo-signal i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px oklch(69% 0.12 148 / .12); }
+.multiplayer-promo-kicker { color: var(--amber); font: 700 .62rem/1 'Barlow Condensed', sans-serif; }
+.multiplayer-promo h2 { margin: 0; color: var(--paper); font: 400 1rem/1.08 'Bowlby One SC'; }
+.multiplayer-promo p { margin: 0; color: oklch(82% 0.025 78); font-size: .65rem; line-height: 1.35; }
+.multiplayer-promo-button { width: 100%; min-height: 32px; display: inline-flex; align-items: center; justify-content: space-between; gap: 7px; border: 1px solid var(--amber); border-radius: 3px; padding: 0 9px; background: var(--amber); color: var(--studio-black); font: 700 .65rem 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.multiplayer-promo-button svg { width: 15px; height: 15px; flex: 0 0 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+.welcome { display: none; }
+.dub-card { min-width: 0; position: relative; padding: 18px 24px 15px; border: 1px solid oklch(57% 0.008 190); border-radius: 28px 28px 22px 22px; background: linear-gradient(135deg, oklch(65% 0.008 190), oklch(34% 0.01 190) 15%, oklch(47% 0.008 190) 51%, oklch(27% 0.01 190) 100%); box-shadow: 0 18px 30px oklch(7% 0.008 190 / .58), inset 0 1px 0 oklch(86% 0.005 190 / .65), inset 0 -2px 0 oklch(18% 0.01 190 / .8); }
+.tv-brand-row { height: 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 0 8px; color: oklch(18% 0.008 190); font: 700 .68rem 'Barlow Condensed', sans-serif; }
+.tv-brand-row i { height: 2px; background: oklch(27% 0.008 190); box-shadow: 0 1px 0 oklch(68% 0.005 190); }
+.tv-brand-row small { font-size: .58rem; }
+.tv-bezel { padding: 10px; border: 1px solid oklch(13% 0.008 190); border-radius: 12px; background: oklch(8% 0.008 190); box-shadow: inset 0 0 0 2px oklch(22% 0.008 190), 0 2px 0 oklch(76% 0.004 190 / .42); }
+.video-wrap { position: relative; aspect-ratio: 2.55 / 1; overflow: hidden; border: 1px solid oklch(30% 0.018 195); border-radius: 5px; background: var(--screen); box-shadow: inset 0 0 32px oklch(4% 0.008 190); }
+.still-frame { width: 100%; height: 100%; display: block; object-fit: contain; background: var(--screen); }
+.studio-video, .studio-ogv-mount { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; background: var(--screen); }
+.studio-video { display: block; object-fit: contain; }
+.studio-video.is-preparing { opacity: 0; pointer-events: none; }
+.studio-video[hidden], .studio-ogv-mount[hidden], .still-frame[hidden] { display: none; }
+.tv-static { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; opacity: .68; }
+.pack-empty-state { position: absolute; z-index: 2; inset: 0; display: grid; place-content: center; justify-items: center; gap: 7px; padding: 16px; color: var(--paper); text-align: center; text-shadow: 0 2px 4px oklch(0% 0 0 / .9); }
+.pack-empty-state span { color: var(--cyan); font: 700 .68rem 'Barlow Condensed', sans-serif; letter-spacing: .08em; }
+.screen-import-button { border: 1px solid var(--cyan); border-radius: 3px; padding: 8px 12px; background: oklch(15% 0.025 195 / .9); color: var(--paper); font: 400 clamp(1rem, 2.5vw, 1.5rem) 'Bowlby One SC'; text-shadow: 0 2px 4px oklch(0% 0 0 / .9); box-shadow: 0 0 0 2px oklch(5% 0.008 190 / .6), inset 0 1px 0 oklch(88% 0.04 195 / .18); }
+.pack-empty-state small { color: var(--muted); font-size: .7rem; }
+.pack-empty-state a { color: var(--cyan); text-underline-offset: 2px; }
+.screen-drop-overlay { position: absolute; z-index: 9; inset: 0; display: grid; place-content: center; visibility: hidden; opacity: 0; }
+.video-wrap.is-pack-dragging .screen-drop-overlay, .video-wrap.is-pack-importing .screen-drop-overlay, .video-wrap.is-pack-restoring .screen-drop-overlay { visibility: visible; opacity: 1; }
+.video-empty { position: absolute; inset: 0; display: none; }
+.video-badge, .screen-caption, .video-scrim { position: absolute; }
+.scanlines { position: absolute; z-index: 3; inset: 0; opacity: .14; pointer-events: none; background: repeating-linear-gradient(180deg, transparent 0 3px, oklch(85% 0.02 195) 4px); mix-blend-mode: soft-light; }
+.tape-tracking { position: absolute; z-index: 6; inset: 0; visibility: hidden; opacity: 0; }
+body:not(.has-pack) .still-frame, body:not(.has-pack) .video-badge, body:not(.has-pack) .screen-caption, body:not(.has-pack) .video-scrim { display: none; }
+body.has-pack #staticCanvas, body.has-pack .pack-empty-state { display: none; }
+.tv-console { height: 36px; display: grid; grid-template-columns: auto minmax(100px, 1fr) 26px; align-items: center; gap: 14px; padding: 7px 8px 0; }
+.dub-controls { display: flex; gap: 13px; color: oklch(19% 0.008 190); font: 700 .58rem 'Barlow Condensed', sans-serif; }
+.deck-bay { min-width: 0; display: grid; grid-template-columns: minmax(34px, 1fr) minmax(82px, 1.35fr); align-items: center; gap: 10px; }
+.speaker-grille { height: 12px; opacity: .65; background: repeating-linear-gradient(90deg, oklch(18% 0.008 190) 0 2px, transparent 2px 6px); }
+.vcr-slot { position: relative; min-width: 0; display: grid; grid-template-rows: 25px 10px; gap: 3px; align-content: center; }
+.slot-mouth { position: relative; overflow: hidden; border: 1px solid oklch(13% 0.008 190); border-radius: 2px; background: linear-gradient(180deg, oklch(31% 0.008 190), oklch(7% 0.005 190) 30% 70%, oklch(37% 0.008 190)); }
+.slot-cavity { position: absolute; inset: 4px 5px 5px; background: oklch(4% 0.004 190); }
+.slot-door { position: absolute; left: 4px; right: 4px; top: 3px; height: 15px; background: linear-gradient(180deg, oklch(35% 0.008 190), oklch(13% 0.008 190)); }
+.vcr-slot b { overflow: hidden; align-self: center; padding: 0 3px; color: var(--amber); font: 700 .45rem 'Barlow Condensed', sans-serif; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.line-thumb { width: 25px; height: 18px; object-fit: cover; border: 1px solid oklch(18% 0.008 190); }
+body:not(.has-pack) .line-thumb { visibility: hidden; }
+
+.main-column > .dub-card, .main-column > .reference-wave-block { grid-area: auto; }
+.main-column > .reference-wave-block { width: min(680px, 100%); margin: 5px auto 0; padding: 8px 10px 7px; border: 4px solid oklch(28% 0.014 195); border-radius: 8px; background: linear-gradient(145deg, oklch(72% 0.008 195), oklch(39% 0.012 195) 13%, oklch(19% 0.012 195) 28% 74%, oklch(51% 0.01 195)); box-shadow: 0 10px 19px oklch(6% 0.008 190 / .55), inset 0 0 0 2px var(--cyan-deep), 0 0 0 1px var(--cyan); }
+.wave-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 0 4px 7px; }
+.wave-heading > div { display: flex; align-items: center; gap: 8px; }
+.eyebrow { color: var(--cyan); font: 700 .7rem/1 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.wave-heading strong, .slot-readout, .wave-status { color: var(--muted); font: 600 .62rem 'Barlow Condensed', sans-serif; }
+.slot-readout { text-transform: uppercase; }
+.slot-readout b { color: var(--paper); font-size: .78rem; font-variant-numeric: tabular-nums; }
+.legend { display: inline-block; width: 7px; height: 7px; margin: 0 3px 0 7px; }
+.legend.original { background: oklch(69% 0.29 334); }
+.legend.player { background: var(--cyan); }
+.wave-shell { position: relative; height: 68px; overflow: hidden; border: 2px solid oklch(8% 0.008 190); background-color: oklch(10% 0.018 195); background-image: linear-gradient(oklch(37% 0.04 205 / .28) 1px, transparent 1px), linear-gradient(90deg, oklch(37% 0.04 205 / .28) 1px, transparent 1px); background-size: 20px 20px; }
+.wave-canvas { position: absolute; inset: 15px 0 0; display: block; width: 100%; height: 49px; }
+.time-markers { position: absolute; z-index: 2; inset: 3px 6px auto; height: 9px; color: oklch(61% 0.05 205); font: 600 .54rem 'Barlow Condensed', sans-serif; }
+.time-markers span { position: absolute; top: 0; transform: translateX(-50%); }
+.time-markers .timeline-start { left: 0; transform: none; }
+.time-markers .clip-start { left: var(--wave-clip-start, 20%); }
+.time-markers .clip-end { left: var(--wave-clip-end, 80%); }
+.time-markers .timeline-end { right: 0; transform: none; }
+.wave-playhead { position: absolute; z-index: 3; left: 0; top: 14px; bottom: 0; width: 2px; display: none; }
+.wave-status { min-height: 22px; display: flex; align-items: end; justify-content: space-between; gap: 15px; padding: 6px 3px 0; }
+.wave-status > div { display: flex; align-items: center; gap: 7px; }
+
+.control-rail { position: relative; grid-area: controls; min-width: 0; align-self: center; }
+.chapter-panel { margin-top: 0; padding: 10px 9px 9px; border: 1px solid oklch(49% 0.008 190); border-radius: 22px; background: linear-gradient(100deg, oklch(20% 0.01 190), oklch(36% 0.008 190) 16%, oklch(19% 0.01 190) 25% 78%, oklch(37% 0.008 190)); box-shadow: 0 14px 24px oklch(5% 0.008 190 / .55), inset 0 1px 0 oklch(72% 0.006 190 / .45); }
+.chapter-heading { display: flex; align-items: baseline; justify-content: space-between; padding: 3px 6px 7px; color: var(--paper); font: 600 .78rem 'Barlow Condensed', sans-serif; }
+.chapter-heading strong { font: 400 1.6rem/1 'Bowlby One SC'; }
+.chapter-heading strong b { color: var(--cyan); font-weight: 400; }
+.chapter-heading strong i { color: oklch(54% 0.008 190); font-style: normal; font-size: .9rem; }
+.chapter-heading strong span { font-size: 1rem; }
+.chapter-progress { height: 4px; margin: 0 5px 5px; border: 1px solid oklch(8% 0.008 190); background: oklch(11% 0.008 190); }
+.chapter-progress span { display: block; width: 0; height: 100%; background: var(--cyan); }
+.control-stack { display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 6px; }
+#hearButton, #recordButton, #takePlaybackButton, #multiplayerFinishButton, #finalButton, #debugFillTakesButton, #soloRoleButton, #micButton { grid-column: 1 / -1; }
+#previousButton { grid-column: 1; }
+#nextButton { grid-column: 2; }
+.console-button, .mic-button { position: relative; width: 100%; min-height: 34px; border: 1px solid oklch(77% 0.005 190); border-radius: 5px; padding: 6px 9px; background: linear-gradient(180deg, oklch(79% 0.007 190), oklch(57% 0.008 190) 48%, oklch(68% 0.007 190) 51%, oklch(49% 0.008 190)); color: var(--ink); font: 700 .74rem 'DM Sans', sans-serif; text-shadow: 0 1px 0 oklch(91% 0.004 190); box-shadow: 0 2px 0 oklch(8% 0.008 190), inset 0 1px 0 oklch(94% 0.003 190); }
+.console-button:disabled, .mic-button:disabled { border-color: oklch(43% 0.008 190); background: linear-gradient(180deg, oklch(40% 0.007 190), oklch(29% 0.008 190) 46%, oklch(31% 0.007 190) 52%, oklch(24% 0.009 190)); color: oklch(76% 0.006 190); text-shadow: 0 -1px 0 oklch(12% 0.008 190 / .72); box-shadow: inset 0 3px 7px oklch(10% 0.008 190 / .58), 0 1px 0 oklch(67% 0.006 190 / .2); }
+.console-button:disabled > span:first-child, .console-button:disabled kbd, .mic-button:disabled > span:first-child { opacity: .52; }
+.console-button:disabled small { color: oklch(58% 0.006 190); opacity: 1; }
+.record-button, .take-playback-button, .previous-button, .next-button, .final-button, .mic-button { display: flex; align-items: center; justify-content: center; }
+.record-button { gap: 6px; }
+.record-button kbd { position: absolute; right: 7px; padding: 1px 4px; border: 1px solid oklch(42% 0.008 190); border-radius: 2px; }
+.record-dot { width: 9px; height: 9px; border: 1px solid oklch(33% 0.12 24); border-radius: 50%; background: var(--coral); }
+.previous-button, .next-button { min-width: 0; }
+.previous-button { padding-inline: 0; }
+.next-button { gap: 4px; padding-inline: 7px; }
+.next-button b { min-width: 0; font: inherit; line-height: 1.08; overflow-wrap: anywhere; }
+.mobile-navigation-label { display: none; }
+.clip-navigation-icon { width: 17px; height: 17px; flex: 0 0 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.2; }
+.final-button { gap: 5px; min-height: 40px; }
+.final-button b, .final-button small { display: block; }
+.final-button small { margin-top: 1px; font: 600 .53rem 'Barlow Condensed', sans-serif; }
+.final-button.is-ready:not(:disabled):not(.is-active) { border-color: oklch(88% 0.13 83); background: linear-gradient(180deg, oklch(90% 0.12 83), oklch(76% 0.16 83) 48%, oklch(82% 0.15 83) 52%, oklch(66% 0.14 76)); color: oklch(18% 0.018 76); text-shadow: 0 1px 0 oklch(95% 0.06 83 / .72); box-shadow: 0 3px 0 oklch(25% 0.045 76), inset 0 1px 0 oklch(96% 0.04 83), 0 0 0 2px oklch(79% 0.15 83 / .24); }
+.final-button.is-ready:not(:disabled):not(.is-active) > span:first-child { color: oklch(30% 0.07 76); font-size: .82rem; }
+.final-button.is-ready:not(:disabled):not(.is-active) small { color: oklch(32% 0.045 76); font-size: .58rem; }
+.debug-fill-button { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; border-style: dashed; }
+.debug-fill-button[hidden] { display: none; }
+.debug-fill-button > span:first-child { font: 800 .55rem 'DM Sans', sans-serif; }
+.debug-fill-button b, .debug-fill-button small { display: block; }
+.debug-fill-button small { margin-top: 1px; font: 600 .53rem 'Barlow Condensed', sans-serif; }
+.voice-fx-panel { min-width: 0; margin-top: 8px; border: 1px solid oklch(39% 0.018 190); border-radius: 3px; padding: 7px; background: oklch(13% 0.012 190); color: var(--paper); }
+.voice-fx-head { min-width: 0; display: grid; grid-template-columns: 25px minmax(0, 1fr); align-items: center; gap: 7px; margin-bottom: 7px; }
+.voice-fx-head > span:last-child { min-width: 0; display: grid; gap: 2px; }
+.voice-fx-head b, .voice-fx-head small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.voice-fx-head b { font: 700 .62rem/1 'DM Sans', sans-serif; }
+.voice-fx-head small { color: oklch(71% 0.018 190); font: 700 .49rem/1.2 'Barlow Condensed', sans-serif; }
+.voice-fx-meter { height: 22px; display: flex; align-items: end; justify-content: center; gap: 2px; border: 1px solid oklch(42% 0.04 334); border-radius: 2px; padding: 4px; background: oklch(9% 0.012 190); }
+.voice-fx-meter i { width: 3px; height: 5px; display: block; background: oklch(58% 0.06 334); }
+.voice-fx-meter i:nth-child(2) { height: 11px; background: var(--magenta); }
+.voice-fx-meter i:nth-child(3) { height: 8px; background: oklch(75% 0.2 334); }
+.voice-fx-preset { min-width: 0; display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 6px; }
+.voice-fx-control-row { min-width: 0; }
+.voice-fx-preset > span { color: var(--muted); font: 700 .52rem 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.voice-fx-preset select { width: 100%; min-width: 0; height: 30px; border: 1px solid oklch(47% 0.045 334); border-radius: 2px; padding: 0 8px; background: oklch(22% 0.018 190); color: var(--paper); font: 700 .61rem 'DM Sans', sans-serif; }
+.voice-fx-tune { width: 100%; min-height: 28px; display: grid; grid-template-columns: 16px minmax(0, 1fr) 14px; align-items: center; gap: 5px; margin-top: 6px; border: 1px solid oklch(37% 0.015 190); border-radius: 2px; padding: 0 7px; background: oklch(18% 0.014 190); color: oklch(79% 0.018 190); font: 700 .55rem 'DM Sans', sans-serif; text-align: left; }
+.voice-fx-tune svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.voice-fx-details[hidden] { display: none; }
+.preview-toggle { min-width: 0; min-height: 42px; display: grid; grid-template-columns: 31px minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: 7px; margin-top: 7px; border-top: 1px solid oklch(8% 0.008 190); border-radius: 3px; padding: 6px 7px; background: oklch(15% 0.01 190); color: var(--paper); }
+.preview-toggle input { position: absolute; opacity: 0; }
+.preview-toggle > span { position: relative; grid-row: 1 / 3; width: 31px; height: 17px; border: 1px solid oklch(48% 0.012 190); border-radius: 10px; background: oklch(28% 0.012 190); }
+.preview-toggle > span::after { content: ''; position: absolute; left: 2px; top: 2px; width: 11px; height: 11px; border-radius: 50%; background: var(--muted); }
+.preview-toggle input:checked + span::after { background: var(--cyan); transform: translateX(14px); }
+.preview-toggle b, .preview-toggle small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.preview-toggle b { font-size: .61rem; }
+.preview-toggle small { color: var(--muted); font-size: .47rem; }
+.feedback-button { position: absolute; z-index: 13; top: calc(100% + 10px); left: 0; width: 100%; min-height: 48px; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 8px; border: 1px solid oklch(54% 0.055 200); border-radius: 5px; padding: 7px 9px; background: oklch(21% 0.025 198); color: var(--paper); text-align: left; }
+.feedback-button > svg { width: 22px; height: 22px; fill: none; stroke: var(--cyan); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.feedback-button > span:not(.feedback-button-arrow) { min-width: 0; display: grid; gap: 2px; }
+.feedback-button b, .feedback-button small { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.feedback-button b { font: 700 .67rem/1 'DM Sans', sans-serif; }
+.feedback-button small { color: oklch(76% 0.02 195); font: 600 .51rem/1.15 'Barlow Condensed', sans-serif; }
+.feedback-button-arrow { color: var(--muted); font-size: .75rem; }
+
+.tape-library { min-width: 0; grid-area: tapes; margin: 12px 4px 0; }
+.tape-library-head { min-height: 34px; display: flex; align-items: end; justify-content: space-between; gap: 14px; padding: 0 5px 6px; }
+.tape-library-head h2 { margin: 3px 0 0; font: 400 .92rem 'Bowlby One SC'; }
+.tape-library-head > span { color: var(--muted); font: 700 .58rem 'Barlow Condensed', sans-serif; }
+.tape-shelf-frame { position: relative; border-radius: 4px; background: oklch(10% 0.008 190); }
+.tape-shelf { position: relative; z-index: 2; min-height: 184px; display: flex; align-items: end; gap: 9px; overflow-x: auto; padding: 12px 12px 13px; }
+.tape-shelf-floor { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; height: 32px; background: linear-gradient(180deg, oklch(41% 0.011 190), oklch(12% 0.007 190)); }
+.tape-library.is-empty .tape-library-head .eyebrow, .tape-library.is-empty .tape-library-head > span { display: none; }
+.tape-library.is-empty .tape-shelf { min-height: 116px; justify-content: center; align-items: center; padding: 12px 16px 30px; overflow: visible; }
+.tape-library.is-empty .tape-shelf-floor { height: 24px; }
+.content-ad-slot { height: 0; overflow: hidden; opacity: 0; }
+.content-ad-slot--mobile { display: none; }
+
+.footer { position: fixed; z-index: 12; left: 0; right: 0; bottom: 0; min-height: 52px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; padding: 0 max(6px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left)); pointer-events: none; }
+.footer::before { content: ''; position: absolute; z-index: -1; inset: -20px 0 0; background: linear-gradient(180deg, transparent, oklch(8% 0.007 190 / .95)); }
+.footer > * { pointer-events: auto; }
+.edge-button { min-width: 124px; min-height: 39px; border: 2px solid oklch(85% 0.006 190); border-radius: 22px; padding: 4px 17px; background: linear-gradient(180deg, oklch(74% 0.008 190), oklch(44% 0.008 190) 48%, oklch(63% 0.008 190) 52%, oklch(34% 0.01 190)); color: var(--paper); font: 600 1rem 'Barlow Condensed', sans-serif; }
+.library-edge-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.library-edge-button svg { width: 17px; height: 17px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.edge-button:last-child { justify-self: end; }
+.footer-status { display: flex; align-items: center; gap: 7px; color: var(--muted); font: 600 .62rem 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+.footer-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+.options-scrim, .options-drawer { position: fixed; visibility: hidden; pointer-events: none; }
+html:not(.app-styles-ready) dialog[open] { display: none; }
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .topbar { grid-template-columns: 1fr auto; }
+  .pack-tools { grid-column: 1 / -1; grid-row: 2; justify-content: center; }
+  .pack-picker select { flex: 1; max-width: 420px; }
+  .site-nav a { white-space: nowrap; }
+}
+
+@media (max-width: 900px) {
+  .topbar { grid-template-columns: 1fr auto; }
+  .pack-tools { grid-column: 1 / -1; grid-row: 2; justify-content: center; }
+  .layout { min-height: auto; grid-template-columns: 1fr; grid-template-areas: 'intro' 'intro-action' 'studio' 'controls' 'rundown' 'tapes' 'native-ad'; row-gap: 12px; }
+  .main-column { min-width: 0; display: block; grid-area: studio; }
+  .studio-intro { grid-area: intro; }
+  .multiplayer-promo { grid-area: intro-action; }
+  .main-column > .dub-card, .main-column > .reference-wave-block { grid-area: auto; }
+  .multiplayer-promo { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto; align-items: center; column-gap: 11px; row-gap: 2px; margin-bottom: 12px; padding: 10px 12px; }
+  .multiplayer-promo-head { grid-row: 1 / -1; flex-direction: column; justify-content: center; gap: 5px; }
+  .multiplayer-promo-icon { width: 27px; height: 27px; }
+  .multiplayer-promo-kicker { grid-column: 2; grid-row: 1; }
+  .multiplayer-promo h2 { grid-column: 2; grid-row: 2; font-size: .92rem; }
+  .multiplayer-promo p { display: none; }
+  .multiplayer-promo-button { grid-column: 3; grid-row: 1 / -1; width: auto; min-width: 126px; padding-inline: 10px; }
+  .control-rail { align-self: start; display: grid; gap: 10px; }
+  .chapter-panel { display: flex; flex-direction: column; border-radius: 8px; }
+  .feedback-button { position: static; z-index: auto; min-height: 46px; }
+  .tape-library { margin-top: 0; }
+  .chapter-heading { justify-content: center; gap: 12px; }
+  .control-stack { order: 2; display: grid; grid-template-columns: minmax(46px, .32fr) minmax(112px, .68fr) minmax(0, 1fr); grid-template-areas: 'hear hear record' 'prev next take' 'finish finish finish' 'final final final' 'debug debug debug' 'roles roles roles' 'mic mic mic'; }
+  #hearButton { grid-area: hear; }
+  #recordButton { grid-area: record; }
+  #takePlaybackButton { grid-area: take; }
+  #previousButton { grid-area: prev; }
+  #nextButton { grid-area: next; }
+  #multiplayerFinishButton { grid-area: finish; }
+  #finalButton { grid-area: final; }
+  #debugFillTakesButton { grid-area: debug; }
+  #soloRoleButton { grid-area: roles; }
+  #micButton { grid-area: mic; }
+  .voice-fx-panel { order: 1; margin: 0 0 8px; }
+  .voice-fx-control-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; }
+  .voice-fx-control-row .voice-fx-tune { width: auto; min-width: 92px; margin-top: 0; }
+  .voice-fx-details { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; }
+  .preview-toggle { order: 3; }
+  .main-column > .reference-wave-block { width: 96%; margin-top: 14px; }
+  .content-ad-slot--desktop { display: none; }
+  .content-ad-slot--mobile { display: block; }
+}
+
+@media (max-width: 600px) {
+  .topbar { min-height: 58px; grid-template-columns: auto 1fr; gap: 10px; padding: 8px 14px; }
+  .brand-name, .pack-tools { display: none; }
+  .brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
+  .top-actions { min-width: 0; justify-self: end; gap: 5px; }
+  .multiplayer-top-controls { gap: 5px; }
+  .multiplayer-button { width: auto; min-width: 105px; min-height: 34px; justify-content: start; padding: 0 8px; }
+  .multiplayer-button-copy { display: grid; }
+  .multiplayer-button.has-room { width: 105px; min-width: 105px; justify-content: start; padding: 0 8px; }
+  .multiplayer-button.has-room .multiplayer-button-copy b { font-size: .62rem; }
+  .multiplayer-button.has-room .multiplayer-button-copy small { font-size: .56rem; }
+  .multiplayer-top-leave { min-height: 34px; padding: 0 8px; }
+  .topbar.has-active-room .site-nav { display: none; }
+  .site-nav { min-width: 0; gap: 8px; }
+  .site-nav a { display: none; white-space: nowrap; font-size: .68rem; }
+  .site-nav .nav-dub-maker, .site-nav a[href*="how-to-play"] { display: block; }
+  .site-nav .nav-dub-maker { min-height: 34px; display: inline-flex; align-items: center; padding: 0 7px; }
+  .help-button { width: 32px; min-height: 32px; }
+  .layout { padding: 18px 12px 22px; }
+  .studio-intro h1 { font-size: 1rem; }
+  .studio-intro p { font-size: .74rem; }
+  .dub-card { padding: 12px 12px 10px; border-radius: 18px; }
+  .tv-brand-row small { display: none; }
+  .video-wrap { aspect-ratio: 4 / 3; }
+  .tv-console { grid-template-columns: auto minmax(82px, 1fr) 25px; gap: 8px; }
+  .frame-note, .deck-bay .speaker-grille { display: none; }
+  .deck-bay { display: block; }
+  .vcr-slot b { max-width: calc(100% - 10px); }
+  .main-column > .reference-wave-block { width: 100%; margin-top: 14px; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+  .wave-heading, .time-markers, .wave-status { display: none; }
+  .wave-shell { height: 58px; }
+  .wave-canvas { inset: 0; height: 100%; }
+  .wave-playhead { top: 0; }
+  .control-stack { grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-areas: 'prev prev prev record record record record next next next' 'hear hear hear hear hear take take take take take' 'finish finish finish finish finish finish finish finish finish finish' 'final final final final final final final final final final' 'debug debug debug debug debug debug debug debug debug debug' 'roles roles roles roles roles roles roles roles roles roles' 'mic mic mic mic mic mic mic mic mic mic'; gap: 6px; }
+  .console-button, .mic-button { min-height: 44px; font-size: .72rem; }
+  #previousButton, #recordButton, #nextButton { height: 52px; min-height: 52px; align-self: stretch; }
+  #previousButton, #nextButton { gap: 3px; padding-inline: 4px; }
+  .record-button b { min-width: 0; line-height: 1.08; overflow-wrap: anywhere; }
+  .record-button kbd, .next-button b { display: none; }
+  .mobile-navigation-label { min-width: 0; display: inline; font: inherit; line-height: 1; }
+  .clip-navigation-icon { width: 16px; height: 16px; flex-basis: 16px; }
+  .footer { grid-template-columns: 1fr 1fr; padding-inline: 5px; }
+  .footer-status { display: none; }
+  .edge-button { min-width: 108px; }
+  .library-edge-button { gap: 6px; padding-inline: 12px; }
+  .library-edge-button svg { width: 15px; height: 15px; }
+  .edge-button:first-child { position: absolute; left: 5px; bottom: max(5px, env(safe-area-inset-bottom)); }
+  .edge-button:last-child { position: absolute; right: 5px; bottom: max(5px, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+  .top-actions { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto; grid-template-rows: 34px auto; align-items: center; column-gap: 5px; row-gap: 7px; }
+  .multiplayer-top-controls { grid-column: 1; grid-row: 1; justify-self: start; }
+  .top-actions .site-nav { display: contents !important; }
+  .top-actions .site-nav .nav-dub-maker { grid-column: 2; grid-row: 1; display: inline-flex !important; min-height: 34px; padding: 0 7px; }
+  .top-actions .site-nav a[href*="how-to-play"] { grid-column: 1 / -1; grid-row: 2; display: block !important; justify-self: end; }
+  .help-button { grid-column: 4; grid-row: 1; }
+  .topbar.has-active-room .site-nav { display: none !important; }
+}
+
+@media (max-width: 420px) {
+  .voice-fx-details { grid-template-columns: 1fr; }
+}</style>
+    <link rel="preload" href="styles.css?v=20260902-3" as="style" onload="this.onload=null;this.rel='stylesheet';document.documentElement.classList.add('app-styles-ready')" />
+    <noscript><link rel="stylesheet" href="styles.css?v=20260902-3" /></noscript>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Choicer Voicer",
+        "url": "https://thechoicervoicer.app/",
+        "description": "A free browser-based voice-over game. Import a voice pack, record your lines, and watch your finished dub.",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any modern web browser",
+        "browserRequirements": "Requires JavaScript, microphone access, and a secure (HTTPS) connection.",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to studio</a>
+
+    <noscript>
+      <p class="noscript-note">The dub studio needs JavaScript to record and play back audio. Everything written on this page is still readable without it.</p>
+    </noscript>
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Choicer Voicer home">
+        <img class="brand-mark" src="brand-mark.webp?v=20260813" width="96" height="96" alt="" />
+        <span class="brand-name">CHOICER <i>VOICER</i> STUDIO</span>
+      </a>
+
+      <div class="pack-tools">
+        <label class="pack-picker">
+          <span>Now dubbing</span>
+          <select id="packSelect" aria-label="Choose chapter">
+            <option value="">No pack loaded</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="top-actions">
+        <div class="multiplayer-top-controls" hidden>
+          <button class="multiplayer-button" id="multiplayerButton" type="button" aria-label="Open multiplayer" title="Open multiplayer">
+            <svg class="multiplayer-button-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg>
+            <span class="multiplayer-button-copy"><b id="multiplayerButtonLabel">Multiplayer</b><small id="multiplayerButtonState" hidden>Room ABC234</small></span>
+          </button>
+          <button class="multiplayer-top-leave" id="multiplayerTopLeave" type="button" title="Leave multiplayer room" aria-label="Leave multiplayer room" hidden>
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>Leave room</span>
+          </button>
+        </div>
+        <nav class="site-nav" aria-label="Site">
+          <a class="nav-dub-maker" href="pack-maker/">Dub Pack Maker</a>
+          <a href="./" aria-current="page">Studio</a>
+          <a href="how-to-play/">How to play</a>
+          <a href="tutorials/">Tutorials</a>
+          <a href="about/">About</a>
+        </nav>
+        <button class="help-button" id="helpButton" aria-label="Help">?</button>
+      </div>
+    </header>
+
+    <main class="layout" id="main-content">
+      <div class="studio-intro">
+          <h1>Make your own dub — a free online voice-over game</h1>
+          <p>Load a voice pack, record each line in your own voice, then watch the finished dub. Play solo or split the lines with friends online.</p>
+          <p class="studio-intro-links">Start with a pack: <a href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer" aria-label="GameBanana (opens in a new tab)">GameBanana <span aria-hidden="true">↗</span></a>. You can also <a href="pack-maker/">make your own pack</a> from a video. New here? Read <a href="how-to-play/">how to play</a>.</p>
+          <p class="studio-intro-links studio-support-links">
+            <a class="faq-jump" href="#common-questions"><span>Troubleshooting</span><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg></a>
+            <a class="discord-help" href="https://discord.gg/YmQznpNFs" target="_blank" rel="noreferrer">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M20.3 4.4a19.8 19.8 0 0 0-4.9-1.5l-.8 1.2a16.7 16.7 0 0 0-5.5 0l-.6-1.2a19.7 19.7 0 0 0-4.9 1.5C.5 9 .1 13.5.1 18.1c2.1 1.5 4 2.4 6 3l1.2-2c-.7-.2-1.3-.5-1.9-.9l.4-.3c3.9 1.8 8.2 1.8 12.1 0l.4.3c-.6.4-1.2.7-1.9.9.4.7.8 1.4 1.2 2 2-.6 4-1.5 6-3 .5-5.2-.8-9.7-3.3-13.7ZM8 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z"></path></svg>
+              <span>Need help? Ask on Discord</span>
+            </a>
+          </p>
+      </div>
+
+        <aside class="multiplayer-promo" id="multiplayerPromo" aria-labelledby="multiplayerPromoTitle" hidden>
+          <div class="multiplayer-promo-head">
+            <svg class="multiplayer-promo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg>
+            <span class="multiplayer-promo-signal"><i aria-hidden="true"></i><b>CO-OP</b></span>
+          </div>
+          <span class="multiplayer-promo-kicker" id="multiplayerPromoKicker">MULTIPLAYER MODE</span>
+          <h2 id="multiplayerPromoTitle">Dub together</h2>
+          <p id="multiplayerPromoCopy"></p>
+          <button class="multiplayer-promo-button" id="multiplayerPromoButton" type="button"><span>Open multiplayer</span><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </aside>
+
+      <section class="main-column" aria-label="Dub monitor">
+
+        <div class="welcome">
+          <div>
+            <span class="eyebrow" id="chapterKicker">WAITING FOR INPUT</span>
+            <p id="packTitle">No pack loaded</p>
+            <p id="packSubtitle">Import a Choicer Voicer pack ZIP to begin dubbing.</p>
+          </div>
+          <div class="session-progress" aria-label="Recording progress">
+            <strong id="doneCount">0</strong>
+            <span>of <b id="totalCount">0</b> takes</span>
+          </div>
+        </div>
+
+        <div class="dub-card">
+          <div class="tv-brand-row">
+            <span>CHOICER VISION</span>
+            <i aria-hidden="true"></i>
+            <small>CV-04 DUB MONITOR</small>
+          </div>
+
+          <div class="tv-bezel">
+            <div class="video-wrap" id="videoWrap">
+              <video id="packVideo" class="studio-video" preload="metadata" playsinline muted hidden></video>
+              <div class="studio-ogv-mount" id="studioOgvMount" hidden></div>
+              <img id="stillFrame" class="still-frame" alt="Current scene still" />
+              <canvas id="staticCanvas" class="tv-static" aria-hidden="true"></canvas>
+              <div class="pack-empty-state" id="packEmptyState"><span>NO SIGNAL / NO PACK LOADED</span><button class="screen-import-button" id="screenImportButton" type="button">Import a pack ZIP</button><small>or <a href="pack-maker/">make one from a video</a></small></div>
+              <div class="screen-drop-overlay" id="screenDropOverlay" role="status" aria-live="polite" aria-busy="false" aria-hidden="true">
+                <span class="screen-drop-tape" aria-hidden="true"><i></i><i></i></span>
+                <strong id="screenDropTitle">Drop to insert pack</strong>
+                <small id="screenDropHint">Choicer Voicer Pack ZIP</small>
+                <span class="screen-drop-progress" id="screenDropProgressTrack" role="progressbar" aria-label="Local pack loading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="screenDropProgress"></i></span>
+              </div>
+              <div class="video-preparation-overlay" id="videoPreparationOverlay" role="status" aria-live="polite" aria-busy="false" aria-hidden="true" hidden>
+                <span class="screen-drop-tape" aria-hidden="true"><i></i><i></i></span>
+                <strong id="videoPreparationTitle">Loading video</strong>
+                <small id="videoPreparationHint">Getting things ready...</small>
+                <span class="video-preparation-progress" id="videoPreparationProgressTrack" role="progressbar" aria-label="Video loading progress" aria-valuemin="0" aria-valuemax="100"><i id="videoPreparationProgress"></i></span>
+              </div>
+              <div class="video-empty" id="videoEmpty">
+                <span>VOICE PACK</span>
+                <strong>Audio scene loaded</strong>
+              </div>
+              <div class="video-badge"><span class="red-dot"></span> CUE <b id="videoClock">00:00</b></div>
+              <div class="screen-caption">
+                <span id="lineRole">VOICE</span>
+                <h2 id="lineTitle">Import a pack ZIP</h2>
+              </div>
+              <div class="tape-tracking" id="tapeTracking" aria-hidden="true"><span>TRACKING</span><i></i></div>
+              <div class="video-scrim"></div>
+              <div class="scanlines" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="tv-console">
+            <div class="dub-controls">
+              <span class="frame-note">FRAME HOLD</span>
+              <span><b id="videoDuration">00:59</b> MASTER</span>
+            </div>
+            <div class="deck-bay">
+              <div class="speaker-grille" aria-hidden="true"></div>
+              <div class="vcr-slot" id="vcrSlot" aria-live="polite"><span class="slot-mouth" id="slotMouth" aria-hidden="true"><i class="slot-cavity"></i><span class="slot-door"></span><i class="slot-led"></i></span><b id="loadedTapeLabel">NO TAPE</b></div>
+            </div>
+            <img id="lineThumb" class="line-thumb" alt="Line reference" />
+          </div>
+          <audio id="originalAudio" preload="metadata"></audio>
+          <audio id="takeAudio" preload="auto"></audio>
+          <p id="caption" class="sr-only">Import a pack ZIP</p>
+        </div>
+
+        <section class="reference-wave-block" aria-label="Audio waveform">
+          <div class="wave-heading">
+            <div>
+              <span class="eyebrow">OVERLAP WAVEFORM</span>
+              <strong><i class="legend original"></i> Original <i class="legend player"></i> Your take</strong>
+            </div>
+            <span class="slot-readout"><b id="slotDuration">1.6s</b> window</span>
+          </div>
+          <div class="wave-shell">
+            <div class="time-markers"><span class="timeline-start">-1.0</span><span class="clip-start">0.0</span><span class="clip-end" id="waveClipEndMarker">1.6</span><span class="timeline-end">+1.0</span></div>
+            <canvas id="waveCanvas" class="wave-canvas" aria-label="Original and recorded audio waveform"></canvas>
+            <span class="wave-playhead" id="wavePlayhead"></span>
+          </div>
+          <div class="wave-status">
+            <div><i class="status-light"></i><span id="recordState">Ready to record</span><b id="recordTime">00:00</b></div>
+          </div>
+        </section>
+
+      </section>
+
+      <div class="control-rail">
+        <aside class="chapter-panel" aria-label="Dub controls">
+          <div class="chapter-heading">
+            <span>ON CLIP</span>
+            <strong><b id="lineNumber">00</b> <i>/</i> <span id="lineTotal">0</span></strong>
+          </div>
+          <div class="chapter-progress" aria-hidden="true"><span id="chapterProgress"></span></div>
+
+          <div class="control-stack" id="controlStack">
+            <button id="hearButton" class="console-button" type="button" aria-pressed="false"><span class="state-icon" id="hearIcon" aria-hidden="true">▶</span><b id="hearLabel">Hear clip</b></button>
+            <button class="console-button record-button" id="recordButton" type="button" aria-pressed="false"><span class="record-dot" aria-hidden="true"></span><b id="recordLabel">Start recording</b><kbd>R</kbd></button>
+            <button class="console-button quiet-button take-playback-button" id="takePlaybackButton" type="button" aria-pressed="false" disabled><span class="state-icon" id="takePlaybackIcon" aria-hidden="true">▶</span><b id="takePlaybackLabel">Play recording</b></button>
+            <button class="console-button previous-button" id="previousButton" type="button" aria-label="Previous clip" title="Previous clip"><svg class="clip-navigation-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg><span class="mobile-navigation-label" aria-hidden="true">Previous</span></button>
+            <button class="console-button next-button" id="nextButton" type="button" aria-label="Next clip" title="Next clip"><b id="nextButtonLabel">Next clip</b><span class="mobile-navigation-label" aria-hidden="true">Next</span><svg class="clip-navigation-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button>
+            <button class="console-button multiplayer-finish-button" id="multiplayerFinishButton" type="button" hidden disabled><span aria-hidden="true">✓</span><span><b id="multiplayerFinishLabel">Finish my clips</b><small id="multiplayerFinishState">Record your assigned clips first</small></span></button>
+            <button class="console-button final-button" id="finalButton" disabled><span aria-hidden="true">▶</span><span><b>Watch dub</b><small>Record every line first</small></span></button>
+            <button class="console-button debug-fill-button" id="debugFillTakesButton" type="button" hidden disabled><span aria-hidden="true">TEST</span><span><b>Fill test takes</b><small>Use original clip audio</small></span></button>
+            <button class="console-button solo-role-button" id="soloRoleButton" type="button" aria-haspopup="dialog" aria-controls="soloRoleDialog" disabled><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><b>Choose roles</b></button>
+            <button class="mic-button" id="micButton"><span aria-hidden="true">●</span><b id="micButtonLabel">Mic settings</b></button>
+          </div>
+
+          <section class="voice-fx-panel" id="voiceFxPanel" aria-labelledby="voiceFxTitle" aria-busy="false">
+            <div class="voice-fx-head">
+              <span class="voice-fx-meter" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span><b id="voiceFxTitle">Voice effect</b><small id="voiceFxStatus" aria-live="polite">No pack loaded</small></span>
+            </div>
+            <div class="voice-fx-control-row">
+              <label class="voice-fx-preset" for="voiceFxPreset">
+                <span>Preset</span>
+                <select id="voiceFxPreset" disabled>
+                <option value="clean">Original</option>
+                <option value="deep">Deep</option>
+                <option value="cartoon">Cartoon</option>
+                <option value="robot">Robot</option>
+                <option value="radio">Radio</option>
+                <option value="echo">Echo</option>
+                <option value="hall">Hall</option>
+                <option value="cave">Cave</option>
+                <option value="megaphone">Megaphone</option>
+                <option value="alien">Alien</option>
+                <option value="monster">Monster</option>
+                <option value="chorus">Chorus</option>
+                <option value="underwater">Underwater</option>
+                <option value="custom" disabled>Custom</option>
+                </select>
+              </label>
+              <button class="voice-fx-tune" id="voiceFxTune" type="button" aria-expanded="false" aria-controls="voiceFxDetails" disabled>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 21v-7"></path><path d="M4 10V3"></path><path d="M12 21v-9"></path><path d="M12 8V3"></path><path d="M20 21v-5"></path><path d="M20 12V3"></path><path d="M1 14h6"></path><path d="M9 8h6"></path><path d="M17 16h6"></path></svg>
+              <span>Fine tune</span>
+              <svg class="voice-fx-chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg>
+              </button>
+            </div>
+            <div class="voice-fx-details" id="voiceFxDetails" hidden>
+              <label><span>Pitch</span><input id="voiceFxPitch" type="range" min="-9" max="9" step="1" value="0" /><output id="voiceFxPitchValue" for="voiceFxPitch">0 st</output></label>
+              <label><span>Tone</span><input id="voiceFxTone" type="range" min="-100" max="100" step="1" value="0" /><output id="voiceFxToneValue" for="voiceFxTone">0</output></label>
+              <label><span>Texture</span><input id="voiceFxTexture" type="range" min="0" max="100" step="1" value="0" /><output id="voiceFxTextureValue" for="voiceFxTexture">0%</output></label>
+              <label><span>Space</span><input id="voiceFxSpace" type="range" min="0" max="100" step="1" value="0" /><output id="voiceFxSpaceValue" for="voiceFxSpace">0%</output></label>
+              <label><span>Echo</span><input id="voiceFxEcho" type="range" min="0" max="100" step="1" value="0" /><output id="voiceFxEchoValue" for="voiceFxEcho">0%</output></label>
+              <label><span>Mod</span><input id="voiceFxModulation" type="range" min="0" max="100" step="1" value="0" /><output id="voiceFxModulationValue" for="voiceFxModulation">0%</output></label>
+            </div>
+          </section>
+
+          <label class="preview-toggle" for="recordingOriginalToggle">
+            <input type="checkbox" id="recordingOriginalToggle" role="switch" />
+            <span aria-hidden="true"></span>
+            <b>Play original audio</b>
+            <small id="recordingOriginalHint">During recording</small>
+          </label>
+
+          <label class="preview-toggle" for="clipVideoToggle">
+            <input type="checkbox" id="clipVideoToggle" role="switch" />
+            <span aria-hidden="true"></span>
+            <b>Play clip video</b>
+            <small id="clipVideoHint">Moving video while hearing and recording</small>
+          </label>
+
+          <label class="preview-toggle" id="videoPipelineControl" for="videoPipelineToggle">
+            <input type="checkbox" id="videoPipelineToggle" role="switch" />
+            <span aria-hidden="true"></span>
+            <b>Fast mode</b>
+            <small id="videoPipelineHint">Faster, but may not work</small>
+          </label>
+
+        </aside>
+
+        <div class="feedback-support">
+          <button class="feedback-button" id="feedbackButton" type="button" aria-haspopup="dialog">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"></path><path d="M8 9h8"></path><path d="M8 13h6"></path></svg>
+            <span><b>Send feedback</b><small>Report a problem or idea</small></span>
+            <span class="feedback-button-arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </div>
+
+      <details class="clip-rundown" id="clipRundown">
+        <summary class="clip-rundown-summary">
+          <span class="clip-rundown-metric clip-rundown-progress-metric">
+            <span class="clip-rundown-label">Progress</span>
+            <span class="clip-rundown-progress-value">
+              <span class="clip-rundown-track" id="rundownProgress" role="progressbar" aria-label="Recorded clips" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><i id="rundownProgressFill"></i></span>
+              <strong><b id="rundownDone">0</b><span aria-hidden="true"> / </span><span id="rundownTotal">0</span></strong>
+            </span>
+          </span>
+          <span class="clip-rundown-metric clip-rundown-status-metric">
+            <span class="clip-rundown-label">Status</span>
+            <span class="clip-rundown-status"><i aria-hidden="true"></i><b id="rundownStatus">Not started</b></span>
+          </span>
+          <span class="clip-rundown-metric clip-rundown-updated-metric">
+            <span class="clip-rundown-label">Updated</span>
+            <time id="rundownUpdated">Not recorded</time>
+          </span>
+          <span class="clip-rundown-toggle">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg>
+            <span class="clip-rundown-toggle-closed">View clips</span>
+            <span class="clip-rundown-toggle-open">Hide clips</span>
+            <svg class="clip-rundown-chevron" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg>
+          </span>
+        </summary>
+        <div class="clip-rundown-body"><div class="line-list" id="lineList"></div></div>
+      </details>
+
+      <section class="tape-library is-empty" id="tapeLibrary" aria-labelledby="tapeLibraryTitle">
+        <div class="tape-library-head"><div><span class="eyebrow">LOCAL TAPE RACK</span><h2 id="tapeLibraryTitle">Your packs</h2></div><span id="tapeCount">0 TAPES</span></div>
+        <div class="tape-shelf-frame">
+          <div class="tape-shelf" id="tapeShelf" role="group" aria-label="Imported pack tapes" aria-live="polite"></div>
+          <div class="tape-shelf-floor" aria-hidden="true"></div>
+        </div>
+      </section>
+      <div class="content-ad-slot content-ad-slot--desktop" hidden data-native-ad-target="desktop" aria-label="Advertisement"></div>
+      <div class="content-ad-slot content-ad-slot--mobile" hidden data-native-ad-target="mobile" aria-label="Advertisement"></div>
+    </main>
+
+    <section class="page-content" aria-labelledby="aboutGameHeading">
+      <h2 id="aboutGameHeading">What Choicer Voicer studio is</h2>
+      <p>Choicer Voicer Studio is a voice-over game you play in a browser tab. You pick a clip, listen to how the original line is delivered, then record your own version over it. When every line in the pack has a take, the studio stitches your recordings back over the scene so you can watch the whole dub end to end.</p>
+      <p>There is nothing to install and no account to create. Play solo on one device, pass one laptop around, or create a multiplayer room where each friend imports the same pack ZIP and records assigned lines.</p>
+
+      <h2>How it works</h2>
+      <ol class="numbered-steps">
+        <li><b>Pick a pack.</b> Import a community pack ZIP, or build one from your own video with the Pack Maker.</li>
+        <li><b>Hear the clip.</b> Play the original line so you can catch the timing and delivery.</li>
+        <li><b>Record your take.</b> Press record and perform the line. Retry as many times as you want.</li>
+        <li><b>Check the waveform.</b> Your take is drawn over the original so you can see where you drifted early or late.</li>
+        <li><b>Watch the dub.</b> Once every line has a take, play the finished dub with the original backing track, then export the video.</li>
+      </ol>
+      <p><a class="content-link" href="how-to-play/">Read the full how-to-play guide</a></p>
+
+      <h2>Voice packs and dub packs</h2>
+      <p>A pack is a folder of clips: each line has an audio file, a still image or video frame, and a text file with the line itself. Packs may also carry a backing track, so music and effects keep playing underneath while your voice replaces the dialogue.</p>
+      <p>The studio starts empty. Community packs are published on <a href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer">GameBanana</a>, or you can turn a video into a compatible ZIP with the browser-based <a href="pack-maker/">Pack Maker</a>.</p>
+      <p><a class="content-link" href="pack-maker/">Make your own pack</a></p>
+
+      <h2>Your microphone and your recordings</h2>
+      <p>The studio needs microphone permission to record, and browsers only grant that over HTTPS. Use <b>Mic settings</b> to select a different input or adjust microphone processing. If permission was blocked, allow microphone access in your browser's site settings first.</p>
+      <p>Solo recordings stay in your browser. In multiplayer, your voice takes are shared temporarily with that room so every player can render the same final dub. Voice pack ZIPs and their video, images, and original audio are never uploaded.</p>
+      <p><a class="content-link" href="privacy/">Read the privacy details</a></p>
+
+      <h2>Browser support</h2>
+      <p>Recent versions of Chrome, Edge, Firefox, and Safari all work, on desktop and on mobile. A few notes worth knowing:</p>
+      <ul>
+        <li>The page must be served over HTTPS, or microphone access is blocked.</li>
+        <li>Private and incognito windows sometimes refuse local storage, so imported packs may not persist.</li>
+        <li>Packs with OGV video are decoded in JavaScript where the browser lacks native support, which is slower on older phones.</li>
+        <li>Headphones are worth using — open speakers bleed the original audio into your take.</li>
+      </ul>
+
+      <h2>Questions people ask</h2>
+      <h3>Is Choicer Voicer Studio free?</h3>
+      <p>Yes. The studio is free to use, with no account and no trial.</p>
+      <h3>Do I need to download anything?</h3>
+      <p>No software installation is needed. The Studio and Pack Maker run in the browser; the only files you handle are the pack ZIPs you import or generate, and any finished video you export.</p>
+      <h3>Are my recordings uploaded?</h3>
+      <p>Not in solo mode. Multiplayer temporarily shares your recorded takes with the room; the voice pack itself always stays on your device.</p>
+      <h3>Can I play with friends?</h3>
+      <p>Yes. Create a room, share its code, and have everyone import the exact same pack ZIP. The Studio checks the ZIP locally before assigning lines.</p>
+      <h3>Can I make my own pack?</h3>
+      <p>Yes. Open the <a class="content-link" href="pack-maker/">Pack Maker</a>, choose a video, mark and caption each line, then generate a ZIP that imports directly into the Studio.</p>
+    </section>
+
+    <section class="page-content faq-section" id="common-questions" aria-labelledby="commonQuestionsTitle">
+      <h2 id="commonQuestionsTitle">Troubleshooting</h2>
+      <h3>Why does my video export take so long?</h3>
+      <p>Most pack ZIPs use OGV video. A browser cannot simply attach your voice recordings to an OGV file, so it must play and render the video again while building the export. Expect export to take about as long as the video, and sometimes longer on slower devices.</p>
+      <h3>Why is my dub export glitchy or the wrong length?</h3>
+      <p>Keep this tab in the foreground and the screen unlocked until export finishes. Switching apps or tabs, minimizing the browser, or locking the screen can pause video rendering and produce stutter, missing frames, or the wrong duration. Run the export again without leaving the tab.</p>
+      <h3>Why does my multiplayer dub say a member is not finished?</h3>
+      <p>Heavy traffic or an unstable connection can interrupt an upload even after recording finishes. Ask the player to keep the room open and record that clip again, then wait until it shows as shared or complete.</p>
+      <h3>Why isn't my microphone working for voice-over recording?</h3>
+      <p>Mobile browsers are more likely to block or interrupt the microphone, especially after switching apps or locking the screen. Keep the page in the foreground, confirm microphone permission, then open <b>Mic settings</b> and select the input again. If it still fails, use <a href="#feedbackButton">Send feedback</a> and include your device model, browser name and version, and the pack link if you imported one. We use these reports to test and fix affected devices.</p>
+      <h3>Where can I find my history recordings?</h3>
+      <p>Open <strong>Recordings</strong> from the bottom-left button to view your saved recordings, continue an unfinished dub, restart one from the beginning, or download the finished video.</p>
+    </section>
+
+    <section class="page-content disclaimer-section" aria-labelledby="disclaimerTitle">
+      <h2 id="disclaimerTitle">Disclaimer</h2>
+      <p>This website is not affiliated with or endorsed by The Choicer Voicer on itch.io or its creator, YeahMaybe.</p>
+    </section>
+
+    <nav class="site-footer-nav" aria-label="Pages">
+      <a href="pack-maker/">Pack maker</a>
+      <a href="how-to-play/">How to play</a>
+      <a href="tutorials/">Tutorials</a>
+      <a href="about/">About</a>
+      <a href="privacy/">Privacy</a>
+      <a href="terms/">Terms</a>
+      <a href="mailto:hello@mail.thechoicervoicer.app">hello@mail.thechoicervoicer.app</a>
+      <a href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer">Packs on GameBanana</a>
+    </nav>
+
+    <footer class="footer">
+      <button class="edge-button library-edge-button" id="recordingsButton" type="button" aria-haspopup="dialog" aria-controls="optionsDrawer">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 5v14"></path><path d="M8 8v8"></path><path d="M12 4v16"></path><path d="M16 8v8"></path><path d="M20 6v12"></path></svg><span>Recordings</span>
+      </button>
+      <span class="footer-status"><i></i><b id="footerStatus">Import a pack ZIP to begin</b></span>
+      <button class="edge-button library-edge-button" id="packsButton" type="button" aria-haspopup="dialog" aria-controls="optionsDrawer">
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"></path><path d="m3 7.5 9 4.5 9-4.5"></path><path d="M12 12v9"></path></svg><span>Packs</span>
+      </button>
+    </footer>
+
+    <div class="history-tour-scrim" id="historyTourScrim" aria-hidden="true" hidden></div>
+    <section class="history-tour" id="historyTour" role="dialog" aria-modal="true" aria-live="polite" aria-atomic="true" aria-labelledby="historyTourTitle" aria-describedby="historyTourCopy" hidden>
+      <span class="eyebrow" id="historyTourStep">STEP 1 OF 7</span>
+      <h2 id="historyTourTitle">Find your recordings</h2>
+      <p id="historyTourCopy">Open your local recording history to continue or review a dub.</p>
+      <div class="history-tour-actions">
+        <button class="history-tour-skip" id="historyTourSkip" type="button">Skip</button>
+        <button class="history-tour-next" id="historyTourNext" type="button">Next</button>
+      </div>
+    </section>
+
+    <div class="options-scrim" id="optionsScrim"></div>
+    <section class="options-drawer" id="optionsDrawer" aria-hidden="true" aria-label="Local library">
+      <div class="options-head">
+        <div class="options-heading">
+          <div class="options-title-row">
+            <span class="eyebrow" id="libraryDrawerKicker">LOCAL RECORDINGS</span>
+            <label class="library-filter" id="recordingLibraryFilterControl" for="recordingLibraryFilter">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+              <span class="sr-only">Filter recordings by pack name</span>
+              <input id="recordingLibraryFilter" type="search" placeholder="Filter recordings" autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="library-filter" id="packLibraryFilterControl" for="packLibraryFilter" hidden>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+              <span class="sr-only">Filter packs by name</span>
+              <input id="packLibraryFilter" type="search" placeholder="Filter packs" autocomplete="off" spellcheck="false" />
+            </label>
+          </div>
+        </div>
+        <button id="optionsClose" type="button" aria-label="Close local library">×</button>
+      </div>
+      <div class="drawer-content">
+        <section class="library-view recordings-view" id="recordingsLibraryView" aria-labelledby="takeLibraryTitle">
+          <div class="local-library-head local-library-head--status-only">
+            <h3 class="sr-only" id="takeLibraryTitle">Recording sessions</h3>
+            <span id="takeStorageStatus">Checking...</span>
+          </div>
+          <div class="local-pack-list recording-list" id="takeLibraryList" aria-live="polite"><p class="local-pack-empty">Loading saved recordings...</p></div>
+        </section>
+        <section class="library-view packs-view" id="packsLibraryView" aria-labelledby="localLibraryTitle" hidden>
+          <div class="local-library-head local-library-head--status-only">
+            <h3 class="sr-only" id="localLibraryTitle">Local packs</h3>
+            <span id="localStorageStatus">Checking...</span>
+          </div>
+          <div class="local-pack-list" id="localPackList" aria-live="polite"><p class="local-pack-empty">Loading local packs...</p></div>
+        </section>
+      </div>
+    </section>
+
+    <dialog class="pack-video-dialog" id="packVideoDialog" aria-labelledby="packVideoDialogTitle">
+      <div class="pack-video-dialog-head">
+        <div><span class="eyebrow">VIDEO</span><h2 id="packVideoDialogTitle">Pack video</h2></div>
+        <button id="packVideoDialogClose" type="button" aria-label="Close video preview">×</button>
+      </div>
+      <div class="pack-video-stage" id="packVideoStage">
+        <img id="packVideoDialogPoster" alt="" />
+        <video id="packVideoDialogVideo" playsinline preload="metadata" hidden></video>
+        <div class="pack-video-ogv-mount" id="packVideoDialogOgvMount" hidden></div>
+      </div>
+      <button class="pack-video-toggle" id="packVideoDialogToggle" type="button"><span aria-hidden="true">▶</span><b>Play video</b></button>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog class="mobile-notice-dialog" id="mobileNoticeDialog" aria-labelledby="mobileNoticeTitle" aria-describedby="mobileNoticeCopy">
+      <span class="eyebrow">MOBILE NOTICE</span>
+      <h2 id="mobileNoticeTitle">Better on desktop</h2>
+      <p id="mobileNoticeCopy">Recording and playback may be less reliable on phones. For the best experience, use a desktop browser.</p>
+      <button class="mobile-notice-ack" id="mobileNoticeAck" type="button">Got it</button>
+    </dialog>
+
+    <dialog class="mic-onboarding-dialog" id="micOnboardingDialog" aria-labelledby="micOnboardingTitle" aria-describedby="micOnboardingCopy">
+      <div class="mic-onboarding-head">
+        <div><span class="eyebrow">BEFORE YOU RECORD</span><h2 id="micOnboardingTitle">Set up your microphone</h2></div>
+        <button id="micOnboardingClose" type="button" aria-label="Skip microphone setup">×</button>
+      </div>
+      <p id="micOnboardingCopy">Choose your input and recording preferences before your first take.</p>
+      <button class="mic-button mic-onboarding-open" id="micOnboardingOpen" type="button"><span aria-hidden="true">●</span><b>Mic settings</b></button>
+      <button class="mic-onboarding-skip" id="micOnboardingSkip" type="button">Not now</button>
+    </dialog>
+
+    <dialog class="help-dialog" id="helpDialog">
+      <button id="dialogClose" aria-label="Close">×</button>
+      <span class="eyebrow">QUICK START</span>
+      <h3>Make your own dub</h3>
+      <ol><li>Get a pack from <a href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer">GameBanana</a>, or <a href="pack-maker/">make your own from a video</a>.</li><li>Keep the downloaded or generated pack as a ZIP file. Do not unzip it.</li><li>Return here and choose <b>Upload pack ZIP</b>.</li><li>Record each clip, then choose <b>Watch dub</b> to play or export your finished video.</li></ol>
+      <div class="tutorial-actions"><button class="tutorial-import-button" id="tutorialImportButton" type="button">Import Pack ZIP</button><a class="tutorial-maker-link" href="pack-maker/">Make a Pack</a></div>
+    </dialog>
+
+    <dialog class="import-dialog" id="importDialog">
+      <div class="import-dialog-head">
+        <div><span class="eyebrow">ADD TO TAPE RACK</span><h2>Import a pack ZIP</h2></div>
+        <button id="importDialogClose" type="button" aria-label="Close import dialog">×</button>
+      </div>
+      <p>Choose a pack from <a class="pack-source-link" href="https://gamebanana.com/mods/cats/44064" target="_blank" rel="noreferrer">GameBanana <span aria-hidden="true">↗</span></a>, or <a class="pack-source-link" href="pack-maker/">make one from a video</a>. Keep the resulting ZIP zipped.</p>
+      <div class="import-drop-zone" id="importDropZone">
+        <span class="drop-reel" aria-hidden="true"><i></i><i></i></span>
+        <strong>Drop Pack ZIP here</strong>
+        <small>.ZIP only · stored in this browser</small>
+        <button class="import-pack-button" id="importPackButton" type="button"><span aria-hidden="true">⇧</span> Choose Pack ZIP</button>
+        <input class="sr-only" id="packZipInput" type="file" accept=".zip,application/zip" />
+      </div>
+      <div class="import-progress" id="importProgress" role="status" aria-live="polite" aria-busy="false" hidden><div class="import-progress-copy"><span id="importProgressLabel">Preparing import...</span><b id="importProgressValue">0%</b></div><div class="import-progress-track" id="importProgressTrack" role="progressbar" aria-label="Pack import progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="importProgressBar"></span></div></div>
+    </dialog>
+
+    <dialog class="pack-size-dialog" id="packSizeDialog" aria-labelledby="packSizeTitle" aria-describedby="packSizeCopy">
+      <div class="pack-size-dialog__panel">
+        <span class="eyebrow">LARGE PACK</span>
+        <h2 id="packSizeTitle">This ZIP is larger than 250 MB</h2>
+        <p id="packSizeCopy">Importing a large ZIP can use a lot of memory and browser storage, and may make this page slow or unresponsive on some devices.</p>
+        <div class="pack-size-dialog__actions">
+          <button class="pack-size-dialog__cancel" id="packSizeCancel" type="button">Cancel</button>
+          <button class="pack-size-dialog__confirm" id="packSizeConfirm" type="button">Continue import</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="mic-dialog" id="micDialog">
+      <div class="mic-dialog-head">
+        <div><span class="eyebrow">AUDIO INPUT</span><h2>Choose a microphone</h2></div>
+        <button id="micDialogClose" type="button" aria-label="Close microphone chooser">×</button>
+      </div>
+      <p id="micDialogStatus">Allow microphone access to see available inputs.</p>
+      <div class="mic-device-list" id="micDeviceList" role="radiogroup" aria-label="Available microphones"></div>
+      <button class="mic-refresh-button" id="micRefreshButton" type="button">Refresh inputs</button>
+      <section class="mic-processing" aria-labelledby="micProcessingTitle">
+        <h3 id="micProcessingTitle">Microphone processing</h3>
+        <div class="mic-processing-list">
+          <label class="mic-processing-option">
+            <span>Automatic volume</span>
+            <input class="sr-only" type="checkbox" role="switch" data-microphone-processing="autoGainControl" />
+            <i aria-hidden="true"></i>
+          </label>
+          <label class="mic-processing-option">
+            <span>Noise reduction</span>
+            <input class="sr-only" type="checkbox" role="switch" data-microphone-processing="noiseSuppression" />
+            <i aria-hidden="true"></i>
+          </label>
+          <label class="mic-processing-option">
+            <span>Echo cancellation</span>
+            <input class="sr-only" type="checkbox" role="switch" data-microphone-processing="echoCancellation" />
+            <i aria-hidden="true"></i>
+          </label>
+          <label class="mic-processing-option">
+            <span>Voice isolation</span>
+            <input class="sr-only" type="checkbox" role="switch" data-microphone-processing="voiceIsolation" />
+            <i aria-hidden="true"></i>
+          </label>
+        </div>
+      </section>
+    </dialog>
+
+    <dialog class="multiplayer-dialog solo-role-dialog" id="soloRoleDialog" aria-labelledby="soloRoleTitle" aria-describedby="soloRoleCopy">
+      <div class="solo-role-head">
+        <div><span class="eyebrow">SOLO CAST</span><h2 id="soloRoleTitle">Choose your roles</h2></div>
+        <button id="soloRoleClose" type="button" aria-label="Close role selection">×</button>
+      </div>
+      <p id="soloRoleCopy">Keep checked the roles you want to dub. The other clips keep their original voices.</p>
+      <form id="soloRoleForm" aria-busy="false">
+        <fieldset class="solo-role-choice">
+          <legend>Roles to dub</legend>
+          <div class="multiplayer-role-options solo-role-options" id="soloRoleOptions"></div>
+        </fieldset>
+        <button class="multiplayer-primary solo-role-start" id="soloRoleStart" type="submit"><span aria-hidden="true">▶</span><span id="soloRoleStartLabel">Start dubbing</span></button>
+      </form>
+    </dialog>
+
+    <dialog class="multiplayer-dialog" id="multiplayerDialog">
+      <div class="multiplayer-head">
+        <h2>Multiplayer Mode</h2>
+        <button id="multiplayerClose" type="button" aria-label="Close multiplayer">×</button>
+      </div>
+      <p class="multiplayer-status" id="multiplayerStatus" role="status" aria-live="polite" hidden></p>
+
+      <section class="multiplayer-sign-in" id="multiplayerSignIn" aria-label="Multiplayer sign in" hidden>
+        <button class="multiplayer-google-button" id="multiplayerGoogleSignIn" type="button">
+          <svg class="multiplayer-google-mark" aria-hidden="true" focusable="false" viewBox="0 0 18 18">
+            <path fill="#4285F4" d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.797 2.716v2.259h2.909c1.702-1.568 2.684-3.875 2.684-6.615Z" />
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.259c-.806.54-1.836.859-3.047.859-2.344 0-4.328-1.583-5.036-3.71H.957v2.33C2.437 15.978 5.477 18 9 18Z" />
+            <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.96H.957A9 9 0 0 0 0 9c0 1.451.348 2.825.957 4.04l3.007-2.33Z" />
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.58-2.58C13.463.895 11.426 0 9 0 5.477 0 2.437 2.022.957 4.96l3.007 2.33C4.672 5.163 6.656 3.58 9 3.58Z" />
+          </svg>
+          <span id="multiplayerGoogleSignInLabel">Continue with Google</span>
+        </button>
+      </section>
+
+      <section id="multiplayerSetup">
+        <div class="multiplayer-modes" role="tablist" aria-label="Room action">
+          <button id="multiplayerModeCreate" type="button" role="tab">Create room</button>
+          <button id="multiplayerModeJoin" type="button" role="tab">Join room</button>
+        </div>
+        <label class="multiplayer-field"><span>Your name</span><input id="multiplayerName" type="text" maxlength="24" autocomplete="nickname" placeholder="Player name" /></label>
+        <div id="multiplayerJoinFields" hidden><label class="multiplayer-field"><span>Room code</span><input id="multiplayerCode" type="text" maxlength="6" inputmode="text" autocomplete="off" autocapitalize="characters" placeholder="ABC234" /></label></div>
+        <div class="multiplayer-pack-choice">
+          <div><span>VOICE PACK</span><select id="multiplayerPackSelect" aria-label="Local voice pack"></select><b id="multiplayerPackEmpty" hidden>No pack selected</b><small id="multiplayerPackDetail">Import the same ZIP on every device.</small></div>
+          <button id="multiplayerChoosePack" type="button">Import ZIP</button>
+        </div>
+        <fieldset class="multiplayer-role-choice" id="multiplayerRoleChoice" hidden>
+          <legend>Your roles · select one or more</legend>
+          <div class="multiplayer-role-options" id="multiplayerRoleOptions"></div>
+        </fieldset>
+        <div class="multiplayer-terms-consent" id="multiplayerTermsConsent">
+          <div class="multiplayer-terms-consent-row">
+            <span class="multiplayer-terms-checkbox"><input id="multiplayerTermsAccepted" type="checkbox" aria-describedby="multiplayerTermsError" /><span aria-hidden="true"></span></span>
+            <label for="multiplayerTermsAccepted">I agree to the Terms of Use.</label>
+            <button class="multiplayer-terms-link" id="multiplayerTermsOpen" type="button">Read terms</button>
+          </div>
+          <small id="multiplayerTermsError" role="alert" hidden>Required before creating or joining a room.</small>
+        </div>
+        <button class="multiplayer-primary" id="multiplayerCreate" type="button">Create room</button>
+        <p class="multiplayer-privacy">The ZIP stays on this device.</p>
+      </section>
+
+      <section id="multiplayerRoom" hidden>
+        <div class="multiplayer-ticket">
+          <div class="multiplayer-ticket-copy"><span>Room code</span><strong id="multiplayerRoomCode">ABC234</strong></div>
+          <div class="multiplayer-ticket-actions">
+            <button id="multiplayerCopy" type="button" title="Copy room code"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><line x1="4" x2="20" y1="9" y2="9"></line><line x1="4" x2="20" y1="15" y2="15"></line><line x1="10" x2="8" y1="3" y2="21"></line><line x1="16" x2="14" y1="3" y2="21"></line></svg><span>Copy code</span></button>
+            <button id="multiplayerCopyUrl" type="button" title="Copy invite link"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg><span>Copy invite link</span></button>
+          </div>
+        </div>
+        <div class="multiplayer-room-pack"><div><span>VOICE PACK</span><b id="multiplayerRoomPack">Pack</b><small id="multiplayerRoomPackState">Choose the same pack ZIP</small></div><div class="multiplayer-pack-actions" id="multiplayerPackActions"><select id="multiplayerRoomPackSelect" aria-label="Choose local voice pack"></select><button id="multiplayerRoomPackImport" type="button">Import ZIP</button></div></div>
+        <ul class="multiplayer-players" id="multiplayerPlayers" aria-label="Players"></ul>
+        <div class="multiplayer-room-actions">
+          <button class="multiplayer-ready-button" id="multiplayerReady" type="button" aria-pressed="false">Ready to play</button>
+          <button class="multiplayer-primary" id="multiplayerStart" type="button" hidden>Start game</button>
+          <span id="multiplayerWaiting" hidden>Waiting for host</span>
+          <span id="multiplayerPlaying" hidden>Record the clips marked for you.</span>
+        </div>
+        <button class="multiplayer-leave" id="multiplayerLeave" type="button">Leave room</button>
+      </section>
+    </dialog>
+
+    <dialog class="multiplayer-dialog multiplayer-kick-dialog" id="multiplayerKickDialog" aria-labelledby="multiplayerKickTitle" aria-describedby="multiplayerKickCopy">
+      <div class="multiplayer-kick-head">
+        <span class="eyebrow">ROOM CONTROL</span>
+        <h2 id="multiplayerKickTitle">Remove player?</h2>
+      </div>
+      <p id="multiplayerKickCopy">Remove <strong id="multiplayerKickPlayerName">this player</strong> from the room? Their roles will open immediately. Shared recordings will stay in the room.</p>
+      <p class="multiplayer-kick-status" id="multiplayerKickStatus" role="alert" hidden></p>
+      <div class="multiplayer-kick-actions">
+        <button class="multiplayer-kick-keep" id="multiplayerKickCancel" type="button">Keep player</button>
+        <button class="multiplayer-kick-confirm" id="multiplayerKickConfirm" type="button"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m17 8 5 5"></path><path d="m22 8-5 5"></path></svg><span id="multiplayerKickConfirmLabel">Remove player</span></button>
+      </div>
+    </dialog>
+
+    <dialog class="multiplayer-terms-dialog" id="multiplayerTermsDialog" aria-labelledby="multiplayerTermsTitle">
+      <div class="multiplayer-terms-head">
+        <div><span class="eyebrow">ROOM AGREEMENT</span><h2 id="multiplayerTermsTitle">Terms of Use</h2></div>
+        <button id="multiplayerTermsClose" type="button" aria-label="Close terms">×</button>
+      </div>
+      <div class="multiplayer-terms-content">
+        <p>These terms apply to this website, its Studio, Pack Maker, voice-pack pages, and Multiplayer Mode.</p>
+        <h3>Files and local processing</h3>
+        <p>Voice-pack ZIPs, source videos, images, original audio, solo recordings, and Pack Maker source files stay on your device. This website does not upload the pack ZIP or its original media.</p>
+        <h3>Community content</h3>
+        <p>Community packs may contain third-party material. Check the source, license, credits, and content warnings. You must have permission to use anything you import, modify, export, or share.</p>
+        <h3>Multiplayer recordings</h3>
+        <p>Your recorded voice takes are temporarily uploaded so players in the same room can play and export the shared dub. You keep your rights in your recordings and give this website limited permission to store and deliver them only for the room.</p>
+        <h3>Storage and sharing</h3>
+        <p>Room recordings are automatically deleted within 24 hours of upload and may be removed sooner when a room expires or is closed. Other room players may receive and save copies; deleting the server copy cannot remove copies they already downloaded or exported.</p>
+        <h3>Responsible use</h3>
+        <p>Do not record another person without permission or include private information. Do not use the service for unlawful, abusive, harmful, automated, or disruptive activity.</p>
+        <p class="multiplayer-terms-note">The full terms, third-party service details, limitations, and contact information are available on the Terms of Use page.</p>
+      </div>
+      <div class="multiplayer-terms-actions">
+        <a href="terms/">Read full terms</a>
+        <button class="multiplayer-secondary" id="multiplayerTermsDone" type="button">Close</button>
+      </div>
+    </dialog>
+
+    <dialog class="multiplayer-completion-dialog" id="multiplayerCompletionDialog" aria-labelledby="multiplayerCompletionTitle" aria-describedby="multiplayerCompletionCopy">
+      <div class="multiplayer-completion-head">
+        <span class="multiplayer-completion-signal" aria-hidden="true"><i></i><i></i></span>
+        <div><span class="eyebrow" id="multiplayerCompletionEyebrow">YOUR CLIPS ARE IN</span><h2 id="multiplayerCompletionTitle">Waiting for the others</h2></div>
+      </div>
+      <p id="multiplayerCompletionCopy">Keep this tab open while the other players finish recording.</p>
+      <ul class="multiplayer-completion-players" id="multiplayerCompletionPlayers" aria-label="Player recording progress"></ul>
+      <div class="multiplayer-completion-foot">
+        <span id="multiplayerCompletionStatus" role="status" aria-live="polite">Waiting for recordings...</span>
+        <div class="multiplayer-completion-actions" id="multiplayerCompletionActions">
+          <button id="multiplayerCompletionReview" type="button"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v6h6"></path></svg><span>Review / re-record</span></button>
+          <button id="multiplayerCompletionLeave" type="button"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>Leave Room</span></button>
+          <button id="multiplayerCompletionWatch" type="button" hidden><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg><span>Watch Dub</span></button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="final-dialog" id="finalDialog">
+      <div class="final-head">
+        <div><span class="eyebrow">FINAL CUT</span><h2 id="finalTitle">Choicer Voicer</h2></div>
+        <button id="finalClose" aria-label="Close">×</button>
+      </div>
+      <div class="final-video-wrap">
+        <video id="finalVideo" controls playsinline></video>
+        <div class="final-ogv-mount" id="finalOgvMount" hidden></div>
+        <div class="final-loading" id="finalLoading">Mixing your takes...</div>
+      </div>
+      <div class="final-foot">
+        <div class="final-status-block">
+          <span id="finalStatus">Your dub is playing with the original backing track.</span>
+          <div class="export-progress" id="exportProgress" role="progressbar" aria-label="Video export progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span id="exportProgressBar"></span></div>
+          <strong class="export-keep-visible" id="exportKeepVisible" hidden></strong>
+        </div>
+        <label class="final-background-control" id="finalBackgroundControl" hidden>
+          <span id="finalBackgroundLabel">Backing track</span>
+          <input id="finalBackgroundVolume" type="range" min="0" max="100" step="1" value="100" />
+          <output id="finalBackgroundValue" for="finalBackgroundVolume">100%</output>
+        </label>
+        <div class="final-actions">
+          <button id="finalReplay">Replay</button>
+          <button class="export-video-button" id="exportVideoButton" disabled><span aria-hidden="true">⇩</span> <b id="exportVideoLabel">Export video</b></button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="feedback-dialog" id="feedbackDialog" aria-labelledby="feedbackTitle" aria-describedby="feedbackIntro">
+      <div class="feedback-head">
+        <div><span class="eyebrow">STUDIO SIGNAL</span><h2 id="feedbackTitle">Send feedback</h2></div>
+        <button id="feedbackClose" type="button" aria-label="Close feedback">×</button>
+      </div>
+      <p class="feedback-intro" id="feedbackIntro">Tell us what went wrong or what would make the studio better.</p>
+      <form id="feedbackForm">
+        <label class="feedback-field">
+          <span>Type</span>
+          <select id="feedbackCategory" name="category">
+            <option value="problem">Something is not working</option>
+            <option value="suggestion">Suggestion</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label class="feedback-field feedback-message-field">
+          <span>What happened?</span>
+          <textarea id="feedbackMessage" name="message" rows="6" minlength="10" maxlength="2000" required placeholder="Describe the problem, including what you clicked and what you expected."></textarea>
+          <small class="feedback-counter" id="feedbackCounter">0 / 2000</small>
+        </label>
+        <label class="feedback-field">
+          <span>Email <small>(optional)</small></span>
+          <input id="feedbackEmail" name="contactEmail" type="email" maxlength="254" autocomplete="email" placeholder="Only if you want a reply" />
+        </label>
+        <label class="feedback-trap" aria-hidden="true">Website<input id="feedbackWebsite" name="website" tabindex="-1" autocomplete="off" /></label>
+        <p class="feedback-status" id="feedbackStatus" role="status" aria-live="polite"></p>
+        <div class="feedback-actions">
+          <button class="feedback-cancel" id="feedbackCancel" type="button">Cancel</button>
+          <button class="feedback-submit" id="feedbackSubmit" type="submit"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg><span>Send feedback</span></button>
+        </div>
+      </form>
+    </dialog>
+
+    <script type="module" src="monitoring.js?v=20260829-1"></script>
+    <script defer src="voice-effects.js?v=20260829-1"></script>
+    <script defer src="multiplayer.js?v=20260902-5"></script>
+    <script defer src="app.js?v=20260902-1"></script>
+  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a34e525a69fb14aa',t:'MTc4ODM3MTA1NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
