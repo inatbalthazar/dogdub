@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Choicer Voicer Field Guide</title>
+    <link>https://thechoicervoicer.app/tutorials/</link>
+    <description>Practical guides to Choicer Voicer Studio and Pack Maker.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 28 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://thechoicervoicer.app/tutorials/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting started with Choicer Voicer Studio</title>
+      <link>https://thechoicervoicer.app/tutorials/getting-started-with-studio/</link>
+      <guid>https://thechoicervoicer.app/tutorials/getting-started-with-studio/</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Import a voice pack ZIP, record each line, review your timing, and watch your first finished dub.</description>
+    </item>
+    <item>
+      <title>Make your first dub pack from an MP4</title>
+      <link>https://thechoicervoicer.app/tutorials/make-your-first-dub-pack/</link>
+      <guid>https://thechoicervoicer.app/tutorials/make-your-first-dub-pack/</guid>
+      <pubDate>Thu, 27 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Mark dialogue clips, add characters and captions, and turn an MP4 into a Studio-ready pack ZIP.</description>
+    </item>
+    <item>
+      <title>Record cleaner voice takes at home</title>
+      <link>https://thechoicervoicer.app/tutorials/record-clean-voice-takes/</link>
+      <guid>https://thechoicervoicer.app/tutorials/record-clean-voice-takes/</guid>
+      <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Choose a microphone, set browser processing, and keep home recordings consistent.</description>
+    </item>
+    <item>
+      <title>Use the overlap waveform to fix timing</title>
+      <link>https://thechoicervoicer.app/tutorials/use-the-overlap-waveform/</link>
+      <guid>https://thechoicervoicer.app/tutorials/use-the-overlap-waveform/</guid>
+      <pubDate>Tue, 25 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Read late starts, long endings, and level differences without treating the graph as a score.</description>
+    </item>
+    <item>
+      <title>Build a multi-character voice pack</title>
+      <link>https://thechoicervoicer.app/tutorials/build-a-multi-character-pack/</link>
+      <guid>https://thechoicervoicer.app/tutorials/build-a-multi-character-pack/</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Organize speakers into character lanes, rename and merge roles, and handle overlapping dialogue.</description>
+    </item>
+    <item>
+      <title>Import SRT and VTT subtitles into Pack Maker</title>
+      <link>https://thechoicervoicer.app/tutorials/import-subtitles-into-pack-maker/</link>
+      <guid>https://thechoicervoicer.app/tutorials/import-subtitles-into-pack-maker/</guid>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Turn subtitle cues into editable clips, then clean their timing, captions, and character assignments.</description>
+    </item>
+    <item>
+      <title>Add a dialogue-free backing track</title>
+      <link>https://thechoicervoicer.app/tutorials/add-a-dialogue-free-backing-track/</link>
+      <guid>https://thechoicervoicer.app/tutorials/add-a-dialogue-free-backing-track/</guid>
+      <pubDate>Sat, 22 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Keep music, ambience, and effects under the new voices without bringing the old dialogue back.</description>
+    </item>
+    <item>
+      <title>Choose and tune voice effects</title>
+      <link>https://thechoicervoicer.app/tutorials/choose-and-tune-voice-effects/</link>
+      <guid>https://thechoicervoicer.app/tutorials/choose-and-tune-voice-effects/</guid>
+      <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Use presets and understand Pitch, Tone, Texture, Space, Echo, and Mod controls.</description>
+    </item>
+    <item>
+      <title>Play Choicer Voicer with friends online</title>
+      <link>https://thechoicervoicer.app/tutorials/play-multiplayer/</link>
+      <guid>https://thechoicervoicer.app/tutorials/play-multiplayer/</guid>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Create or join a room, match the same pack ZIP, assign roles, and finish a shared dub.</description>
+    </item>
+    <item>
+      <title>Export and troubleshoot your finished dub</title>
+      <link>https://thechoicervoicer.app/tutorials/export-and-troubleshoot-your-dub/</link>
+      <guid>https://thechoicervoicer.app/tutorials/export-and-troubleshoot-your-dub/</guid>
+      <pubDate>Wed, 19 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Prepare a dub for export and fix common browser rendering problems.</description>
+    </item>
+  </channel>
+</rss>

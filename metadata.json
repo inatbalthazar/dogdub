@@ -1,0 +1,10 @@
+{
+  "name": "Choicer Voicer Studio",
+  "description": "Play Choicer Voicer in your browser. Import a voice pack, record your lines, and make a finished dub solo or with friends.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

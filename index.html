@@ -32,6 +32,7 @@
     <meta name="twitter:description" content="Import a voice pack, record your lines, and watch your own dub in the browser. Free, no account needed." />
     <meta name="twitter:image" content="https://thechoicervoicer.app/social-preview.png" />
     <link rel="preload" href="fonts/bowlby-one-sc-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="voice-pack-selector.css?v=20260902-1" />
     <style data-critical>@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/barlow-condensed-600-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/barlow-condensed-700-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Bowlby One SC'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/bowlby-one-sc-latin.woff2') format('woff2'); }
@@ -493,7 +494,7 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
               <div class="studio-ogv-mount" id="studioOgvMount" hidden></div>
               <img id="stillFrame" class="still-frame" alt="Current scene still" />
               <canvas id="staticCanvas" class="tv-static" aria-hidden="true"></canvas>
-              <div class="pack-empty-state" id="packEmptyState"><span>NO SIGNAL / NO PACK LOADED</span><button class="screen-import-button" id="screenImportButton" type="button">Import a pack ZIP</button><small>or <a href="pack-maker/">make one from a video</a></small></div>
+              <div class="pack-empty-state" id="packEmptyState"><span>NO SIGNAL / NO PACK LOADED</span><button class="screen-import-button" id="screenImportButton" type="button">Select a Voice Pack (.ZIP)</button><small>Choose from web packs or upload a .zip</small></div>
               <div class="screen-drop-overlay" id="screenDropOverlay" role="status" aria-live="polite" aria-busy="false" aria-hidden="true">
                 <span class="screen-drop-tape" aria-hidden="true"><i></i><i></i></span>
                 <strong id="screenDropTitle">Drop to insert pack</strong>
@@ -969,9 +970,15 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
         </div>
         <label class="multiplayer-field"><span>Your name</span><input id="multiplayerName" type="text" maxlength="24" autocomplete="nickname" placeholder="Player name" /></label>
         <div id="multiplayerJoinFields" hidden><label class="multiplayer-field"><span>Room code</span><input id="multiplayerCode" type="text" maxlength="6" inputmode="text" autocomplete="off" autocapitalize="characters" placeholder="ABC234" /></label></div>
-        <div class="multiplayer-pack-choice">
-          <div><span>VOICE PACK</span><select id="multiplayerPackSelect" aria-label="Local voice pack"></select><b id="multiplayerPackEmpty" hidden>No pack selected</b><small id="multiplayerPackDetail">Import the same ZIP on every device.</small></div>
-          <button id="multiplayerChoosePack" type="button">Import ZIP</button>
+        <div class="multiplayer-pack-choice" id="multiplayerPackChoice">
+          <div>
+            <span class="multiplayer-pack-tag">VOICE PACK</span>
+            <select id="multiplayerWebPackSelect" class="multiplayer-web-pack-select" aria-label="Choose voice pack"></select>
+            <select id="multiplayerPackSelect" aria-label="Local voice pack" style="display: none;"></select>
+            <b id="multiplayerPackEmpty" hidden>No pack selected</b>
+            <small id="multiplayerPackDetail">Choose a web pack or select from available packs.</small>
+          </div>
+          <button id="multiplayerChoosePack" class="multiplayer-choose-pack-btn" type="button">Select Pack</button>
         </div>
         <fieldset class="multiplayer-role-choice" id="multiplayerRoleChoice" hidden>
           <legend>Your roles · select one or more</legend>
@@ -986,7 +993,7 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
           <small id="multiplayerTermsError" role="alert" hidden>Required before creating or joining a room.</small>
         </div>
         <button class="multiplayer-primary" id="multiplayerCreate" type="button">Create room</button>
-        <p class="multiplayer-privacy">The ZIP stays on this device.</p>
+        <p class="multiplayer-privacy">Voice packs are loaded directly into the web app.</p>
       </section>
 
       <section id="multiplayerRoom" hidden>
@@ -997,7 +1004,7 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
             <button id="multiplayerCopyUrl" type="button" title="Copy invite link"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg><span>Copy invite link</span></button>
           </div>
         </div>
-        <div class="multiplayer-room-pack"><div><span>VOICE PACK</span><b id="multiplayerRoomPack">Pack</b><small id="multiplayerRoomPackState">Choose the same pack ZIP</small></div><div class="multiplayer-pack-actions" id="multiplayerPackActions"><select id="multiplayerRoomPackSelect" aria-label="Choose local voice pack"></select><button id="multiplayerRoomPackImport" type="button">Import ZIP</button></div></div>
+        <div class="multiplayer-room-pack"><div><span>VOICE PACK</span><b id="multiplayerRoomPack">Pack</b><small id="multiplayerRoomPackState">Select the matching web voice pack (.zip)</small></div><div class="multiplayer-pack-actions" id="multiplayerPackActions"><select id="multiplayerRoomPackSelect" aria-label="Choose local voice pack"></select><button id="multiplayerRoomPackImport" type="button">Select Pack</button></div></div>
         <ul class="multiplayer-players" id="multiplayerPlayers" aria-label="Players"></ul>
         <div class="multiplayer-room-actions">
           <button class="multiplayer-ready-button" id="multiplayerReady" type="button" aria-pressed="false">Ready to play</button>
@@ -1129,5 +1136,6 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
     <script defer src="voice-effects.js?v=20260829-1"></script>
     <script defer src="multiplayer.js?v=20260902-5"></script>
     <script defer src="app.js?v=20260902-1"></script>
-  <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a34e525a69fb14aa',t:'MTc4ODM3MTA1NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    <script defer src="voice-pack-selector.js?v=20260902-1"></script>
+  </body>
 </html>
