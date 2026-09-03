@@ -506,20 +506,18 @@ const DEFAULT_FALLBACK_PACKS = [
   const isLineAlreadyRecorded = Boolean(mergedRecordedTakes[currentLineIndex]);
   const recorderName = currentLineTakeObj?.playerName || '';
 
-  // Check turn ownership accurately:
+  // Check turn ownership accurately (ONLY the person currently in turn can record!):
   const currentTurnPlayerId = activeRoom?.currentTurnPlayerId || activeRoom?.players?.[activeTurnIndex]?.id;
   const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[activeTurnIndex];
 
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
-    currentUser?.isHost ||
+    (activeRoom?.players && activeRoom.players.length <= 1) || // Room with 1 player
     (currentTurnPlayer && (
-      currentTurnPlayer.name === currentUser?.name ||
-      currentTurnPlayer.id === currentUser?.id ||
-      (currentTurnPlayer.id && activeRoom?.you?.id && currentTurnPlayer.id === activeRoom?.you?.id) ||
-      (currentTurnPlayer.name && currentUser?.name && currentTurnPlayer.name.includes(currentUser.name))
-    )) ||
-    (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
+      (activeRoom?.you?.id && currentTurnPlayer.id === activeRoom.you.id) ||
+      (currentUser?.id && currentTurnPlayer.id === currentUser.id) ||
+      (currentUser?.name && currentTurnPlayer.name === currentUser.name)
+    ))
   );
 
   const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
