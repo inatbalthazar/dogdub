@@ -1175,7 +1175,13 @@ app.get('/api/packs', (req, res) => {
       for (const file of files) {
         const meta = parsePackMetadata(path.join(PACKS_DIR, file));
         if (meta && meta.id) {
-          packMap.set(meta.id, meta);
+          const existing = packMap.get(meta.id) || {};
+          packMap.set(meta.id, {
+            ...meta,
+            title: existing.title || meta.title,
+            category: existing.category || 'Movie',
+            cover: existing.cover || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop'
+          });
         }
       }
     }
