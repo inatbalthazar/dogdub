@@ -857,7 +857,12 @@ app.get('/api/rooms/:code/takes/:lineIndex', (req, res) => {
   res.send(take.buffer);
 });
 
-// Static assets
+// Production static build serving from dist directory
+if (fs.existsSync(path.join(__dirname, 'dist'))) {
+  app.use(express.static(path.join(__dirname, 'dist')));
+}
+
+// Static assets from root
 app.use(express.static(__dirname, {
   extensions: ['html'],
   index: false
@@ -868,6 +873,14 @@ const ASSET_EXT_REGEX = /\.(js|mjs|css|wasm|png|jpg|jpeg|webp|gif|svg|ico|woff2|
 
 app.get(ASSET_EXT_REGEX, async (req, res) => {
   const reqPath = req.path;
+  
+  // 1. Check dist/ directory first
+  const distFile = path.join(__dirname, 'dist', reqPath);
+  if (fs.existsSync(distFile) && fs.statSync(distFile).isFile()) {
+    return res.sendFile(distFile);
+  }
+
+  // 2. Check root directory
   const localFile = path.join(__dirname, reqPath);
   if (fs.existsSync(localFile) && fs.statSync(localFile).isFile()) {
     return res.sendFile(localFile);
