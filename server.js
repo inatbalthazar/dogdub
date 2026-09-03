@@ -197,7 +197,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "46.9 MB",
     "url": "/api/packs/stream/-__09bf5.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/-__09bf5.jpg"
   },
   {
     "id": "-__75374",
@@ -211,7 +211,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "26.6 MB",
     "url": "/api/packs/stream/-__75374.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/-__75374.jpg"
   },
   {
     "id": "300_-_this_is_sparta_",
@@ -225,7 +225,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "283.8 MB",
     "url": "/api/packs/stream/300_-_this_is_sparta_.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/300_-_this_is_sparta_.png"
   },
   {
     "id": "annoying_orange_4a4e0",
@@ -239,7 +239,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "13.3 MB",
     "url": "/api/packs/stream/annoying_orange_4a4e0.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/annoying_orange_4a4e0.png"
   },
   {
     "id": "Are you the Strongest",
@@ -253,7 +253,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "24.3 MB",
     "url": "/api/packs/stream/Are%20you%20the%20Strongest.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Are you the Strongest.png"
   },
   {
     "id": "attack_on_titan_-_you_traitor",
@@ -267,7 +267,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "179.3 MB",
     "url": "/api/packs/stream/attack_on_titan_-_you_traitor.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/attack_on_titan_-_you_traitor.png"
   },
   {
     "id": "avengers_arguing",
@@ -281,7 +281,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "199.3 MB",
     "url": "/api/packs/stream/avengers_arguing.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/avengers_arguing.png"
   },
   {
     "id": "backrooms_-_dinner_scene_e80f0",
@@ -295,7 +295,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "37.7 MB",
     "url": "/api/packs/stream/backrooms_-_dinner_scene_e80f0.zip",
     "category": "Horror",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/backrooms_-_dinner_scene_e80f0.png"
   },
   {
     "id": "batman_interrogates_the_joker_-_the_dark_knight_96d29",
@@ -309,7 +309,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "71.2 MB",
     "url": "/api/packs/stream/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip",
     "category": "DC",
-    "cover": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/batman_interrogates_the_joker_-_the_dark_knight_96d29.jpg"
   },
   {
     "id": "beyond_the_spiderverse_trailer_0d846",
@@ -323,7 +323,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "103.9 MB",
     "url": "/api/packs/stream/beyond_the_spiderverse_trailer_0d846.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/beyond_the_spiderverse_trailer_0d846.png"
   },
   {
     "id": "Dexter - Cargo Scene",
@@ -337,7 +337,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "36.3 MB",
     "url": "/api/packs/stream/Dexter%20-%20Cargo%20Scene.zip",
     "category": "TV Series",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Dexter - Cargo Scene.png"
   },
   {
     "id": "don_t_let_me_leave_murph",
@@ -351,7 +351,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "36.1 MB",
     "url": "/api/packs/stream/don_t_let_me_leave_murph.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/don_t_let_me_leave_murph.jpg"
   },
   {
     "id": "Elsa Flees From Arendelle",
@@ -365,7 +365,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "131.7 MB",
     "url": "/api/packs/stream/Elsa%20Flees%20From%20Arendelle.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Elsa Flees From Arendelle.png"
   },
   {
     "id": "engame",
@@ -379,7 +379,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "163.9 MB",
     "url": "/api/packs/stream/engame.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/engame.png"
   },
   {
     "id": "eren_manipulates",
@@ -393,7 +393,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "69.5 MB",
     "url": "/api/packs/stream/eren_manipulates.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/eren_manipulates.png"
   },
   {
     "id": "erwin_s_plan_aot_3_",
@@ -407,7 +407,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "69.1 MB",
     "url": "/api/packs/stream/erwin_s_plan_aot_3_.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/erwin_s_plan_aot_3_.jpg"
   },
   {
     "id": "evil_dead_rise_bande_annonce_vf_",
@@ -421,7 +421,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "38.2 MB",
     "url": "/api/packs/stream/evil_dead_rise_bande_annonce_vf_.zip",
     "category": "Horror",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/evil_dead_rise_bande_annonce_vf_.jpg"
   },
   {
     "id": "forrest_gump_-_life_is_like_a_box_of_chocolates",
@@ -435,7 +435,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "51.1 MB",
     "url": "/api/packs/stream/forrest_gump_-_life_is_like_a_box_of_chocolates.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1511381939415-e44015466834?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/forrest_gump_-_life_is_like_a_box_of_chocolates.jpg"
   },
   {
     "id": "GIVE ME THE BALL",
@@ -449,7 +449,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "235.2 MB",
     "url": "/api/packs/stream/GIVE%20ME%20THE%20BALL.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/GIVE ME THE BALL.png"
   },
   {
     "id": "GOTG Vol 2 - Now I Know That Sounds Bad",
@@ -463,7 +463,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "225.4 MB",
     "url": "/api/packs/stream/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/GOTG Vol 2 - Now I Know That Sounds Bad.png"
   },
   {
     "id": "Guardians meet avengers",
@@ -477,7 +477,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "75.5 MB",
     "url": "/api/packs/stream/Guardians%20meet%20avengers.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Guardians meet avengers.png"
   },
   {
     "id": "guardians_meet_avengers",
@@ -505,7 +505,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "23.1 MB",
     "url": "/api/packs/stream/guardians_of_the_galaxy_vol_3_i_.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/guardians_of_the_galaxy_vol_3_i_.jpg"
   },
   {
     "id": "harrypotterduel",
@@ -519,7 +519,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "171.1 MB",
     "url": "/api/packs/stream/harrypotterduel.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/harrypotterduel.png"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_1",
@@ -533,7 +533,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "64.3 MB",
     "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_1.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/harry_potter_4_-_harry_vs_voldemort_pt_1.png"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_2",
@@ -547,7 +547,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "115.5 MB",
     "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_2.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/harry_potter_4_-_harry_vs_voldemort_pt_2.png"
   },
   {
     "id": "harry_potter_train_scene",
@@ -561,7 +561,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "19.4 MB",
     "url": "/api/packs/stream/harry_potter_train_scene.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/harry_potter_train_scene.jpg"
   },
   {
     "id": "homelander_vs_butcher",
@@ -575,7 +575,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "17.2 MB",
     "url": "/api/packs/stream/homelander_vs_butcher.zip",
     "category": "TV Series",
-    "cover": "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/homelander_vs_butcher.jpg"
   },
   {
     "id": "i-m-tired-boss-the-green-mile-1999-nominee",
@@ -589,7 +589,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "22.2 MB",
     "url": "/api/packs/stream/i-m-tired-boss-the-green-mile-1999-nominee.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/i-m-tired-boss-the-green-mile-1999-nominee.jpg"
   },
   {
     "id": "ichigo_vs_byakuya_choicervoicer_54255",
@@ -603,7 +603,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "58.4 MB",
     "url": "/api/packs/stream/ichigo_vs_byakuya_choicervoicer_54255.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/ichigo_vs_byakuya_choicervoicer_54255.png"
   },
   {
     "id": "incredibles_-_im_thirsty",
@@ -617,7 +617,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "64.3 MB",
     "url": "/api/packs/stream/incredibles_-_im_thirsty.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/incredibles_-_im_thirsty.png"
   },
   {
     "id": "invincible_-_are_you_sure",
@@ -631,7 +631,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "11.0 MB",
     "url": "/api/packs/stream/invincible_-_are_you_sure.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/invincible_-_are_you_sure.png"
   },
   {
     "id": "it-2017-pennywise-meets-georgie",
@@ -645,7 +645,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "37.8 MB",
     "url": "/api/packs/stream/it-2017-pennywise-meets-georgie.zip",
     "category": "Horror",
-    "cover": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/it-2017-pennywise-meets-georgie.jpg"
   },
   {
     "id": "i_robot_-_can_you_4c11c",
@@ -659,7 +659,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "3.7 MB",
     "url": "/api/packs/stream/i_robot_-_can_you_4c11c.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/i_robot_-_can_you_4c11c.png"
   },
   {
     "id": "jotaro_vs_dio",
@@ -673,7 +673,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "100.7 MB",
     "url": "/api/packs/stream/jotaro_vs_dio.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/jotaro_vs_dio.png"
   },
   {
     "id": "kung_fu_panda_-_oogway_ascends",
@@ -687,7 +687,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "83.8 MB",
     "url": "/api/packs/stream/kung_fu_panda_-_oogway_ascends.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/kung_fu_panda_-_oogway_ascends.png"
   },
   {
     "id": "kung_fu_panda_-_shifu_vs_tai_lung",
@@ -701,7 +701,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "126.6 MB",
     "url": "/api/packs/stream/kung_fu_panda_-_shifu_vs_tai_lung.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/kung_fu_panda_-_shifu_vs_tai_lung.png"
   },
   {
     "id": "light_yagami_perfect_victory",
@@ -715,7 +715,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "35.8 MB",
     "url": "/api/packs/stream/light_yagami_perfect_victory.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/light_yagami_perfect_victory.png"
   },
   {
     "id": "Loki in Germany Avengers 2012",
@@ -729,7 +729,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "54.3 MB",
     "url": "/api/packs/stream/Loki%20in%20Germany%20Avengers%202012.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Loki in Germany Avengers 2012.png"
   },
   {
     "id": "minions_-_banana_song_barbara_ann_",
@@ -743,7 +743,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "45.5 MB",
     "url": "/api/packs/stream/minions_-_banana_song_barbara_ann_.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/minions_-_banana_song_barbara_ann_.png"
   },
   {
     "id": "monsters_inc_-_waternoose_scandal_scene_6a3b5",
@@ -757,7 +757,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "95.5 MB",
     "url": "/api/packs/stream/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/monsters_inc_-_waternoose_scandal_scene_6a3b5.png"
   },
   {
     "id": "no_way_home",
@@ -771,7 +771,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "78.1 MB",
     "url": "/api/packs/stream/no_way_home.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/no_way_home.png"
   },
   {
     "id": "obsession_-_diner_scene_040e7",
@@ -785,7 +785,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "19.5 MB",
     "url": "/api/packs/stream/obsession_-_diner_scene_040e7.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/obsession_-_diner_scene_040e7.png"
   },
   {
     "id": "pulp_fiction_-_say_what_again",
@@ -799,7 +799,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "35.2 MB",
     "url": "/api/packs/stream/pulp_fiction_-_say_what_again.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/pulp_fiction_-_say_what_again.png"
   },
   {
     "id": "Spider-Man 2 - Could You Pay Me In Advance",
@@ -813,7 +813,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "44.7 MB",
     "url": "/api/packs/stream/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Spider-Man 2 - Could You Pay Me In Advance.png"
   },
   {
     "id": "spider-man_3_rent_scene_modpack",
@@ -827,7 +827,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "41.4 MB",
     "url": "/api/packs/stream/spider-man_3_rent_scene_modpack.zip",
     "category": "Marvel",
-    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/spider-man_3_rent_scene_modpack.png"
   },
   {
     "id": "star_wars-i_am_your_father",
@@ -841,7 +841,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "41.4 MB",
     "url": "/api/packs/stream/star_wars-i_am_your_father.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/star_wars-i_am_your_father.png"
   },
   {
     "id": "star_wars_-_you_turned_her_against_me_20ba1",
@@ -855,7 +855,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "48.0 MB",
     "url": "/api/packs/stream/star_wars_-_you_turned_her_against_me_20ba1.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/star_wars_-_you_turned_her_against_me_20ba1.png"
   },
   {
     "id": "sukuna_awakens_in_shibuya_for_windows_zip_",
@@ -869,7 +869,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "26.8 MB",
     "url": "/api/packs/stream/sukuna_awakens_in_shibuya_for_windows_zip_.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/sukuna_awakens_in_shibuya_for_windows_zip_.png"
   },
   {
     "id": "the_good_doctor_-_i_am_a_surgeon",
@@ -883,7 +883,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "60.0 MB",
     "url": "/api/packs/stream/the_good_doctor_-_i_am_a_surgeon.zip",
     "category": "TV Series",
-    "cover": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/the_good_doctor_-_i_am_a_surgeon.png"
   },
   {
     "id": "Toji vs Gojo",
@@ -897,7 +897,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "25.8 MB",
     "url": "/api/packs/stream/Toji%20vs%20Gojo.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/Toji vs Gojo.png"
   },
   {
     "id": "twilight_-_i_know_what_you_are_d9110",
@@ -911,7 +911,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "100.0 MB",
     "url": "/api/packs/stream/twilight_-_i_know_what_you_are_d9110.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/twilight_-_i_know_what_you_are_d9110.png"
   },
   {
     "id": "what_is_your_name_5718b",
@@ -925,7 +925,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "45.1 MB",
     "url": "/api/packs/stream/what_is_your_name_5718b.zip",
     "category": "Anime",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/what_is_your_name_5718b.png"
   },
   {
     "id": "white_chicks_-_a_thousand_miles",
@@ -939,7 +939,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "30.3 MB",
     "url": "/api/packs/stream/white_chicks_-_a_thousand_miles.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/white_chicks_-_a_thousand_miles.png"
   },
   {
     "id": "will_byers_coming_out",
@@ -953,7 +953,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "103.7 MB",
     "url": "/api/packs/stream/will_byers_coming_out.zip",
     "category": "TV Series",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/will_byers_coming_out.jpg"
   },
   {
     "id": "you_are_a_toy",
@@ -967,7 +967,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "15.1 MB",
     "url": "/api/packs/stream/you_are_a_toy.zip",
     "category": "Animation",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/you_are_a_toy.png"
   },
   {
     "id": "you_shall_not_pass_lotr_scene",
@@ -981,7 +981,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "46.7 MB",
     "url": "/api/packs/stream/you_shall_not_pass_lotr_scene.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/you_shall_not_pass_lotr_scene.jpg"
   },
   {
     "id": "ytdowncom_youtube_dementor_on_bo",
@@ -995,7 +995,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "96.5 MB",
     "url": "/api/packs/stream/ytdowncom_youtube_dementor_on_bo.zip",
     "category": "Fantasy",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/ytdowncom_youtube_dementor_on_bo.jpg"
   },
   {
     "id": "yu_and_mi_-_rush_hour",
@@ -1009,7 +1009,7 @@ const DEFAULT_PACKS = [
     "sizeFormatted": "36.2 MB",
     "url": "/api/packs/stream/yu_and_mi_-_rush_hour.zip",
     "category": "Movie",
-    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop"
+    "cover": "/pack-covers/yu_and_mi_-_rush_hour.png"
   }
 ];
 
@@ -1234,6 +1234,7 @@ app.use('/packs', express.static(PACKS_DIR, {
   }
 }));
 
+app.use('/pack-covers', express.static(path.join(__dirname, 'public', 'pack-covers')));
 app.use('/vendor', express.static(path.join(__dirname, 'vendor')));
 app.use('/voice-effects.js', express.static(path.join(__dirname, 'voice-effects.js')));
 app.use('/recording-audio-export.js', express.static(path.join(__dirname, 'recording-audio-export.js')));
