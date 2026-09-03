@@ -13,6 +13,7 @@ export default function LobbyView({
 }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterState, setFilterState] = useState('all');
+  const [selectedPackId, setSelectedPackId] = useState('');
 
   const filteredRooms = rooms.filter((r) => {
     const roomTitle = r.roomName || r.name || '';
@@ -231,12 +232,13 @@ export default function LobbyView({
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (onPreviewPack) onPreviewPack(pack);
+                    setSelectedPackId(pack.id);
+                    if (onOpenCreateModal) onOpenCreateModal(pack);
                   }}
-                  className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 py-2 text-xs font-extrabold text-[var(--cyan)] transition-all group-hover:bg-[var(--cyan)] group-hover:text-black shadow"
+                  className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--amber)]/40 bg-[var(--amber)]/10 py-2 text-xs font-extrabold text-[var(--amber)] transition-all group-hover:bg-[var(--amber)] group-hover:text-black shadow"
                 >
-                  <PlayCircle className="h-4 w-4" />
-                  <span>{t.previewScene || "▶️ Preview Scene"}</span>
+                  <Plus className="h-4 w-4" />
+                  <span>{t.createRoomForScene || "🎬 Create Room for This Scene"}</span>
                 </button>
               </div>
             </div>

@@ -24,7 +24,8 @@ export default function ScenePackPreviewModal({
   onClose, 
   pack, 
   onStartSolo, 
-  onCreateRoom 
+  onCreateRoom,
+  t = {}
 }) {
   const [packData, setPackData] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
@@ -308,7 +309,7 @@ export default function ScenePackPreviewModal({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none flex items-center justify-center">
                       <div className="flex items-center gap-1.5 rounded-full border border-[var(--cyan)]/50 bg-black/80 px-4 py-1.5 text-xs font-bold text-[var(--cyan)] shadow-lg animate-pulse">
                         <Volume2 className="h-4 w-4 animate-bounce" />
-                        <span>กำลังเล่นเสียงพากย์ฉากนี้...</span>
+                        <span>{t.playingAudioOverlay || "Playing original audio..."}</span>
                       </div>
                     </div>
                   )}
@@ -317,7 +318,7 @@ export default function ScenePackPreviewModal({
                 <div className="flex flex-col items-center justify-center gap-2 p-6 text-center text-gray-400">
                   <Film className="h-12 w-12 text-[var(--cyan)]" />
                   <span className="text-xs font-bold text-gray-300">
-                    ฉากพากย์ {currentLine?.speaker ? `(${currentLine.speaker})` : ''}
+                    {t.sceneDialogue || "Scene dialogue"} {currentLine?.speaker ? `(${currentLine.speaker})` : ''}
                   </span>
                 </div>
               )}
@@ -341,7 +342,7 @@ export default function ScenePackPreviewModal({
                 className="flex items-center gap-2 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/15 px-6 py-2.5 text-xs font-extrabold text-[var(--cyan)] transition hover:bg-[var(--cyan)] hover:text-black active:scale-95 shadow-md"
               >
                 <PlayCircle className={`h-4 w-4 ${isPlayingAudio ? 'animate-spin text-black' : ''}`} />
-                <span>{isPlayingAudio ? 'กำลังเล่นวิดีโอ & เสียงพากย์ฉากนี้...' : '▶️ เล่นวิดีโอ & เสียงต้นฉบับฉากนี้'}</span>
+                <span>{isPlayingAudio ? (t.playingSceneBtn || 'Playing video & audio...') : (t.playSceneBtn || '▶️ Play Video & Original Audio')}</span>
               </button>
             </div>
           </div>
@@ -350,7 +351,7 @@ export default function ScenePackPreviewModal({
         {/* Action Footer Buttons */}
         <div className="mt-6 flex flex-col gap-3 border-t border-[oklch(28%_0.01_190)] pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--muted)]">
-            เลือกพากย์ฉากนี้ในโหมดโซโล่หรือสร้างห้องเล่นกับเพื่อน
+            {t.chooseMode || "Choose to dub this scene solo or create a room to play with friends."}
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -362,7 +363,7 @@ export default function ScenePackPreviewModal({
               className="flex items-center gap-2 rounded-xl border border-[oklch(40%_0.01_190)] bg-[oklch(24%_0.01_190)] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[oklch(32%_0.01_190)]"
             >
               <Plus className="h-4 w-4 text-[var(--cyan)]" />
-              <span>สร้างห้องพากย์ฉากนี้</span>
+              <span>{t.createRoomForThisScene || "Create Room for This Scene"}</span>
             </button>
 
             <button
@@ -373,7 +374,7 @@ export default function ScenePackPreviewModal({
               className="flex items-center gap-2 rounded-xl bg-[var(--cyan)] px-5 py-2.5 text-xs font-extrabold text-black shadow transition hover:brightness-110"
             >
               <Play className="h-4 w-4 fill-black" />
-              <span>🚀 เริ่มพากย์ฉากนี้ (Solo Mode)</span>
+              <span>{t.startSoloMode || "🚀 Start Dubbing (Solo Mode)"}</span>
             </button>
           </div>
         </div>

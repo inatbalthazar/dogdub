@@ -27,7 +27,7 @@ export const translations = {
     joinRoom: "Join room",
     scenePacksTitle: "Scene Packs Available",
     linesCount: "scenes",
-    previewScene: "▶️ Preview Scene",
+    createRoomForScene: "🎬 Create Room for This Scene",
     
     // InGameTurnBar & WaitingRoom
     roomLabel: "Room:",
@@ -44,6 +44,16 @@ export const translations = {
     copyLink: "Copy Link",
     playerList: "Player List",
     hostBadge: "Host",
+    dubRoomLabel: "Dubbing Room",
+    roomCodeLabel: "ROOM CODE",
+    membersInRoom: "Members in Room",
+    readyToDub: "● Ready",
+    startGameBtn: "🚀 Start Game (START GAME)",
+    startGameDesc: "Once everyone is ready, press this button to start dubbing together.",
+    waitingForHost: "Waiting for the host to start the game...",
+    waitingForHostDesc: "Screen will switch to dubbing turns automatically when host starts.",
+    privateRoomBadge: "🔒 Private Room",
+    publicRoomBadge: "🔓 Public Room",
 
     // Dub Controls
     onClip: "ON CLIP",
@@ -63,13 +73,16 @@ export const translations = {
 
     // Create Room Modal
     createModalTitle: "Create New Dubbing Room",
+    hostNameLabel: "Host Name",
+    hostNamePlaceholder: "e.g. DubMaster",
     roomNameLabel: "Room Name",
     roomNamePlaceholder: "e.g. Marvel Dub Squad",
-    selectPackLabel: "Select Voice Pack",
+    selectPackLabel: "Select Scene Pack",
+    scenesUnit: "scenes",
     passwordLabel: "Password (Optional for Private Room)",
     passwordPlaceholder: "Leave blank for public room",
     cancel: "Cancel",
-    confirmCreate: "Create Room Now",
+    confirmCreate: "Create Room & Open Lobby",
 
     // Edit Name Modal
     editNameTitle: "Change Player Name",
@@ -80,6 +93,18 @@ export const translations = {
     chooseRoleTitle: "Choose Your Character Role",
     unassignedRole: "Unassigned",
     selectRoleBtn: "Select Role",
+
+    // Scene Pack Preview Modal
+    previewLoading: "Loading scene pack...",
+    sceneLabel: "Scene",
+    of: "of",
+    playSceneBtn: "▶️ Play Video & Original Audio",
+    playingSceneBtn: "Playing video & audio...",
+    playingAudioOverlay: "Playing original audio...",
+    sceneDialogue: "Scene dialogue",
+    chooseMode: "Choose to dub this scene solo or create a room to play with friends.",
+    createRoomForThisScene: "Create Room for This Scene",
+    startSoloMode: "🚀 Start Dubbing (Solo Mode)",
   },
   th: {
     // Header
@@ -109,7 +134,7 @@ export const translations = {
     joinRoom: "เข้าร่วมห้อง",
     scenePacksTitle: "Scene Pack ที่เปิดให้เลือกเล่น",
     linesCount: "ฉากพากย์",
-    previewScene: "▶️ พรีวิวฉากวิดีโอ (Preview)",
+    createRoomForScene: "🎬 สร้างห้องพากย์ฉากนี้",
 
     // InGameTurnBar & WaitingRoom
     roomLabel: "ห้อง:",
@@ -123,9 +148,19 @@ export const translations = {
     startGameNow: "เริ่มพากย์เสียงทันที!",
     copyCode: "คัดลอกรหัส",
     copied: "คัดลอกแล้ว!",
-    copyLink: "คัดลอกลิงก์",
+    copyLink: "ลิงก์ชวน",
     playerList: "รายชื่อผู้เล่น",
     hostBadge: "เจ้าของห้อง",
+    dubRoomLabel: "ห้องพากษ์เสียง",
+    roomCodeLabel: "รหัสห้อง (ROOM CODE)",
+    membersInRoom: "สมาชิกในห้อง",
+    readyToDub: "● พร้อมพากย์",
+    startGameBtn: "🚀 เริ่มเล่นเกม (START GAME)",
+    startGameDesc: "เมื่อสมาชิกครบแล้ว กดปุ่มนี้เพื่อเข้าสู่หน้าเล่นเกมพากย์เสียงพร้อมกันทันที",
+    waitingForHost: "คุณเข้าร่วมห้องแล้ว กำลังรอหัวหน้าห้อง (Host) กดเริ่มเกม...",
+    waitingForHostDesc: "หน้าจอจะเปลี่ยนเป็นสลับคิวพากย์อัตโนมัติเมื่อ Host เริ่มเกม",
+    privateRoomBadge: "🔒 ห้องมีรหัสผ่าน",
+    publicRoomBadge: "🔓 ห้องสาธารณะ",
     
     // Dub Controls
     onClip: "ON CLIP",
@@ -145,13 +180,16 @@ export const translations = {
 
     // Create Room Modal
     createModalTitle: "สร้างห้องพากย์ใหม่",
-    roomNameLabel: "ชื่อห้องพากย์",
+    hostNameLabel: "ชื่อผู้สร้าง (Host Name)",
+    hostNamePlaceholder: "เช่น พากย์ฮาๆ",
+    roomNameLabel: "ชื่อห้อง (Room Name)",
     roomNamePlaceholder: "เช่น แก๊งพากย์หนังฮาฮา",
-    selectPackLabel: "เลือก Voice Pack",
-    passwordLabel: "รหัสผ่านห้อง (ถ้าต้องการตั้งเป็นห้องส่วนตัว)",
-    passwordPlaceholder: "ปล่อยว่างไว้หากต้องการสร้างห้องสาธารณะ",
+    selectPackLabel: "เลือก Scene Pack",
+    scenesUnit: "ฉาก",
+    passwordLabel: "รหัสผ่านห้อง (ถ้าไม่ใส่จะเป็นห้องสาธารณะ)",
+    passwordPlaceholder: "ปล่อยว่างเพื่อเปิดเป็นสาธารณะ",
     cancel: "ยกเลิก",
-    confirmCreate: "สร้างห้องทันที",
+    confirmCreate: "สร้างห้องและเปิดล็อบบี้",
 
     // Edit Name Modal
     editNameTitle: "เปลี่ยนชื่อผู้เล่น",
@@ -162,5 +200,18 @@ export const translations = {
     chooseRoleTitle: "เลือกตัวละครที่คุณต้องการพากย์",
     unassignedRole: "ยังไม่เลือกบท",
     selectRoleBtn: "รับบทนี้",
+
+    // Scene Pack Preview Modal
+    previewLoading: "กำลังโหลด scene pack...",
+    sceneLabel: "ฉาก",
+    of: "/",
+    playSceneBtn: "▶️ เล่นวิดีโอ & เสียงต้นฉบับฉากนี้",
+    playingSceneBtn: "กำลังเล่นวิดีโอ & เสียงพากย์ฉากนี้...",
+    playingAudioOverlay: "กำลังเล่นเสียงพากย์ฉากนี้...",
+    sceneDialogue: "ฉากพากย์",
+    chooseMode: "เลือกพากย์ฉากนี้ในโหมดโซโล่หรือสร้างห้องเล่นกับเพื่อน",
+    createRoomForThisScene: "สร้างห้องพากย์ฉากนี้",
+    startSoloMode: "🚀 เริ่มพากย์ฉากนี้ (Solo Mode)",
   }
 };
+

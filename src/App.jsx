@@ -1469,7 +1469,10 @@ const DEFAULT_FALLBACK_PACKS = [
             rooms={rooms}
             packs={packs}
             onRefresh={fetchRooms}
-            onOpenCreateModal={() => setIsCreateModalOpen(true)}
+            onOpenCreateModal={(pack) => {
+              if (pack && pack.id) setSelectedPackId(pack.id);
+              setIsCreateModalOpen(true);
+            }}
             onJoinRoom={handleJoinRoom}
             onPreviewPack={(pack) => setSelectedPreviewPack(pack)}
             onSelectPack={(id) => {
@@ -1489,6 +1492,7 @@ const DEFAULT_FALLBACK_PACKS = [
             currentUser={currentUser}
             onLeaveRoom={handleLeaveRoom}
             onStartGame={handleStartGame}
+            t={t}
           />
         )}
 
@@ -1562,6 +1566,7 @@ const DEFAULT_FALLBACK_PACKS = [
         currentUser={currentUser}
         onCreateRoom={handleCreateRoom}
         defaultPackId={selectedPackId}
+        t={t}
       />
 
       <WatchDubModal
@@ -1602,6 +1607,7 @@ const DEFAULT_FALLBACK_PACKS = [
           setSelectedPackId(pack.id);
           setIsCreateModalOpen(true);
         }}
+        t={t}
       />
 
       <Footer />

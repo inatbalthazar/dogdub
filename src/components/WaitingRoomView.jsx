@@ -5,7 +5,8 @@ export default function WaitingRoomView({
   room, 
   currentUser, 
   onLeaveRoom, 
-  onStartGame 
+  onStartGame,
+  t = {}
 }) {
   const [copiedCode, setCopiedCode] = React.useState(false);
   const [copiedLink, setCopiedLink] = React.useState(false);
@@ -36,7 +37,7 @@ export default function WaitingRoomView({
             className="flex items-center gap-1.5 rounded-lg border border-[oklch(40%_0.01_190)] bg-[oklch(22%_0.01_190)] px-3 py-1.5 text-xs font-bold text-gray-200 hover:bg-[oklch(28%_0.01_190)]"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>ออกจากห้อง (กลับหน้าหลัก)</span>
+            <span>{t.leaveRoomLobby || "Leave room (Back to Lobby)"}</span>
           </button>
 
           <span
@@ -47,7 +48,7 @@ export default function WaitingRoomView({
             }`}
           >
             {room.isPrivate ? <Lock className="h-3.5 w-3.5" /> : <Unlock className="h-3.5 w-3.5" />}
-            {room.isPrivate ? '🔒 ห้องมีรหัสผ่าน' : '🔓 ห้องสาธารณะ'}
+            {room.isPrivate ? (t.privateRoomBadge || '🔒 Private Room') : (t.publicRoomBadge || '🔓 Public Room')}
           </span>
         </div>
 
@@ -55,7 +56,7 @@ export default function WaitingRoomView({
         <div className="grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[var(--cyan)]">
-              ห้องพากษ์เสียง
+              {t.dubRoomLabel || "Dubbing Room"}
             </span>
             <h2 className="font-['Bowlby_One_SC'] text-2xl text-white md:text-3xl">
               {room.roomName}
@@ -68,7 +69,7 @@ export default function WaitingRoomView({
           {/* Room Code Card */}
           <div className="rounded-xl border border-[oklch(38%_0.01_190)] bg-[oklch(11%_0.01_190)] p-4 text-center">
             <span className="text-[10px] font-bold uppercase text-[var(--muted)]">
-              รหัสห้อง (ROOM CODE)
+              {t.roomCodeLabel || "ROOM CODE"}
             </span>
             <div className="my-1 font-mono text-3xl font-extrabold tracking-widest text-[var(--cyan)]">
               {room.roomCode}
@@ -80,14 +81,14 @@ export default function WaitingRoomView({
                 className="flex items-center gap-1 rounded bg-[oklch(24%_0.01_190)] px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-[oklch(32%_0.01_190)]"
               >
                 {copiedCode ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
-                <span>{copiedCode ? 'คัดลอกแล้ว' : 'คัดลอกรหัส'}</span>
+                <span>{copiedCode ? (t.copied || 'Copied!') : (t.copyCode || 'Copy Code')}</span>
               </button>
               <button
                 onClick={copyLink}
                 className="flex items-center gap-1 rounded bg-[oklch(24%_0.01_190)] px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-[oklch(32%_0.01_190)]"
               >
                 {copiedLink ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
-                <span>{copiedLink ? 'คัดลอกแล้ว' : 'ลิงก์ชวน'}</span>
+                <span>{copiedLink ? (t.copied || 'Copied!') : (t.copyLink || 'Copy Link')}</span>
               </button>
             </div>
           </div>
@@ -98,7 +99,7 @@ export default function WaitingRoomView({
           <div className="mb-3 flex items-center gap-2 border-b border-[oklch(28%_0.01_190)] pb-2">
             <Users className="h-4 w-4 text-[var(--cyan)]" />
             <h3 className="font-['Bowlby_One_SC'] text-sm text-white">
-              👥 สมาชิกในห้อง ({room.players?.length || 1} คน)
+              👥 {t.membersInRoom || "Members in Room"} ({room.players?.length || 1})
             </h3>
           </div>
 
@@ -122,7 +123,7 @@ export default function WaitingRoomView({
                   </div>
                 </div>
 
-                <span className="text-[10px] font-semibold text-emerald-400">● พร้อมพากย์</span>
+                <span className="text-[10px] font-semibold text-emerald-400">{t.readyToDub || "● Ready"}</span>
               </div>
             ))}
           </div>
@@ -137,18 +138,18 @@ export default function WaitingRoomView({
                 className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--amber)] to-orange-400 px-8 py-3.5 font-['Bowlby_One_SC'] text-base text-black shadow-lg hover:brightness-110 active:scale-95"
               >
                 <Play className="h-5 w-5 fill-black" />
-                <span>🚀 เริ่มเล่นเกม (START GAME)</span>
+                <span>{t.startGameBtn || "🚀 Start Game (START GAME)"}</span>
               </button>
               <p className="mt-2 text-xs text-[var(--muted)]">
-                เมื่อสมาชิกครบแล้ว กดปุ่มนี้เพื่อเข้าสู่หน้าเล่นเกมพากย์เสียงพร้อมกันทันที
+                {t.startGameDesc || "Once everyone is ready, press this button to start dubbing together."}
               </p>
             </div>
           ) : (
             <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed border-[oklch(38%_0.01_190)] bg-[oklch(12%_0.01_190)] p-4 text-center">
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--cyan)] border-t-transparent" />
               <div className="text-left">
-                <strong className="text-xs text-white">คุณเข้าร่วมห้องแล้ว กำลังรอหัวหน้าห้อง (Host) กดเริ่มเกม...</strong>
-                <p className="text-[11px] text-[var(--muted)]">หน้าจอจะเปลี่ยนเป็นสลับคิวพากย์อัตโนมัติเมื่อ Host เริ่มเกม</p>
+                <strong className="text-xs text-white">{t.waitingForHost || "Waiting for the host to start the game..."}</strong>
+                <p className="text-[11px] text-[var(--muted)]">{t.waitingForHostDesc || "Screen will switch to dubbing turns automatically when host starts."}</p>
               </div>
             </div>
           )}
