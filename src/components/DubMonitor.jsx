@@ -221,34 +221,54 @@ export default function DubMonitor({
   // Recording & Playback Animation Loop:
   // When recording: 1.0s lead-in prep (-1.0 to 0.0), video & media recorder start EXACTLY at 0.0s!
   const onAutoStopRef = useRef(onAutoStopRecord);
+  const recordingStartTimeRef = useRef(null);
+  const micRecorderStartedRef = useRef(false);
+  const autoStopTriggeredRef = useRef(false);
+
   useEffect(() => {
     onAutoStopRef.current = onAutoStopRecord;
   }, [onAutoStopRecord]);
 
+  // Reset recording refs when isRecording turns false or true
+  useEffect(() => {
+    if (isRecording) {
+      if (!recordingStartTimeRef.current) {
+        recordingStartTimeRef.current = performance.now();
+        micRecorderStartedRef.current = false;
+        autoStopTriggeredRef.current = false;
+      }
+    } else {
+      recordingStartTimeRef.current = null;
+      micRecorderStartedRef.current = false;
+      autoStopTriggeredRef.current = false;
+    }
+  }, [isRecording]);
+
   useEffect(() => {
     let animFrame = null;
-    let micRecorderStarted = false;
-    let hasTriggeredAutoStop = false;
 
     if (isRecording) {
-      const startTime = performance.now();
       const updateProgress = (now) => {
-        const elapsedSecs = (now - startTime) / 1000;
+        if (!recordingStartTimeRef.current) {
+          recordingStartTimeRef.current = now;
+        }
+        const elapsedSecs = (now - recordingStartTimeRef.current) / 1000;
         const currentPlaybackTime = -1.0 + elapsedSecs; // Starts at -1.0 for 1.0s prep time!
 
         setPlaybackTime(currentPlaybackTime);
 
         // Start actual MediaRecorder audio capture right at 0.0s!
-        if (currentPlaybackTime >= 0.0 && !micRecorderStarted) {
-          micRecorderStarted = true;
+        if (currentPlaybackTime >= 0.0 && !micRecorderStartedRef.current) {
+          micRecorderStartedRef.current = true;
           audioEngine.beginMediaRecorder();
         }
 
         // Auto-stop when playhead reaches the end of current scene
-        if (currentPlaybackTime >= clipDurationNum) {
-          setPlaybackTime(clipDurationNum);
-          if (!hasTriggeredAutoStop) {
-            hasTriggeredAutoStop = true;
+        const targetDuration = clipDurationNum || currentLine?.duration || 2.4;
+        if (currentPlaybackTime >= targetDuration) {
+          setPlaybackTime(targetDuration);
+          if (!autoStopTriggeredRef.current) {
+            autoStopTriggeredRef.current = true;
             if (onAutoStopRef.current) {
               onAutoStopRef.current();
             }
@@ -264,7 +284,8 @@ export default function DubMonitor({
       const updateProgress = (now) => {
         const elapsed = (now - startTime) / 1000;
         setPlaybackTime(elapsed);
-        if (elapsed <= clipDurationNum) {
+        const targetDuration = clipDurationNum || currentLine?.duration || 2.4;
+        if (elapsed <= targetDuration) {
           animFrame = requestAnimationFrame(updateProgress);
         } else {
           setPlaybackTime(0);
@@ -278,7 +299,7 @@ export default function DubMonitor({
     return () => {
       if (animFrame) cancelAnimationFrame(animFrame);
     };
-  }, [isPlaying, isRecording, clipDurationNum, onAutoStopRecord]);
+  }, [isRecording, isPlaying, clipDurationNum, currentLine?.duration]);
 
   // Timeline & Waveform Calculations (1.0s padding before 0.0, 1.0s padding after clip end)
   const windowDuration = clipDurationNum + 2.0;
