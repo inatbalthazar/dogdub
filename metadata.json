@@ -1,5 +1,5 @@
 {
-  "name": "Choicer Voicer Studio",
+  "name": "DOGDUB",
   "description": "เว็บเกมพากษ์เสียงออนไลน์ เล่นกับเพื่อนแบบแบ่งคิวพากษ์ มี Scene Pack ให้เลือก หลากหลายฉาก สร้างห้องหรือเข้าร่วมห้องเล่นเกมได้ทันที",
   "requestFramePermissions": [
     "microphone"

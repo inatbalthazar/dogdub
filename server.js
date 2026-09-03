@@ -4,7 +4,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
 // Body parsers
@@ -27,6 +27,46 @@ app.use((req, res, next) => {
 const rooms = new Map();
 const takesStorage = new Map(); // key: `${roomCode}:${lineIndex}` -> { buffer, contentType, version }
 
+// In-memory rate limiting map for DDoS/spam protection
+const rateLimitMap = new Map();
+
+function createRateLimiter(maxRequests, windowMs, message) {
+  return (req, res, next) => {
+    const ip = req.ip || req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+    const now = Date.now();
+    const key = `${req.baseUrl || ''}${req.path}:${ip}`;
+
+    const record = rateLimitMap.get(key) || { count: 0, resetAt: now + windowMs };
+
+    if (now > record.resetAt) {
+      record.count = 0;
+      record.resetAt = now + windowMs;
+    }
+
+    record.count++;
+    rateLimitMap.set(key, record);
+
+    if (record.count > maxRequests) {
+      return res.status(429).json({ error: message || 'คำขอล้นกรอบเวลา กรุณารอครู่หนึ่ง (Too many requests)' });
+    }
+
+    next();
+  };
+}
+
+// Clean up expired rate limiter keys every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of rateLimitMap.entries()) {
+    if (now > v.resetAt) {
+      rateLimitMap.delete(k);
+    }
+  }
+}, 300000);
+
+const roomCreateLimiter = createRateLimiter(15, 60000, 'สร้างห้องถี่เกินไป กรุณารอ 1 นาที (Room creation rate limit exceeded)');
+const takeUploadLimiter = createRateLimiter(120, 60000, 'ส่งไฟล์เสียงถี่เกินไป กรุณารอครู่หนึ่ง (Take upload rate limit exceeded)');
+
 // Room cache persistence for serverless/restart durability
 const CACHE_DIR = path.join(require('os').tmpdir(), 'cv_rooms');
 try {
@@ -37,17 +77,34 @@ try {
 
 const ROOMS_CACHE_FILE = path.join(CACHE_DIR, 'rooms_state.json');
 
-function saveRoomsToCache() {
+let isSavingCache = false;
+let pendingSaveCache = false;
+
+async function saveRoomsToCache() {
+  if (isSavingCache) {
+    pendingSaveCache = true;
+    return;
+  }
+  isSavingCache = true;
   try {
     const list = [];
     for (const [code, r] of rooms.entries()) {
-      list.push({
-        ...r,
-        tokens: Array.from(r.tokens.entries())
-      });
+      if (r.players && r.players.length > 0) {
+        list.push({
+          ...r,
+          tokens: Array.from(r.tokens.entries())
+        });
+      }
     }
-    fs.writeFileSync(ROOMS_CACHE_FILE, JSON.stringify(list));
-  } catch (e) {}
+    await fs.promises.writeFile(ROOMS_CACHE_FILE, JSON.stringify(list));
+  } catch (e) {
+  } finally {
+    isSavingCache = false;
+    if (pendingSaveCache) {
+      pendingSaveCache = false;
+      saveRoomsToCache();
+    }
+  }
 }
 
 function loadRoomsFromCache() {
@@ -56,17 +113,64 @@ function loadRoomsFromCache() {
       const data = JSON.parse(fs.readFileSync(ROOMS_CACHE_FILE, 'utf8'));
       if (Array.isArray(data)) {
         for (const item of data) {
-          const room = {
-            ...item,
-            tokens: new Map(item.tokens || [])
-          };
-          rooms.set(room.code, room);
+          if (item.players && item.players.length > 0) {
+            const room = {
+              ...item,
+              tokens: new Map(item.tokens || [])
+            };
+            rooms.set(room.code, room);
+          }
         }
       }
     }
   } catch (e) {}
 }
 loadRoomsFromCache();
+
+// Periodic cleanup interval: Purge inactive players, empty rooms, and expired/orphaned audio takes
+setInterval(() => {
+  let changed = false;
+  const now = Date.now();
+  for (const [code, room] of rooms.entries()) {
+    if (!room.players || room.players.length === 0 || (now - (room.createdAt || now)) > 86400000) {
+      rooms.delete(code);
+      changed = true;
+      continue;
+    }
+
+    // Filter out players who haven't pinged in the last 15 seconds (closed tab / disconnected)
+    const activePlayers = room.players.filter(p => {
+      if (!p.lastSeen) return true; // Give grace period for newly joined players
+      return (now - p.lastSeen) <= 15000;
+    });
+
+    if (activePlayers.length !== room.players.length) {
+      room.players = activePlayers;
+      if (room.players.length === 0) {
+        rooms.delete(code);
+      } else {
+        if (!room.players.some(p => p.isHost)) {
+          room.players[0].isHost = true;
+        }
+      }
+      changed = true;
+    }
+  }
+
+  // Memory Auto-Pruning: Purge old audio takes (> 24 hours) or orphaned takes from deleted rooms
+  for (const [key, takeData] of takesStorage.entries()) {
+    const roomCode = key.split(':')[0];
+    const isRoomActive = rooms.has(roomCode);
+    const isExpired = takeData.createdAt && (now - takeData.createdAt > 86400000);
+    if (!isRoomActive || isExpired) {
+      takesStorage.delete(key);
+    }
+  }
+
+  if (changed) {
+    saveRoomsToCache();
+  }
+}, 5000);
 
 // Web Voice Packs Directory
 const PACKS_DIR = path.join(__dirname, 'packs');
@@ -156,26 +260,30 @@ function parsePackMetadata(zipPath) {
       const unzipped = fflateModule.unzipSync(new Uint8Array(buf));
       for (const entryName in unzipped) {
         const lower = entryName.toLowerCase();
-        if (lower.includes('_pack_info.txt') || lower.endsWith('pack.ini') || lower.endsWith('pack_info.txt')) {
+        if (lower.includes('_pack_info.txt') || lower.includes('_pack_info.ini') || lower.endsWith('pack.ini') || lower.endsWith('pack_info.txt')) {
           const text = fflateModule.strFromU8(unzipped[entryName]);
           for (const line of text.split('\n')) {
             const [k, ...v] = line.split('=');
             if (k && v.length) {
               const key = k.trim().toLowerCase();
-              const val = v.join('=').trim();
+              const val = v.join('=').trim().replace(/^["']|["']$/g, '');
               if (key === 'title') title = val;
               if (key === 'author' || key === 'authors' || key === 'credits') author = val;
               if (key === 'description' || key === 'desc') description = val;
             }
           }
-        } else if (lower.endsWith('.txt') && !lower.startsWith('.') && !lower.includes('__macosx')) {
+        } else if ((lower.endsWith('.txt') || lower.endsWith('.ini')) && !lower.startsWith('.') && !lower.includes('__macosx')) {
           linesCount++;
           const text = fflateModule.strFromU8(unzipped[entryName]);
           for (const line of text.split('\n')) {
             const [k, ...v] = line.split('=');
-            if (k && (k.trim().toLowerCase() === 'speaker' || k.trim().toLowerCase() === 'character')) {
-              const speaker = v.join('=').trim();
-              if (speaker) characters.add(speaker);
+            if (k && v.length) {
+              const key = k.trim().toLowerCase();
+              const val = v.join('=').trim().replace(/^["']|["']$/g, '');
+              if (key === 'speaker' || key === 'character' || key === 'dub_characters') {
+                const speaker = val.replace(/[\[\]"']/g, '').trim();
+                if (speaker) characters.add(speaker);
+              }
             }
           }
         }
@@ -254,7 +362,7 @@ app.post('/api/packs/upload', (req, res) => {
   }
 });
 
-// Explicit static serving for /packs
+// Explicit static serving for /packs & /vendor
 app.use('/packs', express.static(PACKS_DIR, {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.zip')) {
@@ -264,6 +372,10 @@ app.use('/packs', express.static(PACKS_DIR, {
     }
   }
 }));
+
+app.use('/vendor', express.static(path.join(__dirname, 'vendor')));
+app.use('/voice-effects.js', express.static(path.join(__dirname, 'voice-effects.js')));
+app.use('/recording-audio-export.js', express.static(path.join(__dirname, 'recording-audio-export.js')));
 
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -307,32 +419,71 @@ app.get('/api/rooms/session', (req, res) => {
   });
 });
 
-// 4. Lobby: List all active rooms (for prompt.md requirement)
+// 4. Lobby: List all active rooms (Auto-deletes empty 0-player rooms)
 app.get('/api/rooms', (req, res) => {
   const list = [];
   for (const [code, room] of rooms.entries()) {
+    // If room has no players left, delete it immediately!
+    if (!room.players || room.players.length === 0) {
+      rooms.delete(code);
+      continue;
+    }
+
+    // Deduplicate players list by id/name to clean up any duplicate joins
+    const uniqueMap = new Map();
+    for (const p of room.players) {
+      if (p && (p.id || p.name)) {
+        uniqueMap.set(p.id || p.name, p);
+      }
+    }
+    room.players = Array.from(uniqueMap.values());
+    if (room.players.length === 0) {
+      rooms.delete(code);
+      continue;
+    }
+
+    const roomTitle = room.name || `ห้องพากย์ ${room.code}`;
+    const isPrivate = Boolean(room.password);
+
     list.push({
       code: room.code,
-      name: room.name || `Room ${room.code}`,
-      packTitle: room.pack?.title || 'Custom Pack',
+      roomCode: room.code,
+      name: roomTitle,
+      roomName: roomTitle,
+      packTitle: room.pack?.title || 'Voice Pack',
       packId: room.pack?.id || '',
       lineCount: room.pack?.lineCount || 0,
       playersCount: room.players.length,
       players: room.players.map(p => ({ id: p.id, name: p.name, isHost: p.isHost })),
-      hasPassword: Boolean(room.password),
+      hasPassword: isPrivate,
+      isPrivate: isPrivate,
       status: room.status,
       currentTurnPlayerId: room.currentTurnPlayerId,
       createdAt: room.createdAt || Date.now()
     });
   }
+  saveRoomsToCache();
   // Sort newest first
   list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   res.json({ ok: true, rooms: list });
 });
 
-// 5. Create room
-app.post('/api/rooms', (req, res) => {
+// 5. Create room (Enforces 1 person = 1 room maximum)
+app.post('/api/rooms', roomCreateLimiter, (req, res) => {
   const { name, playerName, roomName, packHash, packId, packTitle, lineCount, password } = req.body || {};
+  const clientIp = req.ip || req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
+  const existingHostToken = req.headers['x-room-token'] || req.body?.token;
+
+  // Purge any previous room opened by this host IP or token so 1 user only has 1 room!
+  for (const [existingCode, existingRoom] of rooms.entries()) {
+    const isOwner = (existingHostToken && existingRoom.tokens.has(existingHostToken)) ||
+                    (existingRoom.hostIp && existingRoom.hostIp === clientIp);
+    if (isOwner) {
+      console.log(`Enforcing 1 room per host: Deleting previous room ${existingCode} for host ${clientIp}`);
+      rooms.delete(existingCode);
+    }
+  }
+
   let code = generateCode();
   while (rooms.has(code)) {
     code = generateCode();
@@ -354,8 +505,9 @@ app.post('/api/rooms', (req, res) => {
   const room = {
     code,
     name: cleanRoomName,
+    hostIp: clientIp,
     password: password ? String(password).trim() : '',
-    status: 'waiting', // 'waiting' (lobby) -> 'recording' (playing) -> 'finished'
+    status: 'recording', // Rooms start directly in active dubbing mode without waiting
     pack: {
       id: packId || '',
       fingerprint: packHash || '',
@@ -379,8 +531,10 @@ app.post('/api/rooms', (req, res) => {
 
   const roomState = getClientRoomState(room, hostId);
   res.json({
+    ok: true,
     token: hostToken,
-    state: roomState
+    state: roomState,
+    room: roomState
   });
 });
 
@@ -431,7 +585,11 @@ function resolvePlayer(room, req) {
   if (!token) return null;
   const playerId = room.tokens.get(token);
   if (!playerId) return null;
-  return room.players.find(p => p.id === playerId) || null;
+  const player = room.players.find(p => p.id === playerId) || null;
+  if (player) {
+    player.lastSeen = Date.now();
+  }
+  return player;
 }
 
 // 6. Get room state
@@ -463,24 +621,48 @@ app.post('/api/rooms/:code', (req, res) => {
       return res.status(403).json({ error: 'รหัสผ่านห้องไม่ถูกต้อง (Incorrect room password)' });
     }
 
-    const newPlayerId = 'p_' + crypto.randomBytes(4).toString('hex');
-    const token = 'tok_' + crypto.randomBytes(16).toString('hex');
-    const newPlayer = {
-      id: newPlayerId,
-      name: (playerName || name || 'Player ' + (room.players.length + 1)).trim(),
-      isHost: false,
-      ready: true,
-      finished: false,
-      roleIndex: room.players.length
-    };
+    const joinName = (playerName || name || 'Player ' + (room.players.length + 1)).trim();
+    const existingToken = req.headers['x-room-token'] || req.body?.token;
 
-    room.players.push(newPlayer);
-    room.tokens.set(token, newPlayerId);
+    let player = null;
+    let token = existingToken;
+
+    if (existingToken && room.tokens.has(existingToken)) {
+      const existingId = room.tokens.get(existingToken);
+      player = room.players.find(p => p.id === existingId);
+    }
+
+    if (!player) {
+      player = room.players.find(p => p.name === joinName);
+    }
+
+    if (player) {
+      // Re-use existing player entry to prevent duplicate entries
+      player.name = joinName;
+      if (!token) {
+        token = Array.from(room.tokens.entries()).find(([t, pid]) => pid === player.id)?.[0] || ('tok_' + crypto.randomBytes(16).toString('hex'));
+        room.tokens.set(token, player.id);
+      }
+    } else {
+      // Add new unique player entry
+      const newPlayerId = 'p_' + crypto.randomBytes(4).toString('hex');
+      token = 'tok_' + crypto.randomBytes(16).toString('hex');
+      player = {
+        id: newPlayerId,
+        name: joinName,
+        isHost: false,
+        ready: true,
+        finished: false,
+        roleIndex: room.players.length
+      };
+      room.players.push(player);
+      room.tokens.set(token, newPlayerId);
+    }
 
     if (!room.turnOrder) {
       room.turnOrder = room.players.map(p => p.id);
-    } else if (!room.turnOrder.includes(newPlayerId)) {
-      room.turnOrder.push(newPlayerId);
+    } else if (!room.turnOrder.includes(player.id)) {
+      room.turnOrder.push(player.id);
     }
     if (!room.currentTurnPlayerId) {
       room.currentTurnPlayerId = room.turnOrder[0];
@@ -489,7 +671,7 @@ app.post('/api/rooms/:code', (req, res) => {
     saveRoomsToCache();
     return res.json({
       token,
-      state: getClientRoomState(room, newPlayerId)
+      state: getClientRoomState(room, player.id)
     });
   }
 
@@ -580,19 +762,24 @@ app.post('/api/rooms/:code', (req, res) => {
 
   if (action === 'kick') {
     if (!player.isHost) {
-      return res.status(403).json({ error: 'Only host can kick' });
+      return res.status(403).json({ error: 'มีเพียงหัวหน้าห้อง (Host) เท่านั้นที่สามารถเตะผู้เล่นออกได้' });
     }
-    room.players = room.players.filter(p => p.id !== playerId);
+    const targetId = targetPlayerId || req.body.targetId || req.body.playerId;
+    if (!targetId) {
+      return res.status(400).json({ error: 'ไม่พบข้อมูลผู้เล่นที่ต้องการเตะออก' });
+    }
+    room.players = room.players.filter(p => p.id !== targetId);
     for (const [t, pid] of room.tokens.entries()) {
-      if (pid === playerId) room.tokens.delete(t);
+      if (pid === targetId) room.tokens.delete(t);
     }
     if (room.turnOrder) {
-      room.turnOrder = room.turnOrder.filter(id => id !== playerId);
+      room.turnOrder = room.turnOrder.filter(id => id !== targetId);
     }
-    if (room.currentTurnPlayerId === playerId) {
+    if (room.currentTurnPlayerId === targetId) {
       room.currentTurnPlayerId = room.turnOrder?.[0] || (room.players[0]?.id || null);
     }
-    return res.json({ state: getClientRoomState(room, player.id) });
+    saveRoomsToCache();
+    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
   }
 
   if (action === 'set-finished') {
@@ -609,7 +796,7 @@ app.post('/api/rooms/:code', (req, res) => {
 });
 
 // 8. Upload take audio
-app.put('/api/rooms/:code/takes/:lineIndex', (req, res) => {
+app.put('/api/rooms/:code/takes/:lineIndex', takeUploadLimiter, (req, res) => {
   const code = (req.params.code || '').toUpperCase();
   const lineIndex = parseInt(req.params.lineIndex, 10);
   const room = rooms.get(code);
@@ -629,7 +816,8 @@ app.put('/api/rooms/:code/takes/:lineIndex', (req, res) => {
   takesStorage.set(key, {
     buffer: req.body,
     contentType: req.headers['content-type'] || 'audio/webm',
-    version
+    version,
+    createdAt: Date.now()
   });
 
   const takeObj = {
@@ -725,10 +913,18 @@ app.get('/terms*', (req, res) => {
   res.sendFile(path.join(__dirname, 'terms', 'index.html'));
 });
 
+// Production static build serving
+if (fs.existsSync(path.join(__dirname, 'dist'))) {
+  app.use(express.static(path.join(__dirname, 'dist')));
+}
+
 // Default SPA fallback
 app.get('*', (req, res) => {
   if (ASSET_EXT_REGEX.test(req.path)) {
     return res.status(404).send('Not Found');
+  }
+  if (fs.existsSync(path.join(__dirname, 'dist', 'index.html'))) {
+    return res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   }
   res.sendFile(path.join(__dirname, 'index.html'));
 });
