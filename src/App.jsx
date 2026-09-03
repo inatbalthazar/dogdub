@@ -462,7 +462,10 @@ const DEFAULT_FALLBACK_PACKS = [
             }
           }
 
-          // Stay on current line so player & friends can check recording with Play recording!
+          // Auto-advance scene line index to next line and pass turn on server!
+          setTimeout(() => {
+            handleNextTurn();
+          }, 500);
         }
       } else {
         await audioEngine.prepareRecording();
@@ -587,6 +590,9 @@ const DEFAULT_FALLBACK_PACKS = [
     : activeTurnIndex;
 
   const handlePassTurnToPlayer = async (targetId, targetName) => {
+    const nextLineIdx = Math.min((activePackData?.lines?.length || 1) - 1, currentLineIndex + 1);
+    setCurrentLineIndex(nextLineIdx);
+
     if (targetId && playersList.length > 0) {
       const targetIdx = playersList.findIndex((p) => p.id === targetId || p.name === targetName);
       if (targetIdx !== -1) {
@@ -603,12 +609,15 @@ const DEFAULT_FALLBACK_PACKS = [
             'Content-Type': 'application/json',
             'x-room-token': currentUser?.token || '',
           },
-          body: JSON.stringify({ action: 'pass-turn', targetPlayerId: targetId }),
+          body: JSON.stringify({ action: 'pass-turn', targetPlayerId: targetId, lineIndex: nextLineIdx }),
         });
         if (res.ok) {
           const data = await res.json();
           if (data.state) {
             setActiveRoom(data.state);
+            if (typeof data.state.currentLineIndex === 'number') {
+              setCurrentLineIndex(data.state.currentLineIndex);
+            }
           }
         }
       } catch (err) {
