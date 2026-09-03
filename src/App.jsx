@@ -453,10 +453,7 @@ const DEFAULT_FALLBACK_PACKS = [
             }
           }
 
-          // Auto-advance scene line index to next line if available!
-          if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
-            setCurrentLineIndex((prev) => prev + 1);
-          }
+          // Stay on current line so player & friends can check recording with Play recording!
         }
       } else {
         await audioEngine.prepareRecording();
@@ -515,19 +512,20 @@ const DEFAULT_FALLBACK_PACKS = [
   const recorderName = currentLineTakeObj?.playerName || '';
 
   // Check turn ownership accurately:
-  const currentTurnPlayerId = activeRoom?.currentTurnPlayerId || activeRoom?.players?.[activeTurnIndex]?.id;
-  const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[activeTurnIndex];
+  const currentTurnPlayerId = activeRoom?.currentTurnPlayerId || activeRoom?.players?.[0]?.id;
+  const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[0];
+
+  const myPlayerId = activeRoom?.you?.id || currentUser?.id;
+  const myPlayerName = activeRoom?.you?.name || currentUser?.name;
 
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
-    currentUser?.isHost ||
+    (activeRoom?.players && activeRoom?.players?.length === 1) || // Single player room: always your turn!
     (currentTurnPlayer && (
-      currentTurnPlayer.name === currentUser?.name ||
-      currentTurnPlayer.id === currentUser?.id ||
-      (currentTurnPlayer.id && activeRoom?.you?.id && currentTurnPlayer.id === activeRoom?.you?.id) ||
-      (currentTurnPlayer.name && currentUser?.name && currentTurnPlayer.name.includes(currentUser.name))
-    )) ||
-    (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
+      (currentTurnPlayerId && myPlayerId && currentTurnPlayerId === myPlayerId) ||
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name === myPlayerName) ||
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name.includes(myPlayerName))
+    ))
   );
 
   const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
@@ -571,6 +569,41 @@ const DEFAULT_FALLBACK_PACKS = [
         }
       } catch (err) {
         console.warn('Failed to pass next turn to server:', err);
+      }
+    }
+  };
+
+  const computedActiveTurnIndex = activeRoom?.currentTurnPlayerId
+    ? Math.max(0, playersList.findIndex(p => p.id === activeRoom.currentTurnPlayerId))
+    : activeTurnIndex;
+
+  const handlePassTurnToPlayer = async (targetId, targetName) => {
+    if (targetId && playersList.length > 0) {
+      const targetIdx = playersList.findIndex((p) => p.id === targetId || p.name === targetName);
+      if (targetIdx !== -1) {
+        setActiveTurnIndex(targetIdx);
+      }
+    }
+
+    if (activeRoom && targetId) {
+      const code = activeRoom.code || activeRoom.roomCode;
+      try {
+        const res = await fetch(`/api/rooms/${code}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-room-token': currentUser?.token || '',
+          },
+          body: JSON.stringify({ action: 'pass-turn', targetPlayerId: targetId }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.state) {
+            setActiveRoom(data.state);
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to pass turn to target player:', err);
       }
     }
   };
@@ -627,18 +660,15 @@ const DEFAULT_FALLBACK_PACKS = [
           <div className="mx-auto my-6 max-w-5xl px-4">
             <InGameTurnBar
               room={activeRoom}
-              activeTurnIndex={activeTurnIndex}
+              activeTurnIndex={computedActiveTurnIndex}
               players={playersList}
               currentUser={currentUser}
               onPassTurn={(targetId, targetName) => {
                 if (targetId) {
-                  const targetIdx = playersList.findIndex((p) => p.id === targetId || p.name === targetName);
-                  if (targetIdx !== -1) {
-                    setActiveTurnIndex(targetIdx);
-                    return;
-                  }
+                  handlePassTurnToPlayer(targetId, targetName);
+                } else {
+                  handleNextTurn();
                 }
-                handleNextTurn();
               }}
               onNextTurn={handleNextTurn}
               onLeaveRoom={handleLeaveRoom}
