@@ -62,6 +62,20 @@ export default function App() {
     }
   }, []);
 
+  // Auto-poll active rooms list every 3 seconds when in lobby view
+  useEffect(() => {
+    let timer = null;
+    if (currentView === 'lobby') {
+      fetchRooms();
+      timer = setInterval(() => {
+        fetchRooms();
+      }, 3000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [currentView]);
+
   // Auto-leave room when browser tab is closed or window is navigated away
   useEffect(() => {
     const handleTabClose = () => {

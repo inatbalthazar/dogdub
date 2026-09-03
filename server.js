@@ -477,12 +477,11 @@ app.post('/api/rooms', roomCreateLimiter, (req, res) => {
   const clientIp = req.ip || req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '127.0.0.1';
   const existingHostToken = req.headers['x-room-token'] || req.body?.token;
 
-  // Purge any previous room opened by this host IP or token so 1 user only has 1 room!
+  // Purge any previous room opened by this specific host token so 1 user only has 1 room!
   for (const [existingCode, existingRoom] of rooms.entries()) {
-    const isOwner = (existingHostToken && existingRoom.tokens.has(existingHostToken)) ||
-                    (existingRoom.hostIp && existingRoom.hostIp === clientIp);
+    const isOwner = existingHostToken && existingRoom.tokens && existingRoom.tokens.has(existingHostToken);
     if (isOwner) {
-      console.log(`Enforcing 1 room per host: Deleting previous room ${existingCode} for host ${clientIp}`);
+      console.log(`Enforcing 1 room per host token: Deleting previous room ${existingCode}`);
       rooms.delete(existingCode);
     }
   }
