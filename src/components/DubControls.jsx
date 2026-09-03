@@ -7,7 +7,8 @@ import {
   Film, 
   Settings,
   Lock,
-  MicOff
+  MicOff,
+  Mic
 } from 'lucide-react';
 import VoiceEffectsPanel from './VoiceEffectsPanel';
 
@@ -82,6 +83,38 @@ export default function DubControls({
           </div>
         </div>
       </div>
+
+      {/* High-Energy Turn Banner */}
+      {isMyTurn && !isAlreadyRecorded ? (
+        <div className="rounded-xl border border-red-500/70 bg-gradient-to-r from-red-950 via-red-900/80 to-red-950 p-2.5 text-center shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse">
+          <span className="flex items-center justify-center gap-1.5 text-xs font-black text-white uppercase tracking-wider">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-ping" />
+            🔥 ถึงคิวพากย์ของคุณแล้ว! (YOUR TURN!)
+          </span>
+          <span className="block text-[11px] font-bold text-red-200 mt-0.5">
+            กดปุ่ม [R] หรือคลิกเริ่มพากย์ได้เลย!
+          </span>
+        </div>
+      ) : isAlreadyRecorded ? (
+        <div className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-2 text-center shadow-md">
+          <span className="flex items-center justify-center gap-1 text-xs font-bold text-emerald-300">
+            ✅ พากย์เสียงเรียบร้อยแล้ว {recorderName ? `(${recorderName})` : ''}
+          </span>
+          <span className="block text-[10px] text-emerald-200/80 mt-0.5">
+            กด Next turn เพื่อส่งคิวต่อไปให้เพื่อน!
+          </span>
+        </div>
+      ) : (
+        <div className="rounded-xl border border-amber-500/50 bg-amber-950/40 p-2.5 text-center shadow-md">
+          <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-amber-300">
+            <Mic className="h-3.5 w-3.5 animate-bounce text-amber-400" />
+            <span>คิวพากย์ของเพื่อน: <b className="text-white font-extrabold">{recorderName || 'ผู้เล่นในคิว'}</b></span>
+          </span>
+          <span className="block text-[10px] text-gray-400 mt-0.5">
+            เตรียมพร้อมสำหรับคิวของคุณ!
+          </span>
+        </div>
+      )}
 
       {/* Control Buttons Stack */}
       <div className="grid gap-2.5">

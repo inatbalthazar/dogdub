@@ -838,6 +838,26 @@ app.put('/api/rooms/:code/takes/:lineIndex', takeUploadLimiter, (req, res) => {
     room.takes.sort((a, b) => a.lineIndex - b.lineIndex);
   }
 
+  // Auto-advance turn to next player in queue after successfully recording a take!
+  if (room.players && room.players.length > 1) {
+    if (!room.turnOrder || room.turnOrder.length === 0) {
+      room.turnOrder = room.players.map(p => p.id);
+    }
+    const currIdx = room.turnOrder.indexOf(room.currentTurnPlayerId);
+    const nextIdx = (currIdx >= 0) ? (currIdx + 1) % room.turnOrder.length : 0;
+    room.currentTurnPlayerId = room.turnOrder[nextIdx];
+
+    const nextPlayer = room.players.find(p => p.id === room.currentTurnPlayerId);
+    room.lastTurnPass = {
+      fromId: player.id,
+      fromName: player.name,
+      toId: room.currentTurnPlayerId,
+      toName: nextPlayer ? nextPlayer.name : 'Next Player',
+      timestamp: Date.now()
+    };
+  }
+
+  saveRoomsToCache();
   res.json({ ok: true, take: takeObj, state: getClientRoomState(room, player.id) });
 });
 

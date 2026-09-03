@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, SkipForward, ArrowLeft, Mic, Users, X, Check } from 'lucide-react';
+import { RefreshCw, ArrowLeft, Mic, Users, X, Check, Radio } from 'lucide-react';
 
 export default function InGameTurnBar({ 
   room, 
@@ -51,6 +51,13 @@ export default function InGameTurnBar({
             <span className="text-white">🎮 {t.roomLabel || "Room:"} <b className="text-[var(--cyan)]">{room?.roomName || room?.name || 'Dub Room'}</b></span>
             <span className="text-gray-500">|</span>
             <span className="text-gray-300">{t.codeLabel || "Code:"} <b className="font-mono text-[var(--amber)]">{room?.roomCode || room?.code || '------'}</b></span>
+          </div>
+
+          {/* Center ON AIR Spotlight Banner */}
+          <div className="flex items-center justify-center gap-2 rounded-lg border border-red-500/40 bg-red-950/40 px-3 py-1 text-xs font-extrabold text-white shadow-[0_0_10px_rgba(239,68,68,0.2)]">
+            <Radio className="h-3.5 w-3.5 text-red-500 animate-pulse" />
+            <span className="text-red-300 uppercase tracking-wide">ON AIR:</span>
+            <span className="text-[var(--cyan)] font-black text-sm drop-shadow">{activePlayer?.name || 'Player 1'}</span>
           </div>
 
           {/* Action Buttons */}
@@ -109,14 +116,21 @@ export default function InGameTurnBar({
                 key={p.id || idx}
                 className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold transition whitespace-nowrap ${
                   isActive
-                    ? 'border-2 border-[var(--cyan)] bg-[var(--cyan)] text-black shadow-lg ring-2 ring-[var(--cyan)]/40'
+                    ? 'border-2 border-[var(--cyan)] bg-[var(--cyan)] text-black shadow-lg ring-2 ring-[var(--cyan)]/40 scale-105'
                     : isSelf
                     ? 'border-2 border-amber-400 bg-[oklch(22%_0.03_60)] text-amber-200 ring-2 ring-amber-400/50 shadow-[0_0_12px_rgba(251,191,36,0.3)]'
                     : 'border border-[oklch(38%_0.01_190)] bg-[oklch(20%_0.01_190)] text-gray-300'
                 }`}
               >
-                {isActive && <Mic className="h-3.5 w-3.5 animate-bounce text-black" />}
-                <span>{idx + 1}. {displayName}</span>
+                {isActive ? (
+                  <span className="flex items-center gap-1">
+                    <span className="h-2 w-2 rounded-full bg-red-600 animate-ping" />
+                    <Mic className="h-3.5 w-3.5 text-black" />
+                  </span>
+                ) : (
+                  <span className="text-[10px] opacity-60">#{idx + 1}</span>
+                )}
+                <span>{displayName}</span>
 
                 {p.isHost && (
                   <span className="text-[10px] text-amber-400 font-extrabold uppercase">
@@ -139,76 +153,65 @@ export default function InGameTurnBar({
         </div>
       </div>
 
-      {/* Pass Turn Player Selection Modal Window */}
+      {/* Modal Selection Window for Passing Turn */}
       {isPassModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-          <div className="relative w-full max-w-md rounded-3xl border border-[var(--cyan)]/40 bg-gradient-to-b from-[oklch(20%_0.02_195)] to-[oklch(14%_0.01_190)] p-6 shadow-2xl glow-cyan">
-            {/* Header */}
-            <div className="mb-4 flex items-center justify-between border-b border-[oklch(28%_0.01_190)] pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-fadeIn">
+          <div className="w-full max-w-md rounded-2xl border-2 border-[var(--cyan)] bg-[oklch(16%_0.015_190)] p-5 shadow-[0_0_30px_rgba(0,243,255,0.3)]">
+            <div className="flex items-center justify-between border-b border-[oklch(28%_0.01_190)] pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--cyan)]/20 text-[var(--cyan)] border border-[var(--cyan)]/40">
-                  <Mic className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-['Bowlby_One_SC'] text-base text-white">
-                    {t.passTurn || "Pass Turn to..."}
-                  </h3>
-                  <p className="text-[11px] text-[var(--muted)]">
-                    เลือกผู้เล่นในห้องที่คุณต้องการส่งไมค์พากย์ต่อให้ทันที
-                  </p>
-                </div>
+                <Mic className="h-5 w-5 text-[var(--cyan)] animate-pulse" />
+                <h3 className="text-base font-extrabold text-white">
+                  {t.passTurnTitle || "ส่งต่อคิวพากย์ให้เพื่อน (Pass Mic)"}
+                </h3>
               </div>
               <button
                 onClick={() => setIsPassModalOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-gray-700 bg-black/40 text-gray-400 hover:text-white transition"
+                className="rounded-lg p-1 text-gray-400 hover:bg-gray-800 hover:text-white transition"
               >
-                <X className="h-4 w-4" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
-            {/* Players List Grid */}
-            <div className="my-4 flex flex-col gap-2.5 max-h-[320px] overflow-y-auto pr-1">
-              {otherQueuePlayers.length === 0 ? (
-                <div className="py-8 text-center text-xs text-gray-400">
-                  ไม่มีผู้เล่นอื่นในห้องขณะนี้
-                </div>
-              ) : (
-                otherQueuePlayers.map((p) => (
-                  <button
-                    key={p.id || p.name}
-                    onClick={() => handleSelectPassTarget(p)}
-                    className="flex w-full items-center justify-between rounded-2xl border border-[oklch(38%_0.01_190)] bg-[oklch(18%_0.01_190)] p-3.5 text-left transition-all duration-200 hover:border-[var(--cyan)] hover:bg-[oklch(26%_0.015_190)] hover:shadow-[0_0_15px_rgba(0,243,255,0.2)] group"
-                    type="button"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--cyan)]/15 text-[var(--cyan)] border border-[var(--cyan)]/30 group-hover:bg-[var(--cyan)] group-hover:text-black transition">
-                        <Mic className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <span className="font-extrabold text-white text-sm block group-hover:text-[var(--cyan)] transition">{p.name}</span>
-                        {p.isHost && (
-                          <span className="text-[10px] font-extrabold text-amber-400 uppercase">
-                            (HOST)
-                          </span>
-                        )}
-                      </div>
-                    </div>
+            <p className="my-3 text-xs text-gray-300">
+              เลือกผู้เล่นที่ต้องการส่งต่อไมโครโฟนเพื่อพากย์ประโยคถัดไป:
+            </p>
 
-                    <span className="rounded-xl bg-[var(--cyan)]/10 px-3.5 py-1.5 text-xs font-extrabold text-[var(--cyan)] border border-[var(--cyan)]/30 group-hover:bg-[var(--cyan)] group-hover:text-black transition shadow">
-                      🎤 ส่งไมค์
-                    </span>
-                  </button>
-                ))
-              )}
+            <div className="grid gap-2 max-h-60 overflow-y-auto pr-1">
+              {otherQueuePlayers.map((player) => (
+                <button
+                  key={player.id}
+                  onClick={() => handleSelectPassTarget(player)}
+                  className="group flex items-center justify-between rounded-xl border border-[oklch(30%_0.02_190)] bg-[oklch(20%_0.015_190)] p-3 text-left transition hover:border-[var(--cyan)] hover:bg-[var(--cyan)]/15 active:scale-95"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--cyan)]/20 text-sm font-extrabold text-[var(--cyan)] group-hover:bg-[var(--cyan)] group-hover:text-black transition">
+                      🎤
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white group-hover:text-[var(--cyan)]">
+                        {player.name}
+                      </div>
+                      {player.isHost && (
+                        <div className="text-[10px] font-bold text-amber-400">
+                          เจ้าของห้อง (Host)
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 rounded-lg bg-[var(--cyan)]/20 px-2.5 py-1 text-xs font-bold text-[var(--cyan)] group-hover:bg-[var(--cyan)] group-hover:text-black transition">
+                    <span>เลือก</span>
+                    <Check className="h-3.5 w-3.5" />
+                  </div>
+                </button>
+              ))}
             </div>
 
-            {/* Modal Footer */}
-            <div className="mt-5 border-t border-[oklch(28%_0.01_190)] pt-3 text-right">
+            <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setIsPassModalOpen(false)}
-                className="rounded-xl border border-gray-700 bg-gray-800/80 px-4 py-2 text-xs font-bold text-gray-300 hover:bg-gray-700 transition"
+                className="rounded-xl border border-gray-700 bg-gray-800 px-4 py-2 text-xs font-bold text-gray-300 hover:bg-gray-700 transition"
               >
-                {t.cancel || "Cancel"}
+                {t.cancel || "ยกเลิก"}
               </button>
             </div>
           </div>

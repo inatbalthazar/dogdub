@@ -15,6 +15,7 @@ import LoadingOverlay from './components/LoadingOverlay';
 import Footer from './components/Footer';
 import { parseScenePackZip } from './services/packReader';
 import { audioEngine } from './services/audioEngine';
+import { soundEffects } from './services/soundEffects';
 import { translations } from './translations';
 
 export default function App() {
@@ -423,6 +424,7 @@ const DEFAULT_FALLBACK_PACKS = [
         setIsRecording(false);
         const result = await audioEngine.stopRecording();
         if (result) {
+          soundEffects.playRecordDoneSound();
           setRecordedTakes((prev) => ({
             ...prev,
             [currentLineIndex]: result.url,
@@ -450,9 +452,15 @@ const DEFAULT_FALLBACK_PACKS = [
               console.warn('Failed to upload recorded voice take to server:', err);
             }
           }
+
+          // Auto-advance scene line index to next line if available!
+          if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
+            setCurrentLineIndex((prev) => prev + 1);
+          }
         }
       } else {
         await audioEngine.prepareRecording();
+        soundEffects.playRecordStartSound();
         setIsRecording(true);
       }
     } finally {
@@ -506,21 +514,31 @@ const DEFAULT_FALLBACK_PACKS = [
   const isLineAlreadyRecorded = Boolean(mergedRecordedTakes[currentLineIndex]);
   const recorderName = currentLineTakeObj?.playerName || '';
 
-  // Check turn ownership accurately (ONLY the person currently in turn can record!):
+  // Check turn ownership accurately:
   const currentTurnPlayerId = activeRoom?.currentTurnPlayerId || activeRoom?.players?.[activeTurnIndex]?.id;
   const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[activeTurnIndex];
 
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
-    (activeRoom?.players && activeRoom.players.length <= 1) || // Room with 1 player
+    currentUser?.isHost ||
     (currentTurnPlayer && (
-      (activeRoom?.you?.id && currentTurnPlayer.id === activeRoom.you.id) ||
-      (currentUser?.id && currentTurnPlayer.id === currentUser.id) ||
-      (currentUser?.name && currentTurnPlayer.name === currentUser.name)
-    ))
+      currentTurnPlayer.name === currentUser?.name ||
+      currentTurnPlayer.id === currentUser?.id ||
+      (currentTurnPlayer.id && activeRoom?.you?.id && currentTurnPlayer.id === activeRoom?.you?.id) ||
+      (currentTurnPlayer.name && currentUser?.name && currentTurnPlayer.name.includes(currentUser.name))
+    )) ||
+    (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
   );
 
   const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
+
+  const prevIsMyTurnRef = React.useRef(false);
+  useEffect(() => {
+    if (isMyTurn && !prevIsMyTurnRef.current && currentView === 'inGame') {
+      soundEffects.playYourTurnSound();
+    }
+    prevIsMyTurnRef.current = isMyTurn;
+  }, [isMyTurn, currentView]);
 
   const handleNextTurn = async () => {
     // Advance scene line index by 1
