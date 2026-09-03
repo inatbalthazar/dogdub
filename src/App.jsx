@@ -50,6 +50,12 @@ export default function App() {
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [selectedPreviewPack, setSelectedPreviewPack] = useState(null);
 
+  // Voice Effect states
+  const [voicePreset, setVoicePreset] = useState('clean');
+  const [voicePitch, setVoicePitch] = useState(0);
+  const [voiceTone, setVoiceTone] = useState(0);
+  const [voiceEcho, setVoiceEcho] = useState(0);
+
   // Fetch available scene packs, rooms, and check saved player name on mount
   useEffect(() => {
     fetchPacks();
@@ -1257,24 +1263,46 @@ const DEFAULT_FALLBACK_PACKS = [
       if (isRecording) {
         setIsRecording(false);
         const result = await audioEngine.stopRecording();
-        if (result) {
+        if (result && result.blob) {
           soundEffects.playRecordDoneSound();
+
+          let finalBlob = result.blob;
+          let finalUrl = result.url;
+
+          // Apply selected Voice Effect preset / fine-tuning!
+          if (voicePreset !== 'clean' || voicePitch !== 0 || voiceTone !== 0 || voiceEcho !== 0) {
+            try {
+              console.log(`Applying voice effect: preset=${voicePreset}, pitch=${voicePitch}, tone=${voiceTone}, echo=${voiceEcho}`);
+              const effectResult = await audioEngine.applyVoiceEffect(result.blob, voicePreset, {
+                pitch: voicePitch,
+                tone: voiceTone,
+                echo: voiceEcho,
+              });
+              if (effectResult && effectResult.url) {
+                finalBlob = effectResult.blob;
+                finalUrl = effectResult.url;
+              }
+            } catch (err) {
+              console.warn('Voice effect application failed, falling back to raw recording:', err);
+            }
+          }
+
           setRecordedTakes((prev) => ({
             ...prev,
-            [currentLineIndex]: result.url,
+            [currentLineIndex]: finalUrl,
           }));
 
           // Upload voice recording blob to server so everyone in the room can listen!
-          if (activeRoom && result.blob) {
+          if (activeRoom && finalBlob) {
             const code = activeRoom.code || activeRoom.roomCode;
             try {
               const uploadRes = await fetch(`/api/rooms/${code}/takes/${currentLineIndex}`, {
                 method: 'PUT',
                 headers: {
-                  'Content-Type': result.blob.type || 'audio/webm',
+                  'Content-Type': finalBlob.type || 'audio/wav',
                   'x-room-token': currentUser?.token || '',
                 },
-                body: result.blob,
+                body: finalBlob,
               });
               if (uploadRes.ok) {
                 const data = await uploadRes.json();
@@ -1551,6 +1579,14 @@ const DEFAULT_FALLBACK_PACKS = [
                   onWatchDub={() => setIsWatchDubOpen(true)}
                   onOpenMicSettings={() => setIsMicSettingsOpen(true)}
                   onOpenFeedback={() => alert(lang === 'en' ? 'Feedback submitted successfully' : 'ส่งข้อเสนอแนะสำเร็จ')}
+                  voicePreset={voicePreset}
+                  onPresetChange={setVoicePreset}
+                  voicePitch={voicePitch}
+                  onPitchChange={setVoicePitch}
+                  voiceTone={voiceTone}
+                  onToneChange={setVoiceTone}
+                  voiceEcho={voiceEcho}
+                  onEchoChange={setVoiceEcho}
                   t={t}
                 />
               </div>

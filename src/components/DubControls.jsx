@@ -32,7 +32,14 @@ export default function DubControls({
   onNextTurn,
   onWatchDub,
   onOpenMicSettings,
-  onOpenFeedback,
+  voicePreset = 'clean',
+  onPresetChange,
+  voicePitch = 0,
+  onPitchChange,
+  voiceTone = 0,
+  onToneChange,
+  voiceEcho = 0,
+  onEchoChange,
   t = {}
 }) {
   const [highlightNextTurn, setHighlightNextTurn] = React.useState(false);
@@ -284,7 +291,17 @@ export default function DubControls({
       </div>
 
       {/* Voice Effects Side Panel */}
-      <VoiceEffectsPanel t={t} />
+      <VoiceEffectsPanel 
+        preset={voicePreset}
+        onPresetChange={onPresetChange}
+        pitch={voicePitch}
+        onPitchChange={onPitchChange}
+        tone={voiceTone}
+        onToneChange={onToneChange}
+        echo={voiceEcho}
+        onEchoChange={onEchoChange}
+        t={t} 
+      />
     </aside>
   );
 }

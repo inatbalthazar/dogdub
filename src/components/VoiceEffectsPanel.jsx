@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { Sliders, ChevronDown, ChevronUp } from 'lucide-react';
 
-export default function VoiceEffectsPanel() {
-  const [preset, setPreset] = useState('clean');
+export default function VoiceEffectsPanel({
+  preset = 'clean',
+  onPresetChange,
+  pitch = 0,
+  onPitchChange,
+  tone = 0,
+  onToneChange,
+  echo = 0,
+  onEchoChange,
+  t = {}
+}) {
   const [isOpenFineTune, setIsOpenFineTune] = useState(false);
-  const [pitch, setPitch] = useState(0);
-  const [tone, setTone] = useState(0);
-  const [echo, setEcho] = useState(0);
 
   return (
     <section className="mt-3 rounded border border-[oklch(39%_0.018_190)] bg-[oklch(13%_0.012_190)] p-2.5 text-xs text-white">
@@ -15,14 +21,14 @@ export default function VoiceEffectsPanel() {
           <Sliders className="h-3.5 w-3.5 text-[var(--cyan)]" />
           <span>Voice Effect</span>
         </div>
-        <span className="text-[10px] text-emerald-400">Preset: {preset.toUpperCase()}</span>
+        <span className="text-[10px] text-emerald-400 font-extrabold">Preset: {preset.toUpperCase()}</span>
       </div>
 
       <div className="flex items-center gap-2">
         <select
           value={preset}
-          onChange={(e) => setPreset(e.target.value)}
-          className="flex-1 rounded border border-[oklch(47%_0.045_334)] bg-[oklch(22%_0.018_190)] px-2 py-1.5 text-xs font-bold text-white focus:outline-none"
+          onChange={(e) => onPresetChange && onPresetChange(e.target.value)}
+          className="flex-1 rounded border border-[oklch(47%_0.045_334)] bg-[oklch(22%_0.018_190)] px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:ring-1 focus:ring-[var(--cyan)] cursor-pointer"
         >
           <option value="clean">Original (ปกติ)</option>
           <option value="deep">Deep (เสียงต่ำ/ทุ้ม)</option>
@@ -32,6 +38,10 @@ export default function VoiceEffectsPanel() {
           <option value="echo">Echo (เสียงสะท้อน)</option>
           <option value="cave">Cave (ถ้ำลึก)</option>
           <option value="monster">Monster (อสูรกาย)</option>
+          <option value="alien">Alien (มนุษย์ต่างดาว)</option>
+          <option value="telephone">Telephone (สายโทรศัพท์)</option>
+          <option value="chorus">Chorus (เสียงประสาน)</option>
+          <option value="megaphone">Megaphone (โทรโข่ง)</option>
         </select>
 
         <button
@@ -53,7 +63,7 @@ export default function VoiceEffectsPanel() {
               min="-9"
               max="9"
               value={pitch}
-              onChange={(e) => setPitch(Number(e.target.value))}
+              onChange={(e) => onPitchChange && onPitchChange(Number(e.target.value))}
               className="w-28 accent-[var(--cyan)]"
             />
             <span className="w-8 text-right font-mono">{pitch} st</span>
@@ -66,7 +76,7 @@ export default function VoiceEffectsPanel() {
               min="-100"
               max="100"
               value={tone}
-              onChange={(e) => setTone(Number(e.target.value))}
+              onChange={(e) => onToneChange && onToneChange(Number(e.target.value))}
               className="w-28 accent-[var(--cyan)]"
             />
             <span className="w-8 text-right font-mono">{tone}</span>
@@ -79,7 +89,7 @@ export default function VoiceEffectsPanel() {
               min="0"
               max="100"
               value={echo}
-              onChange={(e) => setEcho(Number(e.target.value))}
+              onChange={(e) => onEchoChange && onEchoChange(Number(e.target.value))}
               className="w-28 accent-[var(--cyan)]"
             />
             <span className="w-8 text-right font-mono">{echo}%</span>

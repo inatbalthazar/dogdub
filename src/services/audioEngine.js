@@ -181,9 +181,14 @@ class AudioEngine {
     }
   }
 
-  async applyVoiceEffect(audioBlob, presetId = 'normal') {
+  async applyVoiceEffect(audioBlob, presetId = 'clean', customOverrides = null) {
     if (!audioBlob) return null;
-    if (!window.voiceEffects || presetId === 'normal') {
+    if (presetId === 'normal') presetId = 'clean';
+    
+    const isClean = (presetId === 'clean' || !presetId) && 
+      (!customOverrides || (customOverrides.pitch === 0 && customOverrides.tone === 0 && customOverrides.echo === 0));
+
+    if (!window.voiceEffects || isClean) {
       return { blob: audioBlob, url: URL.createObjectURL(audioBlob) };
     }
     try {
@@ -193,7 +198,16 @@ class AudioEngine {
       const audioBuf = await ctx.decodeAudioData(arrayBuf);
       const samples = audioBuf.getChannelData(0);
 
-      const settings = window.voiceEffects.settingsForPreset(presetId);
+      let settings = window.voiceEffects.settingsForPreset(presetId) || window.voiceEffects.settingsForPreset('normal');
+      if (customOverrides) {
+        settings = {
+          ...settings,
+          pitch: customOverrides.pitch !== undefined && customOverrides.pitch !== 0 ? customOverrides.pitch : settings.pitch,
+          tone: customOverrides.tone !== undefined && customOverrides.tone !== 0 ? customOverrides.tone : settings.tone,
+          echo: customOverrides.echo !== undefined && customOverrides.echo !== 0 ? customOverrides.echo : settings.echo,
+        };
+      }
+
       const processed = window.voiceEffects.processTake({ samples, sampleRate: audioBuf.sampleRate }, settings);
 
       const outBuf = ctx.createBuffer(1, processed.samples.length, processed.sampleRate);
