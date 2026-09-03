@@ -49,6 +49,7 @@ export default function App() {
   const [isSetNameModalOpen, setIsSetNameModalOpen] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [selectedPreviewPack, setSelectedPreviewPack] = useState(null);
+  const [createRoomPackId, setCreateRoomPackId] = useState('');
 
   // Fetch available scene packs, rooms, and check saved player name on mount
   useEffect(() => {
@@ -1469,7 +1470,14 @@ const DEFAULT_FALLBACK_PACKS = [
             rooms={rooms}
             packs={packs}
             onRefresh={fetchRooms}
-            onOpenCreateModal={() => setIsCreateModalOpen(true)}
+            onOpenCreateModal={(packId) => {
+              setCreateRoomPackId(typeof packId === 'string' ? packId : '');
+              setIsCreateModalOpen(true);
+            }}
+            onCreateRoomForPack={(pack) => {
+              setCreateRoomPackId(pack.id);
+              setIsCreateModalOpen(true);
+            }}
             onJoinRoom={handleJoinRoom}
             onPreviewPack={(pack) => setSelectedPreviewPack(pack)}
             onSelectPack={(id) => {
@@ -1557,7 +1565,11 @@ const DEFAULT_FALLBACK_PACKS = [
 
       <CreateRoomModal
         isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
+        onClose={() => {
+          setIsCreateModalOpen(false);
+          setCreateRoomPackId('');
+        }}
+        initialPackId={createRoomPackId}
         packs={packs}
         currentUser={currentUser}
         onCreateRoom={handleCreateRoom}
@@ -1598,7 +1610,7 @@ const DEFAULT_FALLBACK_PACKS = [
           setCurrentView('inGame');
         }}
         onCreateRoom={(pack) => {
-          setSelectedPackId(pack.id);
+          setCreateRoomPackId(pack.id);
           setIsCreateModalOpen(true);
         }}
       />

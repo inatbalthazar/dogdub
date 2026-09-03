@@ -6,6 +6,7 @@ export default function LobbyView({
   packs = [], 
   onRefresh, 
   onOpenCreateModal, 
+  onCreateRoomForPack,
   onJoinRoom, 
   onSelectPack,
   onPreviewPack,
@@ -227,17 +228,37 @@ export default function LobbyView({
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (onPreviewPack) onPreviewPack(pack);
-                  }}
-                  className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 py-2 text-xs font-extrabold text-[var(--cyan)] transition-all group-hover:bg-[var(--cyan)] group-hover:text-black shadow"
-                >
-                  <PlayCircle className="h-4 w-4" />
-                  <span>{t.previewScene || "▶️ Preview Scene"}</span>
-                </button>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onPreviewPack) onPreviewPack(pack);
+                    }}
+                    className="flex items-center justify-center gap-1 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 py-2 text-[11px] font-extrabold text-[var(--cyan)] transition-all hover:bg-[var(--cyan)] hover:text-black shadow"
+                    title="ลองฟัง/พากย์คนเดียว (Preview)"
+                  >
+                    <PlayCircle className="h-3.5 w-3.5" />
+                    <span>{t.previewScene || "▶️ ลองดูฉาก"}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onCreateRoomForPack) {
+                        onCreateRoomForPack(pack);
+                      } else if (onOpenCreateModal) {
+                        onOpenCreateModal(pack.id);
+                      }
+                    }}
+                    className="flex items-center justify-center gap-1 rounded-xl border border-[var(--amber)]/50 bg-[var(--amber)]/20 py-2 text-[11px] font-extrabold text-[var(--amber)] transition-all hover:bg-[var(--amber)] hover:text-black shadow"
+                    title="สร้างห้องพากย์สำหรับฉากนี้"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    <span>{t.createRoomForPack || "🎙️ สร้างห้อง"}</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}

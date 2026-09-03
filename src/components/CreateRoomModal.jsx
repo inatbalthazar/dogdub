@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { X, Lock, Users, Sparkles } from 'lucide-react';
 
-export default function CreateRoomModal({ isOpen, onClose, packs = [], onCreateRoom, currentUser }) {
+export default function CreateRoomModal({ isOpen, onClose, packs = [], onCreateRoom, currentUser, initialPackId = '' }) {
   const [roomName, setRoomName] = useState('ห้องพากย์สนุกๆ');
   const [password, setPassword] = useState('');
-  const [selectedPackId, setSelectedPackId] = useState('');
+  const [selectedPackId, setSelectedPackId] = useState(initialPackId || packs[0]?.id || '');
   const [hostName, setHostName] = useState(currentUser?.name || 'นักพากย์');
 
   useEffect(() => {
     if (isOpen) {
       const activeName = currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';
       setHostName(activeName);
-      if (packs && packs.length > 0 && !selectedPackId) {
+      if (initialPackId) {
+        setSelectedPackId(initialPackId);
+      } else if (packs && packs.length > 0 && !selectedPackId) {
         setSelectedPackId(packs[0].id);
       }
     }
-  }, [isOpen, packs, selectedPackId, currentUser]);
+  }, [isOpen, initialPackId, packs, currentUser]);
 
   if (!isOpen) return null;
 
