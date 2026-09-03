@@ -8,7 +8,8 @@ import {
   Settings,
   Lock,
   MicOff,
-  Mic
+  Mic,
+  Sparkles
 } from 'lucide-react';
 import VoiceEffectsPanel from './VoiceEffectsPanel';
 
@@ -34,6 +35,22 @@ export default function DubControls({
   onOpenFeedback,
   t = {}
 }) {
+  const [highlightNextTurn, setHighlightNextTurn] = React.useState(false);
+
+  React.useEffect(() => {
+    let timer = null;
+    if (hasRecordedTake && isMyTurn && !isRecording) {
+      timer = setTimeout(() => {
+        setHighlightNextTurn(true);
+      }, 5000); // 5 seconds after record!
+    } else {
+      setHighlightNextTurn(false);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [hasRecordedTake, isMyTurn, currentLineIndex, isRecording]);
+
   // Keyboard shortcut for [R] to toggle recording
   React.useEffect(() => {
     const handleKeyDown = (e) => {
@@ -214,10 +231,17 @@ export default function DubControls({
 
           {/* Next Turn Button (ONLY enabled for mic holder once scene is recorded) */}
           <button
-            onClick={handleNextTurnClick}
+            onClick={(e) => {
+              setHighlightNextTurn(false);
+              handleNextTurnClick(e);
+            }}
             disabled={isNextTurnDisabled}
-            className={`console-button flex items-center justify-center gap-1.5 ${
-              isNextTurnDisabled ? 'opacity-40 cursor-not-allowed grayscale' : 'ring-2 ring-[var(--amber)]/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+            className={`console-button flex items-center justify-center gap-1.5 transition-all duration-300 ${
+              isNextTurnDisabled
+                ? 'opacity-40 cursor-not-allowed grayscale'
+                : highlightNextTurn
+                ? 'bg-gradient-to-r from-[var(--amber)] via-[#ffe600] to-[var(--cyan)] text-black font-black border-2 border-white shadow-[0_0_30px_rgba(255,230,0,0.95),0_0_50px_rgba(0,243,255,0.8)] scale-[1.04] animate-pulse ring-4 ring-[var(--amber)]/60'
+                : 'ring-2 ring-[var(--amber)]/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
             }`}
             type="button"
             title={
@@ -228,8 +252,11 @@ export default function DubControls({
                 : 'ส่งต่อคิวพากย์ฉากถัดไป'
             }
           >
-            <span>{t.nextTurn || "Next turn"}</span>
-            <ChevronRight className="h-5 w-5 stroke-[2.5]" />
+            {highlightNextTurn && <Sparkles className="h-4 w-4 fill-black text-black animate-spin" />}
+            <span className={highlightNextTurn ? 'font-black tracking-wide text-black text-sm uppercase' : ''}>
+              {t.nextTurn || "Next turn"}
+            </span>
+            <ChevronRight className={`h-5 w-5 stroke-[2.5] ${highlightNextTurn ? 'text-black font-black' : ''}`} />
           </button>
         </div>
 
