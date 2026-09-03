@@ -475,16 +475,29 @@ const DEFAULT_FALLBACK_PACKS = [
     { name: 'Player 2' },
   ];
 
-  const activeSpeaker = playersList[activeTurnIndex] || playersList[0];
+  // Line take status & Overwrite prevention rules
+  const currentLineTakeObj = activeRoom?.takes?.find((t) => t.lineIndex === currentLineIndex);
+  const isLineAlreadyRecorded = Boolean(mergedRecordedTakes[currentLineIndex]);
+  const recorderName = currentLineTakeObj?.playerName || '';
+
+  // Check turn ownership accurately:
+  const currentTurnPlayerId = activeRoom?.currentTurnPlayerId || activeRoom?.players?.[activeTurnIndex]?.id;
+  const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[activeTurnIndex];
+
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
     currentUser?.isHost ||
-    (activeSpeaker && (
-      activeSpeaker.name === currentUser?.name ||
-      activeSpeaker.id === currentUser?.id ||
-      (activeSpeaker.name && currentUser?.name && activeSpeaker.name.includes(currentUser.name))
-    ))
+    (currentTurnPlayer && (
+      currentTurnPlayer.name === currentUser?.name ||
+      currentTurnPlayer.id === currentUser?.id ||
+      (currentTurnPlayer.id && activeRoom?.you?.id && currentTurnPlayer.id === activeRoom?.you?.id) ||
+      (currentTurnPlayer.name && currentUser?.name && currentTurnPlayer.name.includes(currentUser.name))
+    )) ||
+    (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
   );
+
+  // Strict recording permission: Cannot record if already recorded (no overwriting) or if not your turn!
+  const canRecordCurrentLine = !isLineAlreadyRecorded && isMyTurn;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -584,6 +597,9 @@ const DEFAULT_FALLBACK_PACKS = [
                   isRecording={isRecording}
                   hasRecordedTake={Boolean(mergedRecordedTakes[currentLineIndex])}
                   isMyTurn={isMyTurn}
+                  canRecord={canRecordCurrentLine}
+                  isAlreadyRecorded={isLineAlreadyRecorded}
+                  recorderName={recorderName}
                   onHearClip={handleHearClip}
                   onToggleRecord={handleToggleRecord}
                   onPlayRecording={handlePlayRecording}

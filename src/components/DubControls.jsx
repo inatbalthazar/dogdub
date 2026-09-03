@@ -5,7 +5,8 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Film, 
-  Settings 
+  Settings,
+  Lock
 } from 'lucide-react';
 import VoiceEffectsPanel from './VoiceEffectsPanel';
 
@@ -16,6 +17,9 @@ export default function DubControls({
   isRecording = false,
   hasRecordedTake = false,
   isMyTurn = true,
+  canRecord = true,
+  isAlreadyRecorded = false,
+  recorderName = '',
   onHearClip,
   onToggleRecord,
   onPlayRecording,
@@ -32,14 +36,14 @@ export default function DubControls({
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
       if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
-        if (isMyTurn && onToggleRecord) {
+        if (canRecord && onToggleRecord) {
           onToggleRecord();
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onToggleRecord, isMyTurn]);
+  }, [onToggleRecord, canRecord]);
 
   const currentFormatted = String(currentLineIndex + 1).padStart(2, '0');
   const totalFormatted = String(totalLines || 0);
@@ -66,7 +70,7 @@ export default function DubControls({
 
       {/* Control Buttons Stack */}
       <div className="grid gap-2.5">
-        {/* Hear Clip */}
+        {/* Hear Clip (Original Audio) */}
         <button
           onClick={onHearClip}
           className="console-button flex items-center justify-center gap-2"
@@ -79,15 +83,21 @@ export default function DubControls({
         {/* Record Button */}
         <button
           onClick={() => {
-            if (isMyTurn && onToggleRecord) {
+            if (canRecord && onToggleRecord) {
               onToggleRecord();
             }
           }}
-          disabled={!isMyTurn}
+          disabled={!canRecord}
           className={`console-button flex items-center justify-between px-4 ${
             isRecording ? 'record-button-active animate-pulse' : 'record-button'
-          } ${!isMyTurn ? 'opacity-50 cursor-not-allowed' : ''}`}
-          title={isMyTurn ? 'Press [R] to record' : 'Wait for your turn'}
+          } ${!canRecord ? 'opacity-50 cursor-not-allowed grayscale-[0.3]' : ''}`}
+          title={
+            isAlreadyRecorded
+              ? `อัดเสียงแล้วโดย ${recorderName || 'ผู้เล่นอื่น'}`
+              : canRecord
+              ? 'Press [R] to record'
+              : 'Wait for your turn'
+          }
           type="button"
         >
           <div className="flex items-center gap-2 mx-auto">
@@ -96,10 +106,17 @@ export default function DubControls({
                 <Square className="h-3.5 w-3.5 fill-white text-white" />
                 <span>{t.stopRecord || "Stop recording"}</span>
               </>
-            ) : isMyTurn ? (
+            ) : isAlreadyRecorded ? (
               <>
-                <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm" />
-                <span>{hasRecordedTake ? (t.recordAgain || "Record again") : (t.startRecord || "Start recording")}</span>
+                <Lock className="h-3.5 w-3.5 text-amber-400" />
+                <span className="text-xs font-bold text-amber-300">
+                  {recorderName ? `พากย์แล้ว (${recorderName})` : 'พากย์เรียบร้อยแล้ว'}
+                </span>
+              </>
+            ) : canRecord ? (
+              <>
+                <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm animate-pulse" />
+                <span>{t.startRecord || "Start recording"}</span>
               </>
             ) : (
               <>
@@ -108,16 +125,20 @@ export default function DubControls({
               </>
             )}
           </div>
-          <span className="text-[10px] font-mono font-bold bg-black/20 px-1.5 py-0.5 rounded border border-black/30">
-            R
-          </span>
+          {canRecord && (
+            <span className="text-[10px] font-mono font-bold bg-black/20 px-1.5 py-0.5 rounded border border-black/30">
+              R
+            </span>
+          )}
         </button>
 
         {/* Play Recording */}
         <button
           onClick={onPlayRecording}
           disabled={!hasRecordedTake}
-          className="console-button flex items-center justify-center gap-2"
+          className={`console-button flex items-center justify-center gap-2 ${
+            hasRecordedTake ? 'ring-2 ring-[var(--cyan)]/50 shadow-[0_0_12px_rgba(0,243,255,0.3)]' : 'opacity-50 cursor-not-allowed'
+          }`}
           type="button"
         >
           <Play className="h-4 w-4 fill-current text-gray-900" />
@@ -135,47 +156,43 @@ export default function DubControls({
           >
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
+
           <button
             onClick={onNextClip}
-            disabled={currentLineIndex >= totalLines - 1}
-            className="console-button flex items-center justify-center gap-1"
+            disabled={currentLineIndex >= (totalLines - 1)}
+            className="console-button flex items-center justify-center gap-1.5"
             type="button"
-            title={t.nextClip || "Next clip"}
           >
             <span>{t.nextClip || "Next clip"}</span>
-            <ChevronRight className="h-4 w-4 stroke-[2.5]" />
+            <ChevronRight className="h-5 w-5 stroke-[2.5]" />
           </button>
         </div>
 
-        {/* Watch Dub (Golden Arcade 3D Button) */}
+        {/* Watch Dub 3D Gold Button */}
         <button
           onClick={onWatchDub}
-          title="Watch full dubbing movie"
-          className="console-button console-button-gold flex flex-col items-center justify-center py-2 min-h-[46px]"
+          className="console-button-gold flex items-center justify-center gap-2 mt-1 py-3 text-base font-black uppercase tracking-wider"
           type="button"
         >
-          <div className="flex items-center gap-2">
-            <Play className="h-4 w-4 fill-black text-black" />
-            <span className="text-sm font-black tracking-wide">{t.watchDub || "Watch dub"}</span>
-          </div>
-          <span className="text-[10px] font-semibold text-black/80 -mt-0.5">
-            {t.watchDubSub || "Ready - click to watch"}
-          </span>
+          <Film className="h-5 w-5 fill-black stroke-black" />
+          <span>{t.watchDub || "Watch dub"}</span>
         </button>
 
-        {/* Mic Settings Button */}
-        <button
-          onClick={onOpenMicSettings}
-          className="console-button flex items-center justify-center gap-2"
-          type="button"
-        >
-          <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]" />
-          <span>{t.micSettings || "Mic settings"}</span>
-        </button>
+        {/* Mic Settings & Tools */}
+        <div className="mt-2 flex items-center justify-between border-t border-[oklch(28%_0.01_190)] pt-2.5">
+          <button
+            onClick={onOpenMicSettings}
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-[var(--cyan)] transition"
+            type="button"
+          >
+            <Settings className="h-3.5 w-3.5" />
+            <span>{t.micSettings || "Mic settings"}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Voice FX Panel */}
-      <VoiceEffectsPanel />
+      {/* Voice Effects Side Panel */}
+      <VoiceEffectsPanel t={t} />
     </aside>
   );
 }
