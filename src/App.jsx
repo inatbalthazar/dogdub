@@ -400,6 +400,17 @@ const DEFAULT_FALLBACK_PACKS = [
 
   const currentLine = activePackData?.lines?.[currentLineIndex] || null;
 
+  // Merge local recorded takes with server-synced takes from other players in the room
+  const mergedRecordedTakes = { ...recordedTakes };
+  if (activeRoom && Array.isArray(activeRoom.takes)) {
+    const code = activeRoom.code || activeRoom.roomCode;
+    activeRoom.takes.forEach((t) => {
+      if (t && typeof t.lineIndex === 'number' && !mergedRecordedTakes[t.lineIndex]) {
+        mergedRecordedTakes[t.lineIndex] = `/api/rooms/${code}/takes/${t.lineIndex}?v=${t.version || 1}`;
+      }
+    });
+  }
+
   // Audio recording handlers
   const handleToggleRecord = async () => {
     if (isRecording) {
@@ -410,6 +421,29 @@ const DEFAULT_FALLBACK_PACKS = [
           ...prev,
           [currentLineIndex]: result.url,
         }));
+
+        // Upload voice recording blob to server so everyone in the room can listen!
+        if (activeRoom && result.blob) {
+          const code = activeRoom.code || activeRoom.roomCode;
+          try {
+            const uploadRes = await fetch(`/api/rooms/${code}/takes/${currentLineIndex}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': result.blob.type || 'audio/webm',
+                'x-room-token': currentUser?.token || '',
+              },
+              body: result.blob,
+            });
+            if (uploadRes.ok) {
+              const data = await uploadRes.json();
+              if (data.state) {
+                setActiveRoom(data.state);
+              }
+            }
+          } catch (err) {
+            console.warn('Failed to upload recorded voice take to server:', err);
+          }
+        }
       }
     } else {
       await audioEngine.prepareRecording();
@@ -427,7 +461,7 @@ const DEFAULT_FALLBACK_PACKS = [
   };
 
   const handlePlayRecording = () => {
-    const takeUrl = recordedTakes[currentLineIndex];
+    const takeUrl = mergedRecordedTakes[currentLineIndex];
     if (takeUrl) {
       setIsPlayingAudio(true);
       audioEngine.playRecordedBuffer(takeUrl, () => {
@@ -535,7 +569,7 @@ const DEFAULT_FALLBACK_PACKS = [
                   currentLineIndex={currentLineIndex}
                   totalLines={activePackData?.lines?.length || 0}
                   packTitle={activePackData?.title}
-                  recordedTakeUrl={recordedTakes[currentLineIndex]}
+                  recordedTakeUrl={mergedRecordedTakes[currentLineIndex]}
                   isPlaying={isPlayingAudio}
                   isRecording={isRecording}
                   onAutoStopRecord={handleToggleRecord}
@@ -546,9 +580,9 @@ const DEFAULT_FALLBACK_PACKS = [
                 <DubControls
                   currentLineIndex={currentLineIndex}
                   totalLines={activePackData?.lines?.length || 0}
-                  recordedTakesCount={Object.keys(recordedTakes).length}
+                  recordedTakesCount={Object.keys(mergedRecordedTakes).length}
                   isRecording={isRecording}
-                  hasRecordedTake={Boolean(recordedTakes[currentLineIndex])}
+                  hasRecordedTake={Boolean(mergedRecordedTakes[currentLineIndex])}
                   isMyTurn={isMyTurn}
                   onHearClip={handleHearClip}
                   onToggleRecord={handleToggleRecord}
@@ -580,7 +614,7 @@ const DEFAULT_FALLBACK_PACKS = [
         packTitle={activePackData?.title}
         packLines={activePackData?.lines || []}
         backingTrackUrl={activePackData?.backingTrackUrl}
-        recordedTakes={recordedTakes}
+        recordedTakes={mergedRecordedTakes}
       />
 
       <MicSettingsModal
