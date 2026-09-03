@@ -979,41 +979,61 @@ function parsePackMetadata(zipPath) {
 
 
 // Stream proxy endpoint for downloading voice packs from Cloudflare R2 safely without CORS blocks
-app.get('/api/packs/stream/:filename', (req, res) => {
-  const filename = decodeURIComponent(req.params.filename);
+app.get('/api/packs/stream/:filename', async (req, res) => {
+  const rawFilename = req.params.filename || '';
+  let decodedFilename = rawFilename;
+  try {
+    decodedFilename = decodeURIComponent(rawFilename);
+  } catch (e) {}
+
   const r2BaseUrl = (process.env.R2_PUBLIC_URL || 'https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev').replace(/\/$/, '');
-  const r2Url = `${r2BaseUrl}/${encodeURIComponent(filename)}`;
+
+  const candidates = Array.from(new Set([
+    rawFilename,
+    decodedFilename,
+    decodedFilename.replace(/_/g, ' '),
+    decodedFilename.replace(/ /g, '_'),
+  ]));
 
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
   res.header('Content-Type', 'application/zip');
   res.header('Cache-Control', 'public, max-age=86400');
 
-  const clientReq = require('https').get(r2Url, (r2Res) => {
-    if (r2Res.statusCode === 200) {
-      if (r2Res.headers['content-length']) {
-        res.header('Content-Length', r2Res.headers['content-length']);
-      }
-      r2Res.pipe(res);
-    } else {
-      const localPath = path.join(PACKS_DIR, filename);
-      if (fs.existsSync(localPath)) {
-        res.sendFile(localPath);
-      } else {
-        res.status(404).json({ error: 'Pack zip file not found on R2 or local server' });
-      }
-    }
-  });
+  for (const candidate of candidates) {
+    const r2Url = `${r2BaseUrl}/${encodeURIComponent(candidate)}`;
+    const success = await new Promise((resolve) => {
+      const clientReq = require('https').get(r2Url, (r2Res) => {
+        if (r2Res.statusCode === 200) {
+          if (r2Res.headers['content-length']) {
+            res.header('Content-Length', r2Res.headers['content-length']);
+          }
+          r2Res.pipe(res);
+          resolve(true);
+        } else {
+          r2Res.resume();
+          resolve(false);
+        }
+      });
+      clientReq.on('error', () => resolve(false));
+    });
 
-  clientReq.on('error', (err) => {
-    console.warn(`R2 stream error for ${filename}:`, err.message);
-    const localPath = path.join(PACKS_DIR, filename);
+    if (success) return;
+  }
+
+  // Fallback to local packs folder
+  for (const candidate of candidates) {
+    const localPath = path.join(PACKS_DIR, candidate);
     if (fs.existsSync(localPath)) {
-      res.sendFile(localPath);
-    } else {
-      res.status(500).json({ error: err.message });
+      return res.sendFile(localPath);
     }
-  });
+    const publicLocalPath = path.join(__dirname, 'public', 'packs', candidate);
+    if (fs.existsSync(publicLocalPath)) {
+      return res.sendFile(publicLocalPath);
+    }
+  }
+
+  res.status(404).json({ error: 'Pack zip file not found' });
 });
 
 // 0. Web Voice Packs APIs
