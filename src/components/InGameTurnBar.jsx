@@ -77,25 +77,6 @@ export default function InGameTurnBar({
               <RefreshCw className="h-3.5 w-3.5" />
               <span>🔄 {t.passTurn || "Pass turn to..."}</span>
             </button>
-
-            {/* Next Turn */}
-            <button
-              onClick={() => {
-                if (canControlTurn && onNextTurn) {
-                  onNextTurn();
-                }
-              }}
-              disabled={!canControlTurn}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition ${
-                canControlTurn
-                  ? 'bg-[var(--cyan)] text-black hover:brightness-105 active:scale-95 cursor-pointer shadow-[0_0_12px_rgba(0,243,255,0.3)]'
-                  : 'bg-gray-800 text-gray-500 cursor-not-allowed opacity-50'
-              }`}
-              type="button"
-            >
-              <SkipForward className={`h-3.5 w-3.5 ${canControlTurn ? 'fill-black' : 'fill-gray-500'}`} />
-              <span>⏭️ {t.nextTurn || "Next turn"}</span>
-            </button>
           </div>
         </div>
 
