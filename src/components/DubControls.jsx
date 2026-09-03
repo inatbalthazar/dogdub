@@ -6,7 +6,8 @@ import {
   ChevronRight, 
   Film, 
   Settings,
-  Lock
+  Lock,
+  MicOff
 } from 'lucide-react';
 import VoiceEffectsPanel from './VoiceEffectsPanel';
 
@@ -20,6 +21,7 @@ export default function DubControls({
   canRecord = true,
   isAlreadyRecorded = false,
   recorderName = '',
+  hasMicrophone = true,
   onHearClip,
   onToggleRecord,
   onPlayRecording,
@@ -51,12 +53,15 @@ export default function DubControls({
 
   // Trigger next turn (advances scene & shifts mic to next player)
   const handleNextTurnClick = () => {
+    if (!hasRecordedTake) return; // Next turn disabled until current scene is recorded!
     if (onNextTurn) {
       onNextTurn();
     } else if (onNextClip) {
       onNextClip();
     }
   };
+
+  const isNextTurnDisabled = !hasRecordedTake || currentLineIndex >= (totalLines - 1);
 
   return (
     <aside className="chapter-panel flex flex-col gap-3 max-w-[320px] w-full" aria-label="Dub controls">
@@ -102,11 +107,13 @@ export default function DubControls({
             isRecording ? 'record-button-active animate-pulse' : 'record-button'
           } ${!canRecord ? 'opacity-50 cursor-not-allowed grayscale-[0.3]' : ''}`}
           title={
-            isAlreadyRecorded
+            !hasMicrophone
+              ? 'ไม่พบไมโครโฟน กรุณาเสียบไมค์ก่อนอัดเสียง (No mic detected)'
+              : isAlreadyRecorded
               ? `อัดเสียงแล้วโดย ${recorderName || 'ผู้เล่นอื่น'}`
-              : canRecord
-              ? 'Press [R] to record'
-              : 'Wait for your turn'
+              : !isMyTurn
+              ? 'รอให้ถึงคิวพากย์ของคุณ (Wait for your turn)'
+              : 'Press [R] to record'
           }
           type="button"
         >
@@ -115,6 +122,11 @@ export default function DubControls({
               <>
                 <Square className="h-3.5 w-3.5 fill-white text-white" />
                 <span>{t.stopRecord || "Stop recording"}</span>
+              </>
+            ) : !hasMicrophone ? (
+              <>
+                <MicOff className="h-3.5 w-3.5 text-red-400" />
+                <span className="text-xs text-red-300">ไม่พบไมโครโฟน</span>
               </>
             ) : isAlreadyRecorded ? (
               <>
@@ -167,12 +179,19 @@ export default function DubControls({
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
 
-          {/* Next Turn Button (Advances Scene & Passes Mic to Next Player) */}
+          {/* Next Turn Button (Disabled until current scene is recorded) */}
           <button
             onClick={handleNextTurnClick}
-            disabled={currentLineIndex >= (totalLines - 1)}
-            className="console-button flex items-center justify-center gap-1.5"
+            disabled={isNextTurnDisabled}
+            className={`console-button flex items-center justify-center gap-1.5 ${
+              isNextTurnDisabled ? 'opacity-40 cursor-not-allowed grayscale' : 'ring-2 ring-[var(--amber)]/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+            }`}
             type="button"
+            title={
+              !hasRecordedTake
+                ? 'พากย์เสียงฉากนี้ให้เสร็จก่อนส่งคิวถัดไป (Record this scene first)'
+                : 'ส่งต่อคิวพากย์ฉากถัดไป'
+            }
           >
             <span>{t.nextTurn || "Next turn"}</span>
             <ChevronRight className="h-5 w-5 stroke-[2.5]" />

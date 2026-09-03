@@ -484,6 +484,23 @@ const DEFAULT_FALLBACK_PACKS = [
     { name: 'Player 2' },
   ];
 
+  const [hasMicrophone, setHasMicrophone] = useState(true);
+
+  useEffect(() => {
+    async function checkMic() {
+      if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const mics = devices.filter((d) => d.kind === 'audioinput');
+          setHasMicrophone(mics.length > 0);
+        } catch (e) {
+          setHasMicrophone(true);
+        }
+      }
+    }
+    checkMic();
+  }, []);
+
   // Line take status & Overwrite prevention rules
   const currentLineTakeObj = activeRoom?.takes?.find((t) => t.lineIndex === currentLineIndex);
   const isLineAlreadyRecorded = Boolean(mergedRecordedTakes[currentLineIndex]);
@@ -505,7 +522,7 @@ const DEFAULT_FALLBACK_PACKS = [
     (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
   );
 
-  const canRecordCurrentLine = !isLineAlreadyRecorded && isMyTurn;
+  const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
 
   const handleNextTurn = async () => {
     // Advance scene line index by 1
@@ -638,6 +655,7 @@ const DEFAULT_FALLBACK_PACKS = [
                   canRecord={canRecordCurrentLine}
                   isAlreadyRecorded={isLineAlreadyRecorded}
                   recorderName={recorderName}
+                  hasMicrophone={hasMicrophone}
                   onHearClip={handleHearClip}
                   onToggleRecord={handleToggleRecord}
                   onPlayRecording={handlePlayRecording}
