@@ -195,7 +195,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 49126895,
     "sizeFormatted": "46.9 MB",
-    "url": "/packs/-__09bf5.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/-__09bf5.zip"
   },
   {
     "id": "-__75374",
@@ -207,7 +207,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 27857379,
     "sizeFormatted": "26.6 MB",
-    "url": "/packs/-__75374.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/-__75374.zip"
   },
   {
     "id": "300_-_this_is_sparta_",
@@ -219,7 +219,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 297625319,
     "sizeFormatted": "283.8 MB",
-    "url": "/packs/300_-_this_is_sparta_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/300_-_this_is_sparta_.zip"
   },
   {
     "id": "annoying_orange_4a4e0",
@@ -231,7 +231,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 13952441,
     "sizeFormatted": "13.3 MB",
-    "url": "/packs/annoying_orange_4a4e0.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/annoying_orange_4a4e0.zip"
   },
   {
     "id": "Are you the Strongest",
@@ -243,7 +243,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 25449640,
     "sizeFormatted": "24.3 MB",
-    "url": "/packs/Are%20you%20the%20Strongest.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Are%20you%20the%20Strongest.zip"
   },
   {
     "id": "attack_on_titan_-_you_traitor",
@@ -255,7 +255,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 188012205,
     "sizeFormatted": "179.3 MB",
-    "url": "/packs/attack_on_titan_-_you_traitor.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/attack_on_titan_-_you_traitor.zip"
   },
   {
     "id": "avengers_arguing",
@@ -267,7 +267,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 208966886,
     "sizeFormatted": "199.3 MB",
-    "url": "/packs/avengers_arguing.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/avengers_arguing.zip"
   },
   {
     "id": "backrooms_-_dinner_scene_e80f0",
@@ -279,7 +279,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 39495110,
     "sizeFormatted": "37.7 MB",
-    "url": "/packs/backrooms_-_dinner_scene_e80f0.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/backrooms_-_dinner_scene_e80f0.zip"
   },
   {
     "id": "batman_interrogates_the_joker_-_the_dark_knight_96d29",
@@ -291,7 +291,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 74649260,
     "sizeFormatted": "71.2 MB",
-    "url": "/packs/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip"
   },
   {
     "id": "beyond_the_spiderverse_trailer_0d846",
@@ -303,7 +303,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 108981486,
     "sizeFormatted": "103.9 MB",
-    "url": "/packs/beyond_the_spiderverse_trailer_0d846.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/beyond_the_spiderverse_trailer_0d846.zip"
   },
   {
     "id": "Dexter - Cargo Scene",
@@ -315,7 +315,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 38113883,
     "sizeFormatted": "36.3 MB",
-    "url": "/packs/Dexter%20-%20Cargo%20Scene.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Dexter%20-%20Cargo%20Scene.zip"
   },
   {
     "id": "don_t_let_me_leave_murph",
@@ -327,7 +327,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 37885013,
     "sizeFormatted": "36.1 MB",
-    "url": "/packs/don_t_let_me_leave_murph.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/don_t_let_me_leave_murph.zip"
   },
   {
     "id": "Elsa Flees From Arendelle",
@@ -339,7 +339,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 138054924,
     "sizeFormatted": "131.7 MB",
-    "url": "/packs/Elsa%20Flees%20From%20Arendelle.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Elsa%20Flees%20From%20Arendelle.zip"
   },
   {
     "id": "engame",
@@ -351,7 +351,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 171845399,
     "sizeFormatted": "163.9 MB",
-    "url": "/packs/engame.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/engame.zip"
   },
   {
     "id": "eren_manipulates",
@@ -363,7 +363,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 72909518,
     "sizeFormatted": "69.5 MB",
-    "url": "/packs/eren_manipulates.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/eren_manipulates.zip"
   },
   {
     "id": "erwin_s_plan_aot_3_",
@@ -375,7 +375,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 72463513,
     "sizeFormatted": "69.1 MB",
-    "url": "/packs/erwin_s_plan_aot_3_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/erwin_s_plan_aot_3_.zip"
   },
   {
     "id": "evil_dead_rise_bande_annonce_vf_",
@@ -387,7 +387,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 40066671,
     "sizeFormatted": "38.2 MB",
-    "url": "/packs/evil_dead_rise_bande_annonce_vf_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/evil_dead_rise_bande_annonce_vf_.zip"
   },
   {
     "id": "forrest_gump_-_life_is_like_a_box_of_chocolates",
@@ -399,7 +399,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 53627602,
     "sizeFormatted": "51.1 MB",
-    "url": "/packs/forrest_gump_-_life_is_like_a_box_of_chocolates.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/forrest_gump_-_life_is_like_a_box_of_chocolates.zip"
   },
   {
     "id": "GIVE ME THE BALL",
@@ -411,7 +411,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 246633065,
     "sizeFormatted": "235.2 MB",
-    "url": "/packs/GIVE%20ME%20THE%20BALL.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/GIVE%20ME%20THE%20BALL.zip"
   },
   {
     "id": "GOTG Vol 2 - Now I Know That Sounds Bad",
@@ -423,7 +423,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 236342447,
     "sizeFormatted": "225.4 MB",
-    "url": "/packs/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip"
   },
   {
     "id": "Guardians meet avengers",
@@ -435,7 +435,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 79137929,
     "sizeFormatted": "75.5 MB",
-    "url": "/packs/Guardians%20meet%20avengers.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Guardians%20meet%20avengers.zip"
   },
   {
     "id": "guardians_meet_avengers",
@@ -447,7 +447,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 79059303,
     "sizeFormatted": "75.4 MB",
-    "url": "/packs/guardians_meet_avengers.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/guardians_meet_avengers.zip"
   },
   {
     "id": "guardians_of_the_galaxy_vol_3_i_",
@@ -459,7 +459,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 24195306,
     "sizeFormatted": "23.1 MB",
-    "url": "/packs/guardians_of_the_galaxy_vol_3_i_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/guardians_of_the_galaxy_vol_3_i_.zip"
   },
   {
     "id": "harrypotterduel",
@@ -471,7 +471,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 179428633,
     "sizeFormatted": "171.1 MB",
-    "url": "/packs/harrypotterduel.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/harrypotterduel.zip"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_1",
@@ -483,7 +483,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 67414873,
     "sizeFormatted": "64.3 MB",
-    "url": "/packs/harry_potter_4_-_harry_vs_voldemort_pt_1.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/harry_potter_4_-_harry_vs_voldemort_pt_1.zip"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_2",
@@ -495,7 +495,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 121083320,
     "sizeFormatted": "115.5 MB",
-    "url": "/packs/harry_potter_4_-_harry_vs_voldemort_pt_2.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/harry_potter_4_-_harry_vs_voldemort_pt_2.zip"
   },
   {
     "id": "harry_potter_train_scene",
@@ -507,7 +507,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 20293488,
     "sizeFormatted": "19.4 MB",
-    "url": "/packs/harry_potter_train_scene.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/harry_potter_train_scene.zip"
   },
   {
     "id": "homelander_vs_butcher",
@@ -519,7 +519,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 18008127,
     "sizeFormatted": "17.2 MB",
-    "url": "/packs/homelander_vs_butcher.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/homelander_vs_butcher.zip"
   },
   {
     "id": "i-m-tired-boss-the-green-mile-1999-nominee",
@@ -531,7 +531,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 23288565,
     "sizeFormatted": "22.2 MB",
-    "url": "/packs/i-m-tired-boss-the-green-mile-1999-nominee.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/i-m-tired-boss-the-green-mile-1999-nominee.zip"
   },
   {
     "id": "ichigo_vs_byakuya_choicervoicer_54255",
@@ -543,7 +543,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 61226559,
     "sizeFormatted": "58.4 MB",
-    "url": "/packs/ichigo_vs_byakuya_choicervoicer_54255.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/ichigo_vs_byakuya_choicervoicer_54255.zip"
   },
   {
     "id": "incredibles_-_im_thirsty",
@@ -555,7 +555,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 67458892,
     "sizeFormatted": "64.3 MB",
-    "url": "/packs/incredibles_-_im_thirsty.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/incredibles_-_im_thirsty.zip"
   },
   {
     "id": "invincible_-_are_you_sure",
@@ -567,7 +567,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 11566301,
     "sizeFormatted": "11.0 MB",
-    "url": "/packs/invincible_-_are_you_sure.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/invincible_-_are_you_sure.zip"
   },
   {
     "id": "it-2017-pennywise-meets-georgie",
@@ -579,7 +579,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 39662490,
     "sizeFormatted": "37.8 MB",
-    "url": "/packs/it-2017-pennywise-meets-georgie.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/it-2017-pennywise-meets-georgie.zip"
   },
   {
     "id": "i_robot_-_can_you_4c11c",
@@ -591,7 +591,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 3868945,
     "sizeFormatted": "3.7 MB",
-    "url": "/packs/i_robot_-_can_you_4c11c.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/i_robot_-_can_you_4c11c.zip"
   },
   {
     "id": "jotaro_vs_dio",
@@ -603,7 +603,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 105616788,
     "sizeFormatted": "100.7 MB",
-    "url": "/packs/jotaro_vs_dio.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/jotaro_vs_dio.zip"
   },
   {
     "id": "kung_fu_panda_-_oogway_ascends",
@@ -615,7 +615,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 87842233,
     "sizeFormatted": "83.8 MB",
-    "url": "/packs/kung_fu_panda_-_oogway_ascends.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/kung_fu_panda_-_oogway_ascends.zip"
   },
   {
     "id": "kung_fu_panda_-_shifu_vs_tai_lung",
@@ -627,7 +627,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 132790504,
     "sizeFormatted": "126.6 MB",
-    "url": "/packs/kung_fu_panda_-_shifu_vs_tai_lung.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/kung_fu_panda_-_shifu_vs_tai_lung.zip"
   },
   {
     "id": "light_yagami_perfect_victory",
@@ -639,7 +639,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 37504302,
     "sizeFormatted": "35.8 MB",
-    "url": "/packs/light_yagami_perfect_victory.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/light_yagami_perfect_victory.zip"
   },
   {
     "id": "Loki in Germany Avengers 2012",
@@ -651,7 +651,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 56946847,
     "sizeFormatted": "54.3 MB",
-    "url": "/packs/Loki%20in%20Germany%20Avengers%202012.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Loki%20in%20Germany%20Avengers%202012.zip"
   },
   {
     "id": "minions_-_banana_song_barbara_ann_",
@@ -663,7 +663,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 47717035,
     "sizeFormatted": "45.5 MB",
-    "url": "/packs/minions_-_banana_song_barbara_ann_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/minions_-_banana_song_barbara_ann_.zip"
   },
   {
     "id": "monsters_inc_-_waternoose_scandal_scene_6a3b5",
@@ -675,7 +675,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 100160645,
     "sizeFormatted": "95.5 MB",
-    "url": "/packs/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip"
   },
   {
     "id": "no_way_home",
@@ -687,7 +687,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 81895474,
     "sizeFormatted": "78.1 MB",
-    "url": "/packs/no_way_home.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/no_way_home.zip"
   },
   {
     "id": "obsession_-_diner_scene_040e7",
@@ -699,7 +699,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 20416681,
     "sizeFormatted": "19.5 MB",
-    "url": "/packs/obsession_-_diner_scene_040e7.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/obsession_-_diner_scene_040e7.zip"
   },
   {
     "id": "pulp_fiction_-_say_what_again",
@@ -711,7 +711,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 36923034,
     "sizeFormatted": "35.2 MB",
-    "url": "/packs/pulp_fiction_-_say_what_again.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/pulp_fiction_-_say_what_again.zip"
   },
   {
     "id": "Spider-Man 2 - Could You Pay Me In Advance",
@@ -723,7 +723,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 46832703,
     "sizeFormatted": "44.7 MB",
-    "url": "/packs/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip"
   },
   {
     "id": "spider-man_3_rent_scene_modpack",
@@ -735,7 +735,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 43404519,
     "sizeFormatted": "41.4 MB",
-    "url": "/packs/spider-man_3_rent_scene_modpack.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/spider-man_3_rent_scene_modpack.zip"
   },
   {
     "id": "star_wars-i_am_your_father",
@@ -747,7 +747,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 43457409,
     "sizeFormatted": "41.4 MB",
-    "url": "/packs/star_wars-i_am_your_father.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/star_wars-i_am_your_father.zip"
   },
   {
     "id": "star_wars_-_you_turned_her_against_me_20ba1",
@@ -759,7 +759,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 50355311,
     "sizeFormatted": "48.0 MB",
-    "url": "/packs/star_wars_-_you_turned_her_against_me_20ba1.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/star_wars_-_you_turned_her_against_me_20ba1.zip"
   },
   {
     "id": "sukuna_awakens_in_shibuya_for_windows_zip_",
@@ -771,7 +771,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 28070969,
     "sizeFormatted": "26.8 MB",
-    "url": "/packs/sukuna_awakens_in_shibuya_for_windows_zip_.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/sukuna_awakens_in_shibuya_for_windows_zip_.zip"
   },
   {
     "id": "the_good_doctor_-_i_am_a_surgeon",
@@ -783,7 +783,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 62961885,
     "sizeFormatted": "60.0 MB",
-    "url": "/packs/the_good_doctor_-_i_am_a_surgeon.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/the_good_doctor_-_i_am_a_surgeon.zip"
   },
   {
     "id": "Toji vs Gojo",
@@ -795,7 +795,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 27091222,
     "sizeFormatted": "25.8 MB",
-    "url": "/packs/Toji%20vs%20Gojo.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/Toji%20vs%20Gojo.zip"
   },
   {
     "id": "twilight_-_i_know_what_you_are_d9110",
@@ -807,7 +807,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 104816547,
     "sizeFormatted": "100.0 MB",
-    "url": "/packs/twilight_-_i_know_what_you_are_d9110.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/twilight_-_i_know_what_you_are_d9110.zip"
   },
   {
     "id": "what_is_your_name_5718b",
@@ -819,7 +819,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 47312596,
     "sizeFormatted": "45.1 MB",
-    "url": "/packs/what_is_your_name_5718b.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/what_is_your_name_5718b.zip"
   },
   {
     "id": "white_chicks_-_a_thousand_miles",
@@ -831,7 +831,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 31793098,
     "sizeFormatted": "30.3 MB",
-    "url": "/packs/white_chicks_-_a_thousand_miles.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/white_chicks_-_a_thousand_miles.zip"
   },
   {
     "id": "will_byers_coming_out",
@@ -843,7 +843,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 108735142,
     "sizeFormatted": "103.7 MB",
-    "url": "/packs/will_byers_coming_out.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/will_byers_coming_out.zip"
   },
   {
     "id": "you_are_a_toy",
@@ -855,7 +855,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 15835095,
     "sizeFormatted": "15.1 MB",
-    "url": "/packs/you_are_a_toy.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/you_are_a_toy.zip"
   },
   {
     "id": "you_shall_not_pass_lotr_scene",
@@ -867,7 +867,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 48920992,
     "sizeFormatted": "46.7 MB",
-    "url": "/packs/you_shall_not_pass_lotr_scene.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/you_shall_not_pass_lotr_scene.zip"
   },
   {
     "id": "ytdowncom_youtube_dementor_on_bo",
@@ -879,7 +879,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 101232070,
     "sizeFormatted": "96.5 MB",
-    "url": "/packs/ytdowncom_youtube_dementor_on_bo.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/ytdowncom_youtube_dementor_on_bo.zip"
   },
   {
     "id": "yu_and_mi_-_rush_hour",
@@ -891,7 +891,7 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 37954983,
     "sizeFormatted": "36.2 MB",
-    "url": "/packs/yu_and_mi_-_rush_hour.zip"
+    "url": "https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev/yu_and_mi_-_rush_hour.zip"
   }
 ];
 
