@@ -980,21 +980,38 @@ function parsePackMetadata(zipPath) {
 // 0. Web Voice Packs APIs
 app.get('/api/packs', (req, res) => {
   try {
-    let packs = [];
+    const packMap = new Map();
+
+    // 1. First add all 59 Cloudflare R2 default packs
+    if (Array.isArray(DEFAULT_PACKS)) {
+      for (const p of DEFAULT_PACKS) {
+        if (p && (p.id || p.filename)) {
+          packMap.set(p.id || p.filename, p);
+        }
+      }
+    }
+
+    // 2. Merge local files in PACKS_DIR if any exist
     if (fs.existsSync(PACKS_DIR)) {
       const files = fs.readdirSync(PACKS_DIR)
         .filter(f => f.toLowerCase().endsWith('.zip') && !f.startsWith('.'));
-      packs = files.map(file => parsePackMetadata(path.join(PACKS_DIR, file)));
+      for (const file of files) {
+        const meta = parsePackMetadata(path.join(PACKS_DIR, file));
+        if (meta && meta.id) {
+          packMap.set(meta.id, meta);
+        }
+      }
     }
-    if (!packs || packs.length === 0) {
-      packs = DEFAULT_PACKS;
-    }
+
+    const packs = Array.from(packMap.values());
+
     // Sort: guardians_meet_avengers first or alphabetical
     packs.sort((a, b) => {
       if (a.filename === 'guardians_meet_avengers.zip') return -1;
       if (b.filename === 'guardians_meet_avengers.zip') return 1;
-      return a.title.localeCompare(b.title);
+      return (a.title || '').localeCompare(b.title || '');
     });
+
     res.json({ ok: true, packs });
   } catch (err) {
     res.json({ ok: true, packs: DEFAULT_PACKS });
