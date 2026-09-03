@@ -40,3 +40,12 @@ logs/
 *.log
 *.tmp
 *.temp
+
+# Large Voice Pack files & Storage (Prevents GitHub >100MB file limit errors)
+packs/
+scratch/
+public/packs/*.zip
+!public/packs/matrix_red_pill.zip
+!public/packs/pulp_fiction_royale.zip
+!public/packs/star_wars-i_am_your_father.zip
+!public/packs/guardians_meet_avengers.zip
