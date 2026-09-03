@@ -141,10 +141,10 @@ setInterval(() => {
       continue;
     }
 
-    // Filter out players who haven't pinged in the last 15 seconds (closed tab / disconnected)
+    // Filter out players who haven't pinged in the last 60 seconds (closed tab / disconnected)
     const activePlayers = room.players.filter(p => {
       if (!p.lastSeen) return true; // Give grace period for newly joined players
-      return (now - p.lastSeen) <= 15000;
+      return (now - p.lastSeen) <= 60000;
     });
 
     if (activePlayers.length !== room.players.length) {
@@ -500,7 +500,8 @@ app.post('/api/rooms', roomCreateLimiter, (req, res) => {
     isHost: true,
     ready: true,
     finished: false,
-    roleIndex: 0
+    roleIndex: 0,
+    lastSeen: Date.now()
   };
 
   const cleanRoomName = (roomName || name || 'ห้องพากษ์ ' + code).trim();

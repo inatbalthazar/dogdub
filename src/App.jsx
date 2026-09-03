@@ -76,6 +76,37 @@ export default function App() {
     };
   }, [currentView]);
 
+  // Send active heartbeat and sync room state every 3 seconds while inside a room
+  useEffect(() => {
+    let timer = null;
+    if (activeRoom && (currentView === 'inGame' || currentView === 'waitingRoom')) {
+      const code = activeRoom.code || activeRoom.roomCode;
+      const sendHeartbeat = async () => {
+        try {
+          const res = await fetch(`/api/rooms/${code}`, {
+            headers: {
+              'x-room-token': currentUser?.token || '',
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.state) {
+              setActiveRoom(data.state);
+            }
+          }
+        } catch (err) {
+          console.warn('In-game heartbeat error:', err);
+        }
+      };
+
+      sendHeartbeat();
+      timer = setInterval(sendHeartbeat, 3000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [activeRoom?.code, currentView, currentUser?.token]);
+
   // Auto-leave room when browser tab is closed or window is navigated away
   useEffect(() => {
     const handleTabClose = () => {
