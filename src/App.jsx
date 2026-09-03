@@ -505,8 +505,40 @@ const DEFAULT_FALLBACK_PACKS = [
     (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
   );
 
-  // Strict recording permission: Cannot record if already recorded (no overwriting) or if not your turn!
-  const canRecordCurrentLine = !isLineAlreadyRecorded && isMyTurn;
+  const handleNextTurn = async () => {
+    // Advance scene line index by 1
+    if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
+      setCurrentLineIndex((prev) => prev + 1);
+    }
+
+    // Advance active turn index locally
+    if (playersList.length > 0) {
+      setActiveTurnIndex((prev) => (prev + 1) % playersList.length);
+    }
+
+    // Send next-turn action to server if inside a room
+    if (activeRoom) {
+      const code = activeRoom.code || activeRoom.roomCode;
+      try {
+        const res = await fetch(`/api/rooms/${code}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-room-token': currentUser?.token || '',
+          },
+          body: JSON.stringify({ action: 'next-turn' }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.state) {
+            setActiveRoom(data.state);
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to pass next turn to server:', err);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -571,14 +603,9 @@ const DEFAULT_FALLBACK_PACKS = [
                     return;
                   }
                 }
-                setActiveTurnIndex((prev) => (prev + 1) % playersList.length);
+                handleNextTurn();
               }}
-              onNextTurn={() => {
-                setActiveTurnIndex((prev) => (prev + 1) % playersList.length);
-                if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
-                  setCurrentLineIndex((prev) => prev + 1);
-                }
-              }}
+              onNextTurn={handleNextTurn}
               onLeaveRoom={handleLeaveRoom}
               onKickPlayer={handleKickPlayer}
               t={t}
@@ -613,7 +640,8 @@ const DEFAULT_FALLBACK_PACKS = [
                   onToggleRecord={handleToggleRecord}
                   onPlayRecording={handlePlayRecording}
                   onPrevClip={() => setCurrentLineIndex((prev) => Math.max(0, prev - 1))}
-                  onNextClip={() => setCurrentLineIndex((prev) => Math.min((activePackData?.lines?.length || 1) - 1, prev + 1))}
+                  onNextClip={handleNextTurn}
+                  onNextTurn={handleNextTurn}
                   onWatchDub={() => setIsWatchDubOpen(true)}
                   onOpenMicSettings={() => setIsMicSettingsOpen(true)}
                   onOpenFeedback={() => alert(lang === 'en' ? 'Feedback submitted successfully' : 'ส่งข้อเสนอแนะสำเร็จ')}

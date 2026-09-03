@@ -25,6 +25,7 @@ export default function DubControls({
   onPlayRecording,
   onPrevClip,
   onNextClip,
+  onNextTurn,
   onWatchDub,
   onOpenMicSettings,
   onOpenFeedback,
@@ -47,6 +48,15 @@ export default function DubControls({
 
   const currentFormatted = String(currentLineIndex + 1).padStart(2, '0');
   const totalFormatted = String(totalLines || 0);
+
+  // Trigger next turn (advances scene & shifts mic to next player)
+  const handleNextTurnClick = () => {
+    if (onNextTurn) {
+      onNextTurn();
+    } else if (onNextClip) {
+      onNextClip();
+    }
+  };
 
   return (
     <aside className="chapter-panel flex flex-col gap-3 max-w-[320px] w-full" aria-label="Dub controls">
@@ -157,13 +167,14 @@ export default function DubControls({
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
 
+          {/* Next Turn Button (Advances Scene & Passes Mic to Next Player) */}
           <button
-            onClick={onNextClip}
+            onClick={handleNextTurnClick}
             disabled={currentLineIndex >= (totalLines - 1)}
             className="console-button flex items-center justify-center gap-1.5"
             type="button"
           >
-            <span>{t.nextClip || "Next clip"}</span>
+            <span>{t.nextTurn || "Next turn"}</span>
             <ChevronRight className="h-5 w-5 stroke-[2.5]" />
           </button>
         </div>
