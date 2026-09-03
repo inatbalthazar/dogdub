@@ -590,14 +590,21 @@ function resolvePlayer(room, req) {
   let playerId = token ? room.tokens.get(token) : null;
   let player = playerId ? room.players.find(p => p.id === playerId) : null;
 
-  if (!player && req.body?.playerName) {
-    player = room.players.find(p => p.name === req.body.playerName);
+  const reqName = req.body?.playerName || req.body?.name || req.query?.playerName;
+  if (!player && reqName) {
+    const cleanName = String(reqName).trim();
+    player = room.players.find(p => p.name === cleanName || (p.name && cleanName.includes(p.name)));
   }
+
   if (!player && room.players.length > 0) {
     player = room.players.find(p => p.id === room.currentTurnPlayerId) || room.players[0];
   }
+
   if (player) {
     player.lastSeen = Date.now();
+    if (token && !room.tokens.has(token)) {
+      room.tokens.set(token, player.id);
+    }
   }
   return player;
 }

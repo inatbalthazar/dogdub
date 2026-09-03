@@ -525,14 +525,16 @@ const DEFAULT_FALLBACK_PACKS = [
   const currentTurnPlayer = activeRoom?.players?.find(p => p.id === currentTurnPlayerId) || activeRoom?.players?.[0];
 
   const myPlayerId = activeRoom?.you?.id || currentUser?.id;
-  const cleanMyName = (currentUser?.name || '').replace(/^คุณ \((.*)\)$/, '$1').trim();
-  const cleanTurnName = (currentTurnPlayer?.name || '').replace(/^คุณ \((.*)\)$/, '$1').trim();
+  const myPlayerName = activeRoom?.you?.name || currentUser?.name;
 
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
     (activeRoom?.players && activeRoom?.players?.length === 1) || // Single player room: always your turn!
-    (currentTurnPlayerId && myPlayerId && currentTurnPlayerId === myPlayerId && myPlayerId !== 'guest') ||
-    (cleanTurnName && cleanMyName && cleanTurnName.toLowerCase() === cleanMyName.toLowerCase())
+    (currentTurnPlayer && (
+      (currentTurnPlayerId && myPlayerId && currentTurnPlayerId === myPlayerId) ||
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name === myPlayerName) ||
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name.includes(myPlayerName))
+    ))
   );
 
   const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
