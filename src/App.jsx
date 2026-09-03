@@ -11,6 +11,7 @@ import MicSettingsModal from './components/MicSettingsModal';
 import SetPlayerNameModal from './components/SetPlayerNameModal';
 import HowToPlayModal from './components/HowToPlayModal';
 import ScenePackPreviewModal from './components/ScenePackPreviewModal';
+import LoadingOverlay from './components/LoadingOverlay';
 import { parseScenePackZip } from './services/packReader';
 import { audioEngine } from './services/audioEngine';
 import { translations } from './translations';
@@ -184,19 +185,46 @@ const DEFAULT_FALLBACK_PACKS = [
     }
   };
 
+  const [globalLoading, setGlobalLoading] = useState({ isOpen: false, percent: 0, title: '', subtext: '' });
+
   const loadPack = async (packId, packUrl) => {
     setSelectedPackId(packId);
     const targetUrl = packUrl || `/packs/${packId}.zip`;
+    setGlobalLoading({
+      isOpen: true,
+      percent: 10,
+      title: lang === 'en' ? 'Downloading Voice Pack...' : 'กำลังดาวน์โหลดฉากภาพและเสียงพากย์...',
+      subtext: '10%'
+    });
+
     try {
       const res = await fetch(targetUrl);
       if (res.ok) {
+        setGlobalLoading({
+          isOpen: true,
+          percent: 30,
+          title: lang === 'en' ? 'Processing Pack Archive...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...',
+          subtext: '30%'
+        });
+
         const arrayBuffer = await res.arrayBuffer();
-        const packData = await parseScenePackZip(arrayBuffer);
+        const packData = await parseScenePackZip(arrayBuffer, (pct, status) => {
+          setGlobalLoading({
+            isOpen: true,
+            percent: Math.max(30, Math.min(100, Math.round(pct))),
+            title: lang === 'en' ? 'Loading Voice Pack...' : 'กำลังโหลดฉากภาพและเสียงพากย์...',
+            subtext: status
+          });
+        });
         setActivePackData(packData);
         setCurrentLineIndex(0);
       }
     } catch (err) {
       console.error('Error loading pack:', err);
+    } finally {
+      setTimeout(() => {
+        setGlobalLoading({ isOpen: false, percent: 100, title: '', subtext: '' });
+      }, 400);
     }
   };
 
@@ -538,6 +566,13 @@ const DEFAULT_FALLBACK_PACKS = [
           setSelectedPackId(pack.id);
           setIsCreateModalOpen(true);
         }}
+      />
+
+      <LoadingOverlay
+        isOpen={globalLoading.isOpen}
+        percent={globalLoading.percent}
+        title={globalLoading.title}
+        subtext={globalLoading.subtext}
       />
     </div>
   );

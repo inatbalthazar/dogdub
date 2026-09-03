@@ -4,10 +4,14 @@ import * as fflate from 'fflate';
  * Parses a Scene Pack ZIP buffer or Blob and extracts all audio clips, images, video files, and subtitle metadata.
  * Supports both .ini (Choicer Voicer format) and .txt files, as well as .ogv, .mp4, .ogg, .mp3, and .wav audio/video.
  * @param {ArrayBuffer | Blob} zipData 
+ * @param {Function} [onProgress] Progress callback: (percent, statusText)
  * @returns {Promise<Object>} Pack object containing lines, audio URLs, video URL, images, and character metadata.
  */
-export async function parseScenePackZip(zipData) {
+export async function parseScenePackZip(zipData, onProgress) {
+  if (onProgress) onProgress(5, 'Reading ZIP data... 5%');
   const buffer = zipData instanceof Blob ? new Uint8Array(await zipData.arrayBuffer()) : new Uint8Array(zipData);
+  
+  if (onProgress) onProgress(15, 'Unzipping archive... 15%');
   const unzipped = fflate.unzipSync(buffer);
 
   let title = 'Scene Pack';
@@ -16,11 +20,20 @@ export async function parseScenePackZip(zipData) {
   let packVideoUrl = null;
   let backingTrackUrl = null;
   let isOgvVideo = false;
-  const linesMap = new Map(); // key: line number (number) -> { id, speaker, text, audioUrl, imageUrl, timestamp, videoUrl, isOgvVideo }
+  const linesMap = new Map();
   const characters = new Set();
 
-  // First pass: look for video files and backing track audio files (_backing_track.ogg, dub_video.ogv, etc.)
+  const totalEntries = Object.keys(unzipped).length || 1;
+  let processedCount = 0;
+
+  // First pass: look for video files and backing track audio files
   for (const [filePath, content] of Object.entries(unzipped)) {
+    processedCount++;
+    if (onProgress && processedCount % 2 === 0) {
+      const pct = Math.min(60, Math.round(15 + (processedCount / (totalEntries * 2)) * 45));
+      onProgress(pct, `Extracting video & music tracks... ${pct}%`);
+    }
+
     const fileName = filePath.split('/').pop();
     const lower = fileName.toLowerCase();
     if (!fileName || lower.startsWith('.')) continue;
@@ -48,6 +61,12 @@ export async function parseScenePackZip(zipData) {
 
   // Second pass: metadata and scene lines
   for (const [filePath, content] of Object.entries(unzipped)) {
+    processedCount++;
+    if (onProgress && processedCount % 2 === 0) {
+      const pct = Math.min(99, Math.round(60 + (processedCount / (totalEntries * 2)) * 39));
+      onProgress(pct, `Parsing dialogues & audio clips... ${pct}%`);
+    }
+
     const fileName = filePath.split('/').pop();
     const lower = fileName.toLowerCase();
 
@@ -69,7 +88,7 @@ export async function parseScenePackZip(zipData) {
       continue;
     }
 
-    // Process line assets: match e.g., "01_Luke1.ini", "01_Luke1.ogg", "01_Luke1.png", "01_Dr strange.txt", "01_Dr strange.mp3"
+    // Process line assets
     const match = fileName.match(/^(\d+)_?([^.]+)?\.(txt|ini|mp3|ogg|wav|png|jpg|webp)$/i);
     if (match) {
       const lineNum = parseInt(match[1], 10);
@@ -135,6 +154,8 @@ export async function parseScenePackZip(zipData) {
 
   // Sort lines by numeric ID
   const lines = Array.from(linesMap.values()).sort((a, b) => a.id - b.id);
+
+  if (onProgress) onProgress(100, 'Pack ready! 100%');
 
   return {
     title,

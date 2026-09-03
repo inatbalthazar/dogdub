@@ -65,16 +65,22 @@ export default function ScenePackPreviewModal({
     }
   };
 
+  const [loadPercent, setLoadPercent] = useState(0);
+
   const loadPackDetails = async () => {
     if (!pack) return;
     setIsLoading(true);
+    setLoadPercent(10);
     setCurrentSceneIndex(0);
     try {
       const packUrl = pack.url || `/packs/${pack.id}.zip`;
       const res = await fetch(packUrl);
       if (res.ok) {
+        setLoadPercent(35);
         const buffer = await res.arrayBuffer();
-        const parsed = await parseScenePackZip(buffer);
+        const parsed = await parseScenePackZip(buffer, (pct) => {
+          setLoadPercent(Math.max(35, Math.min(100, Math.round(pct))));
+        });
         setPackData(parsed);
       }
     } catch (err) {
