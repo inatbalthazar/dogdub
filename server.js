@@ -1234,7 +1234,8 @@ app.use('/packs', express.static(PACKS_DIR, {
   }
 }));
 
-app.use('/pack-covers', express.static(path.join(__dirname, 'public', 'pack-covers')));
+app.use('/pack-covers', express.static(path.join(__dirname, 'public', 'pack-covers'), { maxAge: '30d' }));
+app.use('/pack-covers', express.static(path.join(__dirname, 'dist', 'pack-covers'), { maxAge: '30d' }));
 app.use('/vendor', express.static(path.join(__dirname, 'vendor')));
 app.use('/voice-effects.js', express.static(path.join(__dirname, 'voice-effects.js')));
 app.use('/recording-audio-export.js', express.static(path.join(__dirname, 'recording-audio-export.js')));
