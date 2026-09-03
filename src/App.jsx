@@ -55,6 +55,52 @@ export default function App() {
   const [voicePitch, setVoicePitch] = useState(0);
   const [voiceTone, setVoiceTone] = useState(0);
   const [voiceEcho, setVoiceEcho] = useState(0);
+  const rawTakesRef = React.useRef({});
+
+  // Dynamically re-apply voice effect to existing raw take when preset or sliders change!
+  useEffect(() => {
+    const rawBlob = rawTakesRef.current[currentLineIndex];
+    if (!rawBlob) return;
+
+    let isMounted = true;
+    async function reapplyEffect() {
+      if (voicePreset === 'clean' && voicePitch === 0 && voiceTone === 0 && voiceEcho === 0) {
+        const rawUrl = URL.createObjectURL(rawBlob);
+        if (isMounted) {
+          setRecordedTakes((prev) => ({ ...prev, [currentLineIndex]: rawUrl }));
+        }
+        return;
+      }
+      try {
+        const effectResult = await audioEngine.applyVoiceEffect(rawBlob, voicePreset, {
+          pitch: voicePitch,
+          tone: voiceTone,
+          echo: voiceEcho,
+        });
+        if (isMounted && effectResult && effectResult.url) {
+          setRecordedTakes((prev) => ({ ...prev, [currentLineIndex]: effectResult.url }));
+          if (activeRoom && effectResult.blob) {
+            const code = activeRoom.code || activeRoom.roomCode;
+            fetch(`/api/rooms/${code}/takes/${currentLineIndex}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': effectResult.blob.type || 'audio/wav',
+                'x-room-token': currentUser?.token || '',
+              },
+              body: effectResult.blob,
+            }).then(r => r.json()).then(data => {
+              if (data.state && isMounted) setActiveRoom(data.state);
+            }).catch(e => console.warn('Re-upload failed:', e));
+          }
+        }
+      } catch (err) {
+        console.warn('Dynamic voice effect re-apply failed:', err);
+      }
+    }
+
+    reapplyEffect();
+    return () => { isMounted = false; };
+  }, [voicePreset, voicePitch, voiceTone, voiceEcho, currentLineIndex]);
 
   // Fetch available scene packs, rooms, and check saved player name on mount
   useEffect(() => {
@@ -1265,6 +1311,7 @@ const DEFAULT_FALLBACK_PACKS = [
         const result = await audioEngine.stopRecording();
         if (result && result.blob) {
           soundEffects.playRecordDoneSound();
+          rawTakesRef.current[currentLineIndex] = result.blob;
 
           let finalBlob = result.blob;
           let finalUrl = result.url;

@@ -195,7 +195,20 @@ class AudioEngine {
       const arrayBuf = await audioBlob.arrayBuffer();
       const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
       const ctx = new AudioCtxClass();
-      const audioBuf = await ctx.decodeAudioData(arrayBuf);
+      
+      let audioBuf;
+      try {
+        audioBuf = await ctx.decodeAudioData(arrayBuf.slice(0));
+      } catch (decodeErr) {
+        audioBuf = await new Promise((resolve, reject) => {
+          ctx.decodeAudioData(
+            arrayBuf.slice(0),
+            (decoded) => resolve(decoded),
+            (err) => reject(err)
+          );
+        });
+      }
+
       const samples = audioBuf.getChannelData(0);
 
       let settings = window.voiceEffects.settingsForPreset(presetId) || window.voiceEffects.settingsForPreset('normal');
@@ -208,13 +221,20 @@ class AudioEngine {
         };
       }
 
-      const processed = window.voiceEffects.processTake({ samples, sampleRate: audioBuf.sampleRate }, settings);
+      console.log(`[AudioEngine] Processing voice effect: ${presetId}`, settings);
+      const processed = window.voiceEffects.processTake({ samples: new Float32Array(samples), sampleRate: audioBuf.sampleRate }, settings);
 
       const outBuf = ctx.createBuffer(1, processed.samples.length, processed.sampleRate);
       outBuf.getChannelData(0).set(processed.samples);
 
+      if (ctx.state !== 'closed' && typeof ctx.close === 'function') {
+        ctx.close().catch(() => {});
+      }
+
       const wavBlob = audioBufferToWav(outBuf);
-      return { blob: wavBlob, url: URL.createObjectURL(wavBlob) };
+      const processedUrl = URL.createObjectURL(wavBlob);
+      console.log(`[AudioEngine] Voice effect applied successfully! Result size: ${wavBlob.size} bytes`);
+      return { blob: wavBlob, url: processedUrl };
     } catch (err) {
       console.warn('Failed to apply voice effect:', err);
       return { blob: audioBlob, url: URL.createObjectURL(audioBlob) };

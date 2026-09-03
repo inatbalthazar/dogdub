@@ -55,11 +55,12 @@ export const translations = {
     privateRoomBadge: "🔒 Private Room",
     publicRoomBadge: "🔓 Public Room",
 
-    // Dub Controls
+    // Dub Controls Banners & Hints
     onClip: "ON CLIP",
     hearClip: "Hear clip",
-    startRecord: "Start recording",
-    recordAgain: "Record again",
+    startRecord: "🔴 Start recording",
+    recordAgain: "🔴 Record again",
+    reRecord: "🔴 Record again",
     stopRecord: "Stop recording",
     waitTurn: "Wait for your turn",
     playRecording: "Play recording",
@@ -70,6 +71,15 @@ export const translations = {
     micSettings: "Mic settings",
     sendFeedback: "Send feedback",
     feedbackSub: "Report an issue or suggestion",
+    yourTurnBanner: "🔥 YOUR TURN TO DUB!",
+    yourTurnSub: "Press [R] or click to start recording!",
+    dubbedDone: "✅ Dubbed successfully",
+    clickNextTurnHint: "Click Next Turn to advance to next scene!",
+    waitNextTurnHint: "Waiting for mic holder to click Next Turn...",
+    friendTurn: "Friend's Turn:",
+    waitingForPlayer: "Waiting for player in queue...",
+    noMic: "Microphone not found",
+    dubbedBy: "Dubbed by",
 
     // Create Room Modal
     createModalTitle: "Create New Dubbing Room",
@@ -105,6 +115,25 @@ export const translations = {
     chooseMode: "Choose to dub this scene solo or create a room to play with friends.",
     createRoomForThisScene: "Create Room for This Scene",
     startSoloMode: "🚀 Start Dubbing (Solo Mode)",
+
+    // Voice Effect Panel
+    voiceEffectTitle: "Voice Effect",
+    presetOriginal: "Original (Normal)",
+    presetDeep: "Deep Voice",
+    presetCartoon: "Cartoon Pitch",
+    presetRobot: "Robot Synthesizer",
+    presetRadio: "Walkie-Talkie Radio",
+    presetEcho: "Echo Reverb",
+    presetCave: "Deep Cave",
+    presetMonster: "Monster Creature",
+    presetAlien: "Alien Voice",
+    presetTelephone: "Telephone Call",
+    presetChorus: "Voice Chorus",
+    presetMegaphone: "Loud Megaphone",
+    fineTune: "Fine tune",
+    pitchLabel: "Pitch",
+    toneLabel: "Tone",
+    echoLabel: "Echo",
   },
   th: {
     // Header
@@ -162,11 +191,12 @@ export const translations = {
     privateRoomBadge: "🔒 ห้องมีรหัสผ่าน",
     publicRoomBadge: "🔓 ห้องสาธารณะ",
     
-    // Dub Controls
+    // Dub Controls Banners & Hints
     onClip: "ON CLIP",
     hearClip: "Hear clip (ฟังเสียงต้นฉบับ)",
-    startRecord: "Start recording (กดเริ่มพากย์)",
-    recordAgain: "Record again (พากย์ใหม่)",
+    startRecord: "🔴 Start recording (กดเริ่มพากย์)",
+    recordAgain: "🔴 Record again (พากย์ใหม่)",
+    reRecord: "🔴 Record again (พากย์ใหม่)",
     stopRecord: "Stop recording (หยุดพากย์)",
     waitTurn: "รอถึงคิวพากย์ของคุณ",
     playRecording: "Play recording (ฟังเสียงอัด)",
@@ -177,6 +207,15 @@ export const translations = {
     micSettings: "Mic settings (ตั้งค่าไมค์)",
     sendFeedback: "Send feedback",
     feedbackSub: "แจ้งปัญหาหรือข้อเสนอแนะ",
+    yourTurnBanner: "🔥 ถึงคิวพากย์ของคุณแล้ว! (YOUR TURN!)",
+    yourTurnSub: "กดปุ่ม [R] หรือคลิกเริ่มพากย์ได้เลย!",
+    dubbedDone: "✅ พากย์เสียงเรียบร้อยแล้ว",
+    clickNextTurnHint: "คลิก Next turn เพื่อส่งคิวเลื่อนฉากถัดไป!",
+    waitNextTurnHint: "รอผู้ถือไมค์กด Next turn ส่งคิวถัดไป",
+    friendTurn: "คิวพากย์ของเพื่อน:",
+    waitingForPlayer: "ผู้เล่นในคิว",
+    noMic: "ไม่พบไมโครโฟน",
+    dubbedBy: "พากย์แล้ว",
 
     // Create Room Modal
     createModalTitle: "สร้างห้องพากย์ใหม่",
@@ -212,6 +251,24 @@ export const translations = {
     chooseMode: "เลือกพากย์ฉากนี้ในโหมดโซโล่หรือสร้างห้องเล่นกับเพื่อน",
     createRoomForThisScene: "สร้างห้องพากย์ฉากนี้",
     startSoloMode: "🚀 เริ่มพากย์ฉากนี้ (Solo Mode)",
+
+    // Voice Effect Panel
+    voiceEffectTitle: "Voice Effect",
+    presetOriginal: "Original (ปกติ)",
+    presetDeep: "Deep (เสียงต่ำ/ทุ้ม)",
+    presetCartoon: "Cartoon (เสียงการ์ตูน)",
+    presetRobot: "Robot (เสียงหุ่นยนต์)",
+    presetRadio: "Radio (วิทยุสื่อสาร)",
+    presetEcho: "Echo (เสียงสะท้อน)",
+    presetCave: "Cave (ถ้ำลึก)",
+    presetMonster: "Monster (อสูรกาย)",
+    presetAlien: "Alien (มนุษย์ต่างดาว)",
+    presetTelephone: "Telephone (สายโทรศัพท์)",
+    presetChorus: "Chorus (เสียงประสาน)",
+    presetMegaphone: "Megaphone (โทรโข่ง)",
+    fineTune: "Fine tune (ปรับแต่ง)",
+    pitchLabel: "Pitch (ระดับเสียง)",
+    toneLabel: "Tone (ความทุ้ม/แหลม)",
+    echoLabel: "Echo (สะท้อน)",
   }
 };
-

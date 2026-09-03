@@ -114,29 +114,29 @@ export default function DubControls({
         <div className="rounded-xl border border-red-500/70 bg-gradient-to-r from-red-950 via-red-900/80 to-red-950 p-2.5 text-center shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse">
           <span className="flex items-center justify-center gap-1.5 text-xs font-black text-white uppercase tracking-wider">
             <span className="h-2.5 w-2.5 rounded-full bg-red-500 animate-ping" />
-            🔥 ถึงคิวพากย์ของคุณแล้ว! (YOUR TURN!)
+            {t.yourTurnBanner || "🔥 YOUR TURN TO DUB!"}
           </span>
           <span className="block text-[11px] font-bold text-red-200 mt-0.5">
-            กดปุ่ม [R] หรือคลิกเริ่มพากย์ได้เลย!
+            {t.yourTurnSub || "Press [R] or click to start recording!"}
           </span>
         </div>
       ) : isAlreadyRecorded ? (
         <div className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-2 text-center shadow-md">
           <span className="flex items-center justify-center gap-1 text-xs font-bold text-emerald-300">
-            ✅ พากย์เสียงเรียบร้อยแล้ว {recorderName ? `(${recorderName})` : ''}
+            {t.dubbedDone || "✅ Dubbed successfully"} {recorderName ? `(${recorderName})` : ''}
           </span>
           <span className="block text-[10px] text-emerald-200/80 mt-0.5">
-            {isMyTurn ? 'คลิก Next turn เพื่อส่งคิวเลื่อนฉากถัดไป!' : 'รอผู้ถือไมค์กด Next turn ส่งคิวถัดไป'}
+            {isMyTurn ? (t.clickNextTurnHint || 'Click Next turn to advance to next scene!') : (t.waitNextTurnHint || 'Waiting for mic holder to click Next turn...')}
           </span>
         </div>
       ) : (
         <div className="rounded-xl border border-amber-500/50 bg-amber-950/40 p-2.5 text-center shadow-md">
           <span className="flex items-center justify-center gap-1.5 text-xs font-bold text-amber-300">
             <Mic className="h-3.5 w-3.5 animate-bounce text-amber-400" />
-            <span>คิวพากย์ของเพื่อน: <b className="text-white font-extrabold">{recorderName || 'ผู้เล่นในคิว'}</b></span>
+            <span>{t.friendTurn || "Friend's Turn:"} <b className="text-white font-extrabold">{recorderName || (t.waitingForPlayer || 'Player in queue')}</b></span>
           </span>
           <span className="block text-[10px] text-gray-400 mt-0.5">
-            รอผู้พากย์กด Next turn ส่งคิวถัดไป!
+            {t.waitNextTurnHint || 'Waiting for mic holder to click Next turn...'}
           </span>
         </div>
       )}
@@ -166,12 +166,12 @@ export default function DubControls({
           } ${!canRecord ? 'opacity-50 cursor-not-allowed grayscale-[0.3]' : ''}`}
           title={
             !hasMicrophone
-              ? 'ไม่พบไมโครโฟน กรุณาเสียบไมค์ก่อนอัดเสียง'
+              ? (t.noMic || 'Microphone not found')
               : !canRecord
-              ? 'รอให้ถึงคิวพากย์ของคุณ'
+              ? (t.waitTurn || 'Wait for your turn')
               : (hasRecordedTake || isAlreadyRecorded)
-              ? 'กดอัดเสียงใหม่ (Record again)'
-              : 'กดเพื่ออัดเสียง (Start recording)'
+              ? (t.recordAgain || '🔴 Record again')
+              : (t.startRecord || '🔴 Start recording')
           }
           type="button"
         >
@@ -184,14 +184,14 @@ export default function DubControls({
             ) : !hasMicrophone ? (
               <>
                 <MicOff className="h-3.5 w-3.5 text-red-400" />
-                <span className="text-xs text-red-300">ไม่พบไมโครโฟน</span>
+                <span className="text-xs text-red-300">{t.noMic || "Microphone not found"}</span>
               </>
             ) : canRecord ? (
               <>
                 <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm animate-pulse" />
                 <span className="font-bold">
                   {(hasRecordedTake || isAlreadyRecorded)
-                    ? (t.reRecord || "🔴 Record again (พากย์ใหม่)")
+                    ? (t.recordAgain || "🔴 Record again")
                     : (t.startRecord || "🔴 Start recording")}
                 </span>
               </>
@@ -199,7 +199,7 @@ export default function DubControls({
               <>
                 <Lock className="h-3.5 w-3.5 text-amber-400" />
                 <span className="text-xs font-bold text-amber-300">
-                  {recorderName ? `พากย์แล้ว (${recorderName})` : 'คิวพากย์ของเพื่อน'}
+                  {recorderName ? `${t.dubbedBy || 'Dubbed by'} (${recorderName})` : (t.friendTurn || "Friend's Turn")}
                 </span>
               </>
             )}
@@ -253,10 +253,10 @@ export default function DubControls({
             type="button"
             title={
               !isMyTurn
-                ? 'เฉพาะผู้ถือไมค์เท่านั้นที่กด Next turn ได้ (Only mic holder can advance turn)'
+                ? (t.onlyMicHolderCanNext || 'Only mic holder can advance turn')
                 : !hasRecordedTake
-                ? 'พากย์เสียงฉากนี้ให้เสร็จก่อนส่งคิวถัดไป (Record this scene first)'
-                : 'ส่งต่อคิวพากย์ฉากถัดไป'
+                ? (t.recordSceneFirst || 'Record this scene first before passing turn')
+                : (t.nextTurnHint || 'Pass turn to next scene')
             }
           >
             {highlightNextTurn && <Sparkles className="h-4 w-4 fill-black text-black animate-spin" />}
