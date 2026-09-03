@@ -23,6 +23,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Health check endpoint for Cloud hosts (Render, Koyeb, Railway)
+app.get('/healthz', (req, res) => res.status(200).json({ ok: true }));
+
 // In-memory room and take storage
 const rooms = new Map();
 const takesStorage = new Map(); // key: `${roomCode}:${lineIndex}` -> { buffer, contentType, version }
