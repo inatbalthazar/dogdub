@@ -184,11 +184,13 @@ class AudioEngine {
   async applyVoiceEffect(audioBlob, presetId = 'clean', customOverrides = null) {
     if (!audioBlob) return null;
     if (presetId === 'normal') presetId = 'clean';
+
+    const voiceFx = window.VoiceEffects || window.voiceEffects;
     
     const isClean = (presetId === 'clean' || !presetId) && 
       (!customOverrides || (customOverrides.pitch === 0 && customOverrides.tone === 0 && customOverrides.echo === 0));
 
-    if (!window.voiceEffects || isClean) {
+    if (!voiceFx || isClean) {
       return { blob: audioBlob, url: URL.createObjectURL(audioBlob) };
     }
     try {
@@ -211,7 +213,7 @@ class AudioEngine {
 
       const samples = audioBuf.getChannelData(0);
 
-      let settings = window.voiceEffects.settingsForPreset(presetId) || window.voiceEffects.settingsForPreset('normal');
+      let settings = voiceFx.settingsForPreset(presetId) || voiceFx.settingsForPreset('clean') || voiceFx.settingsForPreset('normal');
       if (customOverrides) {
         settings = {
           ...settings,
@@ -221,8 +223,8 @@ class AudioEngine {
         };
       }
 
-      console.log(`[AudioEngine] Processing voice effect: ${presetId}`, settings);
-      const processed = window.voiceEffects.processTake({ samples: new Float32Array(samples), sampleRate: audioBuf.sampleRate }, settings);
+      console.log(`[AudioEngine] Processing voice effect with VoiceEffects DSP: preset=${presetId}`, settings);
+      const processed = voiceFx.processTake({ samples: new Float32Array(samples), sampleRate: audioBuf.sampleRate }, settings);
 
       const outBuf = ctx.createBuffer(1, processed.samples.length, processed.sampleRate);
       outBuf.getChannelData(0).set(processed.samples);
@@ -233,7 +235,7 @@ class AudioEngine {
 
       const wavBlob = audioBufferToWav(outBuf);
       const processedUrl = URL.createObjectURL(wavBlob);
-      console.log(`[AudioEngine] Voice effect applied successfully! Result size: ${wavBlob.size} bytes`);
+      console.log(`[AudioEngine] Voice effect applied successfully! Result WAV size: ${wavBlob.size} bytes`);
       return { blob: wavBlob, url: processedUrl };
     } catch (err) {
       console.warn('Failed to apply voice effect:', err);
