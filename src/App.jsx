@@ -505,6 +505,8 @@ const DEFAULT_FALLBACK_PACKS = [
     (activeRoom?.players && activeRoom?.players?.length === 1) // If single player in room, always your turn!
   );
 
+  const canRecordCurrentLine = !isLineAlreadyRecorded && isMyTurn;
+
   const handleNextTurn = async () => {
     // Advance scene line index by 1
     if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
