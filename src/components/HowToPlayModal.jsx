@@ -114,22 +114,63 @@ export default function HowToPlayModal({ isOpen, onClose }) {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Left / Avatar & Title */}
             <div className="flex items-center gap-3.5">
-              <div className="relative">
-                <img
-                  src="/creator.jpg"
-                  alt="Creator Profile"
-                  className="h-14 w-14 rounded-full border-2 border-[var(--cyan)] object-cover shadow-[0_0_15px_rgba(0,243,255,0.4)]"
-                />
-                <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] text-black shadow">
-                  ✨
-                </span>
+              {/* Stacked Avatars from Left to Right */}
+              <div className="flex items-center -space-x-3.5 hover:space-x-0.5 transition-all duration-300 group/avatars py-1">
+                {/* 1. Main Creator Picture */}
+                <div className="relative z-50 transition-all duration-300 hover:scale-115 hover:z-50 cursor-pointer">
+                  <img
+                    src="/creator.jpg"
+                    alt="Creator"
+                    className="h-14 w-14 rounded-full border-2 border-[var(--cyan)] object-cover shadow-lg"
+                  />
+                  <span className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[var(--amber)] text-[10px] text-black shadow font-bold">
+                    ✨
+                  </span>
+                </div>
+
+                {/* 2. Team Member 1 */}
+                <div className="relative z-40 transition-all duration-300 hover:scale-115 hover:z-50 cursor-pointer">
+                  <img
+                    src="/team/member_1.jpg"
+                    alt="Team Member 1"
+                    className="h-12 w-12 rounded-full border-2 border-[oklch(38%_0.015_190)] object-cover shadow-md bg-black/60"
+                  />
+                </div>
+
+                {/* 3. Team Member 2 */}
+                <div className="relative z-30 transition-all duration-300 hover:scale-115 hover:z-50 cursor-pointer">
+                  <img
+                    src="/team/member_2.jpg"
+                    alt="Team Member 2"
+                    className="h-12 w-12 rounded-full border-2 border-[oklch(38%_0.015_190)] object-cover shadow-md bg-black/60"
+                  />
+                </div>
+
+                {/* 4. Team Member 3 */}
+                <div className="relative z-20 transition-all duration-300 hover:scale-115 hover:z-50 cursor-pointer">
+                  <img
+                    src="/team/member_3.jpg"
+                    alt="Team Member 3"
+                    className="h-12 w-12 rounded-full border-2 border-[oklch(38%_0.015_190)] object-cover shadow-md bg-black/60"
+                  />
+                </div>
+
+                {/* 5. Team Member 4 */}
+                <div className="relative z-10 transition-all duration-300 hover:scale-115 hover:z-50 cursor-pointer">
+                  <img
+                    src="/team/member_4.jpg"
+                    alt="Team Member 4"
+                    className="h-12 w-12 rounded-full border-2 border-[oklch(38%_0.015_190)] object-cover shadow-md bg-black/60"
+                  />
+                </div>
               </div>
+
               <div>
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-[var(--cyan)]">
                   CREATOR INFO
                 </span>
-                <h4 className="font-['Bowlby_One_SC'] text-lg tracking-wide text-white drop-shadow-[0_0_8px_rgba(0,243,255,0.4)]">
-                  who vibe this?
+                <h4 className="font-['Bowlby_One_SC'] text-lg tracking-wide text-white">
+                  WHO VIBE THIS?
                 </h4>
               </div>
             </div>
