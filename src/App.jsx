@@ -1244,7 +1244,7 @@ const DEFAULT_FALLBACK_PACKS = [
     ))
   );
 
-  const canRecordCurrentLine = hasMicrophone && !isLineAlreadyRecorded && isMyTurn;
+  const canRecordCurrentLine = hasMicrophone && isMyTurn;
 
   const prevIsMyTurnRef = React.useRef(false);
   useEffect(() => {

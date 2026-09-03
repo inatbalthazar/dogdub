@@ -162,17 +162,17 @@ export default function DubControls({
                 <MicOff className="h-3.5 w-3.5 text-red-400" />
                 <span className="text-xs text-red-300">ไม่พบไมโครโฟน</span>
               </>
+            ) : canRecord ? (
+              <>
+                <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm animate-pulse" />
+                <span>{isAlreadyRecorded ? (t.reRecord || "Re-record (พากย์ใหม่)") : (t.startRecord || "Start recording")}</span>
+              </>
             ) : isAlreadyRecorded ? (
               <>
                 <Lock className="h-3.5 w-3.5 text-amber-400" />
                 <span className="text-xs font-bold text-amber-300">
                   {recorderName ? `พากย์แล้ว (${recorderName})` : 'พากย์เรียบร้อยแล้ว'}
                 </span>
-              </>
-            ) : canRecord ? (
-              <>
-                <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm animate-pulse" />
-                <span>{t.startRecord || "Start recording"}</span>
               </>
             ) : (
               <>
