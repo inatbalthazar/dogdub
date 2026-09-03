@@ -702,14 +702,6 @@ app.post('/api/rooms/:code', (req, res) => {
     }
 
     room.currentTurnPlayerId = target.id;
-    const packLineCount = room.pack?.lineCount || 99;
-    if (typeof room.currentLineIndex !== 'number') room.currentLineIndex = 0;
-    if (typeof req.body?.lineIndex === 'number') {
-      room.currentLineIndex = Math.min(packLineCount - 1, req.body.lineIndex);
-    } else if (room.currentLineIndex < packLineCount - 1) {
-      room.currentLineIndex += 1;
-    }
-
     room.lastTurnPass = {
       fromId: player ? player.id : 'system',
       fromName: player ? player.name : 'Player',
@@ -732,12 +724,11 @@ app.post('/api/rooms/:code', (req, res) => {
     room.currentTurnPlayerId = room.turnOrder[nextIdx];
 
     // Increment or set scene line index so ALL players in room shift to the next clip!
-    const packLineCount = room.pack?.lineCount || 99;
     if (typeof room.currentLineIndex !== 'number') room.currentLineIndex = 0;
 
     if (typeof req.body?.lineIndex === 'number') {
-      room.currentLineIndex = Math.min(packLineCount - 1, req.body.lineIndex);
-    } else if (room.currentLineIndex < packLineCount - 1) {
+      room.currentLineIndex = Math.max(0, req.body.lineIndex);
+    } else {
       room.currentLineIndex += 1;
     }
 

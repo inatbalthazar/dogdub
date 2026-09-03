@@ -54,7 +54,7 @@ export default function DubControls({
 
   // Trigger next turn (advances scene & shifts mic to next player)
   const handleNextTurnClick = () => {
-    if (!hasRecordedTake && !isMyTurn) return; 
+    if (!isMyTurn || !hasRecordedTake) return; // ONLY mic holder AND recorded take!
     if (onNextTurn) {
       onNextTurn();
     } else if (onNextClip) {
@@ -62,8 +62,8 @@ export default function DubControls({
     }
   };
 
-  // Next turn is enabled if the scene has been recorded OR if you are the active mic holder!
-  const isNextTurnDisabled = (!hasRecordedTake && !isMyTurn) || currentLineIndex >= (totalLines - 1);
+  // Next turn is enabled ONLY IF you are the active mic holder AND the scene has been recorded!
+  const isNextTurnDisabled = !isMyTurn || !hasRecordedTake || currentLineIndex >= (totalLines - 1);
 
   return (
     <aside className="chapter-panel flex flex-col gap-3 max-w-[320px] w-full" aria-label="Dub controls">
@@ -102,7 +102,7 @@ export default function DubControls({
             ✅ พากย์เสียงเรียบร้อยแล้ว {recorderName ? `(${recorderName})` : ''}
           </span>
           <span className="block text-[10px] text-emerald-200/80 mt-0.5">
-            คลิก Next turn เพื่อส่งคิวเลื่อนฉากถัดไป!
+            {isMyTurn ? 'คลิก Next turn เพื่อส่งคิวเลื่อนฉากถัดไป!' : 'รอผู้ถือไมค์กด Next turn ส่งคิวถัดไป'}
           </span>
         </div>
       ) : (
@@ -213,7 +213,7 @@ export default function DubControls({
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
 
-          {/* Next Turn Button */}
+          {/* Next Turn Button (ONLY enabled for mic holder once scene is recorded) */}
           <button
             onClick={handleNextTurnClick}
             disabled={isNextTurnDisabled}
@@ -222,7 +222,9 @@ export default function DubControls({
             }`}
             type="button"
             title={
-              isNextTurnDisabled
+              !isMyTurn
+                ? 'เฉพาะผู้ถือไมค์เท่านั้นที่กด Next turn ได้ (Only mic holder can advance turn)'
+                : !hasRecordedTake
                 ? 'พากย์เสียงฉากนี้ให้เสร็จก่อนส่งคิวถัดไป (Record this scene first)'
                 : 'ส่งต่อคิวพากย์ฉากถัดไป'
             }
