@@ -912,8 +912,15 @@ const DEFAULT_FALLBACK_PACKS = [
   const [globalLoading, setGlobalLoading] = useState({ isOpen: false, percent: 0, title: '', subtext: '' });
 
   const loadPack = async (packId, packUrl) => {
+    if (!packId) return;
     setSelectedPackId(packId);
-    const targetUrl = packUrl || `/packs/${packId}.zip`;
+
+    const foundPack = packs.find((p) => p.id === packId || p.filename === packId || p.filename === `${packId}.zip`);
+    const r2Url = foundPack?.url || (packUrl && packUrl.startsWith('http') ? packUrl : null);
+    const localUrl = `/packs/${encodeURIComponent(foundPack?.filename || `${packId}.zip`)}`;
+
+    const targetUrl = r2Url || packUrl || localUrl;
+
     setGlobalLoading({
       isOpen: true,
       percent: 10,
@@ -922,8 +929,23 @@ const DEFAULT_FALLBACK_PACKS = [
     });
 
     try {
-      const res = await fetch(targetUrl);
-      if (res.ok) {
+      let res = null;
+      try {
+        res = await fetch(targetUrl);
+      } catch (err) {
+        console.warn(`Primary fetch failed for ${targetUrl}, trying fallback...`, err);
+      }
+
+      if ((!res || !res.ok) && targetUrl !== localUrl) {
+        try {
+          console.log(`Retrying pack download with local URL: ${localUrl}`);
+          res = await fetch(localUrl);
+        } catch (err) {
+          console.warn(`Fallback fetch failed for ${localUrl}`, err);
+        }
+      }
+
+      if (res && res.ok) {
         setGlobalLoading({
           isOpen: true,
           percent: 30,
@@ -942,6 +964,8 @@ const DEFAULT_FALLBACK_PACKS = [
         });
         setActivePackData(packData);
         setCurrentLineIndex(0);
+      } else {
+        alert(lang === 'en' ? 'Failed to download pack archive. Please try another pack.' : 'ไม่สามารถดาวน์โหลดไฟล์บทพากย์ได้ กรุณาลองฉากอื่น');
       }
     } catch (err) {
       console.error('Error loading pack:', err);
@@ -951,6 +975,21 @@ const DEFAULT_FALLBACK_PACKS = [
       }, 400);
     }
   };
+
+  // Auto-load room's scene pack upon entering inGame view or joining room
+  useEffect(() => {
+    if (currentView === 'inGame' && activeRoom) {
+      const roomPackId = activeRoom.packId || activeRoom.pack?.id;
+      const foundPack = packs.find(p => p.id === roomPackId || p.filename === roomPackId || p.filename === `${roomPackId}.zip`);
+      const roomPackUrl = activeRoom.pack?.url || foundPack?.url;
+
+      if (roomPackId && selectedPackId !== roomPackId) {
+        loadPack(roomPackId, roomPackUrl);
+      } else if (!activePackData && roomPackId) {
+        loadPack(roomPackId, roomPackUrl);
+      }
+    }
+  }, [currentView, activeRoom?.packId, activeRoom?.pack?.id, activeRoom?.code]);
 
   const handleCreateRoom = async (roomData) => {
     try {
