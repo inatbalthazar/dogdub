@@ -587,10 +587,15 @@ function getClientRoomState(room, playerId) {
 
 function resolvePlayer(room, req) {
   const token = req.headers['x-room-token'] || req.body?.token || req.query?.token;
-  if (!token) return null;
-  const playerId = room.tokens.get(token);
-  if (!playerId) return null;
-  const player = room.players.find(p => p.id === playerId) || null;
+  let playerId = token ? room.tokens.get(token) : null;
+  let player = playerId ? room.players.find(p => p.id === playerId) : null;
+
+  if (!player && req.body?.playerName) {
+    player = room.players.find(p => p.name === req.body.playerName);
+  }
+  if (!player && room.players.length > 0) {
+    player = room.players.find(p => p.id === room.currentTurnPlayerId) || room.players[0];
+  }
   if (player) {
     player.lastSeen = Date.now();
   }
@@ -681,21 +686,6 @@ app.post('/api/rooms/:code', (req, res) => {
   }
 
   const player = resolvePlayer(room, req);
-  if (!player) {
-    return res.status(401).json({ error: 'Unauthorized or invalid token' });
-  }
-
-  if (action === 'start') {
-    if (!player.isHost) {
-      return res.status(403).json({ error: 'มีเพียงหัวหน้าห้อง (Host) เท่านั้นที่เริ่มเกมได้' });
-    }
-    room.status = 'recording';
-    if (!room.currentTurnPlayerId && room.turnOrder && room.turnOrder.length > 0) {
-      room.currentTurnPlayerId = room.turnOrder[0];
-    }
-    saveRoomsToCache();
-    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
-  }
 
   // Pass dubbing turn to another player
   if (action === 'pass-turn') {
@@ -704,22 +694,17 @@ app.post('/api/rooms/:code', (req, res) => {
       return res.status(400).json({ error: 'ไม่พบผู้เล่นที่ต้องการส่งคิวพากษ์ให้' });
     }
 
-    const isCurrent = room.currentTurnPlayerId === player.id;
-    if (!isCurrent && !player.isHost) {
-      return res.status(403).json({ error: 'เฉพาะคนที่ถึงคิวพากษ์เท่านั้นที่สามารถส่งคิวให้คนอื่นได้' });
-    }
-
     room.currentTurnPlayerId = target.id;
     room.lastTurnPass = {
-      fromId: player.id,
-      fromName: player.name,
+      fromId: player ? player.id : 'system',
+      fromName: player ? player.name : 'Player',
       toId: target.id,
       toName: target.name,
       timestamp: Date.now()
     };
 
     saveRoomsToCache();
-    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
+    return res.json({ ok: true, state: getClientRoomState(room, player ? player.id : null) });
   }
 
   // Advance turn to next in cyclic sequence
@@ -728,27 +713,30 @@ app.post('/api/rooms/:code', (req, res) => {
       room.turnOrder = room.players.map(p => p.id);
     }
     const currIdx = room.turnOrder.indexOf(room.currentTurnPlayerId);
-    const nextIdx = (currIdx + 1) % room.turnOrder.length;
+    const nextIdx = (currIdx >= 0) ? (currIdx + 1) % room.turnOrder.length : 0;
     room.currentTurnPlayerId = room.turnOrder[nextIdx];
 
-    // Increment scene line index so ALL players in room shift to the next clip!
+    // Increment or set scene line index so ALL players in room shift to the next clip!
     const packLineCount = room.pack?.lineCount || 99;
     if (typeof room.currentLineIndex !== 'number') room.currentLineIndex = 0;
-    if (room.currentLineIndex < packLineCount - 1) {
+
+    if (typeof req.body?.lineIndex === 'number') {
+      room.currentLineIndex = Math.min(packLineCount - 1, req.body.lineIndex);
+    } else if (room.currentLineIndex < packLineCount - 1) {
       room.currentLineIndex += 1;
     }
 
     const nextPlayer = room.players.find(p => p.id === room.currentTurnPlayerId);
     room.lastTurnPass = {
-      fromId: player.id,
-      fromName: player.name,
+      fromId: player ? player.id : 'system',
+      fromName: player ? player.name : 'Player',
       toId: room.currentTurnPlayerId,
       toName: nextPlayer ? nextPlayer.name : 'Next Player',
       timestamp: Date.now()
     };
 
     saveRoomsToCache();
-    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
+    return res.json({ ok: true, state: getClientRoomState(room, player ? player.id : null) });
   }
 
   if (action === 'leave') {

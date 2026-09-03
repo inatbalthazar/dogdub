@@ -101,7 +101,7 @@ export default function App() {
       };
 
       sendHeartbeat();
-      timer = setInterval(sendHeartbeat, 3000);
+      timer = setInterval(sendHeartbeat, 1000);
     }
     return () => {
       if (timer) clearInterval(timer);
@@ -115,7 +115,7 @@ export default function App() {
         setCurrentLineIndex(activeRoom.currentLineIndex);
       }
     }
-  }, [activeRoom?.currentLineIndex]);
+  }, [activeRoom?.currentLineIndex, activeRoom?.currentTurnPlayerId]);
 
   // Auto-leave room when browser tab is closed or window is navigated away
   useEffect(() => {
@@ -548,17 +548,9 @@ const DEFAULT_FALLBACK_PACKS = [
   }, [isMyTurn, currentView]);
 
   const handleNextTurn = async () => {
-    // Advance scene line index by 1
-    if (currentLineIndex < (activePackData?.lines?.length || 1) - 1) {
-      setCurrentLineIndex((prev) => prev + 1);
-    }
+    const nextLineIdx = Math.min((activePackData?.lines?.length || 1) - 1, currentLineIndex + 1);
+    setCurrentLineIndex(nextLineIdx);
 
-    // Advance active turn index locally
-    if (playersList.length > 0) {
-      setActiveTurnIndex((prev) => (prev + 1) % playersList.length);
-    }
-
-    // Send next-turn action to server if inside a room
     if (activeRoom) {
       const code = activeRoom.code || activeRoom.roomCode;
       try {
@@ -568,12 +560,20 @@ const DEFAULT_FALLBACK_PACKS = [
             'Content-Type': 'application/json',
             'x-room-token': currentUser?.token || '',
           },
-          body: JSON.stringify({ action: 'next-turn' }),
+          body: JSON.stringify({
+            action: 'next-turn',
+            lineIndex: nextLineIdx,
+            token: currentUser?.token || '',
+            playerName: currentUser?.name || ''
+          }),
         });
         if (res.ok) {
           const data = await res.json();
           if (data.state) {
             setActiveRoom(data.state);
+            if (typeof data.state.currentLineIndex === 'number') {
+              setCurrentLineIndex(data.state.currentLineIndex);
+            }
           }
         }
       } catch (err) {
