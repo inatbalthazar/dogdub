@@ -72,16 +72,133 @@
 /* Neon & Cinema Theme Utility Classes */
 /* ========================================================================== */
 
+/* ========================================================================== */
+/* Clean Precision Depth Utility Classes (No tacky neon glow) */
+/* ========================================================================== */
+
 .glow-cyan {
-  box-shadow: 0 0 16px var(--cyan-glow);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px oklch(45% 0.1 205 / 0.4);
 }
 
 .glow-amber {
-  box-shadow: 0 0 16px var(--amber-glow);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px oklch(60% 0.12 83 / 0.4);
 }
 
 .glow-red {
-  box-shadow: 0 0 18px var(--rec-red-glow);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px oklch(50% 0.18 24 / 0.4);
+}
+
+/* Custom Rich Motion Keyframes & Animations */
+@keyframes view-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-view-enter {
+  animation: view-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modal-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  70% {
+    transform: scale(1.01) translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-pop {
+  animation: modal-pop-in 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 8s linear infinite;
+}
+
+@keyframes eq-bounce-1 {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
+}
+@keyframes eq-bounce-2 {
+  0%, 100% { height: 18px; }
+  50% { height: 8px; }
+}
+@keyframes eq-bounce-3 {
+  0%, 100% { height: 10px; }
+  50% { height: 26px; }
+}
+@keyframes eq-bounce-4 {
+  0%, 100% { height: 22px; }
+  50% { height: 12px; }
+}
+
+.animate-eq-1 { animation: eq-bounce-1 0.75s ease-in-out infinite; }
+.animate-eq-2 { animation: eq-bounce-2 0.65s ease-in-out infinite; }
+.animate-eq-3 { animation: eq-bounce-3 0.85s ease-in-out infinite; }
+.animate-eq-4 { animation: eq-bounce-4 0.70s ease-in-out infinite; }
+
+@keyframes shimmer-move {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+
+.bg-shimmer {
+  background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200px 100%;
+  animation: shimmer-move 2s infinite linear;
+}
+
+@keyframes card-cascade {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-card-cascade {
+  animation: card-cascade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.8s infinite ease-in-out;
+}
+
+@keyframes pulse-recording {
+  0%, 100% { border-color: rgba(255, 42, 95, 0.8); transform: scale(1); }
+  50% { border-color: rgba(255, 42, 95, 0.3); transform: scale(0.99); }
+}
+
+.animate-pulse-recording {
+  animation: pulse-recording 1.2s infinite ease-in-out;
 }
 
 /* CRT TV Monitor & Console Styling (.dub-card) */

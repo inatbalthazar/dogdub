@@ -211,8 +211,8 @@ export default function ScenePackPreviewModal({
   if (!isOpen || !pack) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-3xl rounded-2xl border border-[oklch(42%_0.01_190)] bg-[oklch(14%_0.01_190)] p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md animate-view-enter">
+      <div className="relative w-full max-w-3xl rounded-2xl border border-[oklch(42%_0.01_190)] bg-[oklch(14%_0.01_190)] p-6 shadow-2xl animate-modal-pop">
         {/* Modal Header */}
         <div className="mb-4 flex items-start justify-between border-b border-[oklch(28%_0.01_190)] pb-4">
           <div>

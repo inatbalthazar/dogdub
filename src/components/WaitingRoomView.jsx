@@ -28,7 +28,7 @@ export default function WaitingRoomView({
   };
 
   return (
-    <section className="mx-auto my-6 max-w-4xl px-4">
+    <section className="mx-auto my-6 max-w-4xl px-4 animate-view-enter">
       <div className="rounded-2xl border border-[oklch(48%_0.06_195)] bg-[oklch(16%_0.012_190)] p-6 shadow-2xl">
         {/* Topbar */}
         <div className="mb-6 flex items-center justify-between border-b border-[oklch(28%_0.01_190)] pb-4">

@@ -1572,7 +1572,7 @@ const DEFAULT_FALLBACK_PACKS = [
         )}
 
         {currentView === 'inGame' && (
-          <div className="mx-auto my-6 max-w-5xl px-4">
+          <div className="mx-auto my-6 max-w-5xl px-4 animate-view-enter">
             <InGameTurnBar
               room={activeRoom}
               activeTurnIndex={computedActiveTurnIndex}

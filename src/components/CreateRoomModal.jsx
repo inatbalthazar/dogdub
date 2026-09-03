@@ -37,8 +37,8 @@ export default function CreateRoomModal({ isOpen, onClose, packs = [], onCreateR
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-[oklch(48%_0.06_195)] bg-[oklch(16%_0.012_190)] p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm animate-view-enter">
+      <div className="w-full max-w-md rounded-2xl border border-[oklch(48%_0.06_195)] bg-[oklch(16%_0.012_190)] p-6 shadow-2xl animate-modal-pop">
         <div className="mb-4 flex items-center justify-between border-b border-[oklch(28%_0.01_190)] pb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-[var(--amber)]" />

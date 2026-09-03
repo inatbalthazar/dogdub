@@ -5,8 +5,8 @@ export default function HowToPlayModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[var(--cyan)]/40 bg-gradient-to-b from-[oklch(18%_0.02_195)] to-[oklch(12%_0.01_190)] p-6 shadow-2xl glow-cyan">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-md animate-view-enter">
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[oklch(40%_0.015_190)] bg-gradient-to-b from-[oklch(18%_0.02_195)] to-[oklch(12%_0.01_190)] p-6 shadow-2xl animate-modal-pop">
         {/* Header */}
         <div className="mb-4 flex items-start justify-between border-b border-[oklch(28%_0.01_190)] pb-4">
           <div>
