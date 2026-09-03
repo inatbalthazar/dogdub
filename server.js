@@ -521,6 +521,7 @@ app.post('/api/rooms', roomCreateLimiter, (req, res) => {
     players: [hostPlayer],
     turnOrder: [hostId],
     currentTurnPlayerId: hostId,
+    currentLineIndex: 0,
     lastTurnPass: null,
     roles: [],
     takes: [],
@@ -563,6 +564,7 @@ function getClientRoomState(room, playerId) {
     status: room.status,
     pack: room.pack,
     currentTurnPlayerId,
+    currentLineIndex: typeof room.currentLineIndex === 'number' ? room.currentLineIndex : 0,
     turnOrder,
     lastTurnPass: room.lastTurnPass || null,
     players: room.players.map((p, idx) => ({
@@ -728,6 +730,13 @@ app.post('/api/rooms/:code', (req, res) => {
     const currIdx = room.turnOrder.indexOf(room.currentTurnPlayerId);
     const nextIdx = (currIdx + 1) % room.turnOrder.length;
     room.currentTurnPlayerId = room.turnOrder[nextIdx];
+
+    // Increment scene line index so ALL players in room shift to the next clip!
+    const packLineCount = room.pack?.lineCount || 99;
+    if (typeof room.currentLineIndex !== 'number') room.currentLineIndex = 0;
+    if (room.currentLineIndex < packLineCount - 1) {
+      room.currentLineIndex += 1;
+    }
 
     const nextPlayer = room.players.find(p => p.id === room.currentTurnPlayerId);
     room.lastTurnPass = {

@@ -108,6 +108,15 @@ export default function App() {
     };
   }, [activeRoom?.code, currentView, currentUser?.token]);
 
+  // Sync scene line index across all room clients when server room state updates
+  useEffect(() => {
+    if (activeRoom && typeof activeRoom.currentLineIndex === 'number') {
+      if (activeRoom.currentLineIndex !== currentLineIndex) {
+        setCurrentLineIndex(activeRoom.currentLineIndex);
+      }
+    }
+  }, [activeRoom?.currentLineIndex]);
+
   // Auto-leave room when browser tab is closed or window is navigated away
   useEffect(() => {
     const handleTabClose = () => {
