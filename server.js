@@ -315,7 +315,9 @@ function parsePackMetadata(zipPath) {
     size: stat.size,
     sizeFormatted: formatBytes(stat.size),
     updatedAt: stat.mtimeMs,
-    url: `/packs/${encodeURIComponent(filename)}`
+    url: process.env.R2_PUBLIC_URL
+      ? `${process.env.R2_PUBLIC_URL.replace(/\/$/, '')}/${encodeURIComponent(filename)}`
+      : `/packs/${encodeURIComponent(filename)}`
   };
 }
 
