@@ -206,7 +206,7 @@ export default function LobbyView({
                     {pack.category || 'Movie'}
                   </span>
                   <span className="rounded-md bg-[var(--cyan)]/80 backdrop-blur-md px-2 py-0.5 text-[10px] font-black uppercase text-black shadow">
-                    {pack.linesCount || 5} {t.linesCount || "scenes"}
+                    {pack.linesCount || pack.lines?.length || pack.totalLines || 0} {t.linesCount || "scenes"}
                   </span>
                 </div>
               </div>
