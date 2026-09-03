@@ -1,0 +1,56 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/api",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/packs/(.*)",
+      "destination": "/packs/$1"
+    },
+    {
+      "source": "/pack-maker",
+      "destination": "/pack-maker/index.html"
+    },
+    {
+      "source": "/how-to-play",
+      "destination": "/how-to-play/index.html"
+    },
+    {
+      "source": "/tutorials",
+      "destination": "/tutorials/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/packs/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization, x-room-token, x-filename" }
+      ]
+    }
+  ]
+}

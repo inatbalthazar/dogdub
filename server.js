@@ -12,15 +12,125 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.raw({ type: ['audio/*', 'application/octet-stream', 'application/zip', 'application/x-zip-compressed'], limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
+// CORS headers for Vercel, preview deployments, and local dev
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-room-token, x-filename');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 // In-memory room and take storage
 const rooms = new Map();
 const takesStorage = new Map(); // key: `${roomCode}:${lineIndex}` -> { buffer, contentType, version }
 
+// Room cache persistence for serverless/restart durability
+const CACHE_DIR = path.join(require('os').tmpdir(), 'cv_rooms');
+try {
+  if (!fs.existsSync(CACHE_DIR)) {
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+  }
+} catch (e) {}
+
+const ROOMS_CACHE_FILE = path.join(CACHE_DIR, 'rooms_state.json');
+
+function saveRoomsToCache() {
+  try {
+    const list = [];
+    for (const [code, r] of rooms.entries()) {
+      list.push({
+        ...r,
+        tokens: Array.from(r.tokens.entries())
+      });
+    }
+    fs.writeFileSync(ROOMS_CACHE_FILE, JSON.stringify(list));
+  } catch (e) {}
+}
+
+function loadRoomsFromCache() {
+  try {
+    if (fs.existsSync(ROOMS_CACHE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(ROOMS_CACHE_FILE, 'utf8'));
+      if (Array.isArray(data)) {
+        for (const item of data) {
+          const room = {
+            ...item,
+            tokens: new Map(item.tokens || [])
+          };
+          rooms.set(room.code, room);
+        }
+      }
+    }
+  } catch (e) {}
+}
+loadRoomsFromCache();
+
 // Web Voice Packs Directory
 const PACKS_DIR = path.join(__dirname, 'packs');
-if (!fs.existsSync(PACKS_DIR)) {
-  fs.mkdirSync(PACKS_DIR, { recursive: true });
-}
+try {
+  if (!fs.existsSync(PACKS_DIR)) {
+    fs.mkdirSync(PACKS_DIR, { recursive: true });
+  }
+} catch (e) {}
+
+// Built-in Voice Packs metadata fallback for serverless & static hosting
+const DEFAULT_PACKS = [
+  {
+    id: 'guardians_meet_avengers',
+    filename: 'guardians_meet_avengers.zip',
+    title: 'Guardians Meet Avengers',
+    author: 'Choicer Voicer',
+    description: 'When the Guardians of the Galaxy encounter the unconscious Thor floating in deep space.',
+    linesCount: 5,
+    characters: ['STAR-LORD', 'DRAX', 'GAMORA', 'THOR'],
+    size: 359136,
+    sizeFormatted: '351 KB',
+    updatedAt: 1788373105791,
+    url: '/packs/guardians_meet_avengers.zip'
+  },
+  {
+    id: 'pulp_fiction_royale',
+    filename: 'pulp_fiction_royale.zip',
+    title: 'Pulp Fiction: Royale with Cheese',
+    author: 'Choicer Voicer',
+    description: 'Vincent and Jules discuss the little differences between America and Europe.',
+    linesCount: 5,
+    characters: ['VINCENT', 'JULES'],
+    size: 364158,
+    sizeFormatted: '356 KB',
+    updatedAt: 1788373159977,
+    url: '/packs/pulp_fiction_royale.zip'
+  },
+  {
+    id: 'star_wars_father',
+    filename: 'star_wars_father.zip',
+    title: 'Star Wars: I Am Your Father',
+    author: 'Choicer Voicer',
+    description: 'The legendary confrontation between Darth Vader and Luke Skywalker on Cloud City.',
+    linesCount: 3,
+    characters: ['DARTH VADER', 'LUKE'],
+    size: 270446,
+    sizeFormatted: '264 KB',
+    updatedAt: 1788373105836,
+    url: '/packs/star_wars_father.zip'
+  },
+  {
+    id: 'matrix_red_pill',
+    filename: 'matrix_red_pill.zip',
+    title: 'The Matrix: Red or Blue Pill',
+    author: 'Choicer Voicer',
+    description: 'Morpheus offers Neo the choice between blissful illusion and harsh reality.',
+    linesCount: 3,
+    characters: ['MORPHEUS'],
+    size: 357510,
+    sizeFormatted: '349 KB',
+    updatedAt: 1788373160025,
+    url: '/packs/matrix_red_pill.zip'
+  }
+];
 
 let fflateModule = null;
 try {
@@ -101,12 +211,15 @@ function parsePackMetadata(zipPath) {
 // 0. Web Voice Packs APIs
 app.get('/api/packs', (req, res) => {
   try {
-    if (!fs.existsSync(PACKS_DIR)) {
-      return res.json({ packs: [] });
+    let packs = [];
+    if (fs.existsSync(PACKS_DIR)) {
+      const files = fs.readdirSync(PACKS_DIR)
+        .filter(f => f.toLowerCase().endsWith('.zip') && !f.startsWith('.'));
+      packs = files.map(file => parsePackMetadata(path.join(PACKS_DIR, file)));
     }
-    const files = fs.readdirSync(PACKS_DIR)
-      .filter(f => f.toLowerCase().endsWith('.zip') && !f.startsWith('.'));
-    const packs = files.map(file => parsePackMetadata(path.join(PACKS_DIR, file)));
+    if (!packs || packs.length === 0) {
+      packs = DEFAULT_PACKS;
+    }
     // Sort: guardians_meet_avengers first or alphabetical
     packs.sort((a, b) => {
       if (a.filename === 'guardians_meet_avengers.zip') return -1;
@@ -115,7 +228,7 @@ app.get('/api/packs', (req, res) => {
     });
     res.json({ ok: true, packs });
   } catch (err) {
-    res.status(500).json({ ok: false, error: err.message });
+    res.json({ ok: true, packs: DEFAULT_PACKS });
   }
 });
 
@@ -161,6 +274,11 @@ function generateCode() {
   return code;
 }
 
+// API Health Check / Status
+app.all(['/api', '/api/'], (req, res) => {
+  res.json({ ok: true, name: 'Choicer Voicer API', status: 'online' });
+});
+
 // 1. App Context
 app.get('/api/context', (req, res) => {
   res.json({ ok: true, region: 'us' });
@@ -197,18 +315,24 @@ app.get('/api/rooms', (req, res) => {
       code: room.code,
       name: room.name || `Room ${room.code}`,
       packTitle: room.pack?.title || 'Custom Pack',
+      packId: room.pack?.id || '',
       lineCount: room.pack?.lineCount || 0,
       playersCount: room.players.length,
+      players: room.players.map(p => ({ id: p.id, name: p.name, isHost: p.isHost })),
       hasPassword: Boolean(room.password),
-      status: room.status
+      status: room.status,
+      currentTurnPlayerId: room.currentTurnPlayerId,
+      createdAt: room.createdAt || Date.now()
     });
   }
-  res.json({ rooms: list });
+  // Sort newest first
+  list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  res.json({ ok: true, rooms: list });
 });
 
 // 5. Create room
 app.post('/api/rooms', (req, res) => {
-  const { name, packHash, packTitle, lineCount, password } = req.body || {};
+  const { name, playerName, roomName, packHash, packId, packTitle, lineCount, password } = req.body || {};
   let code = generateCode();
   while (rooms.has(code)) {
     code = generateCode();
@@ -219,32 +343,39 @@ app.post('/api/rooms', (req, res) => {
 
   const hostPlayer = {
     id: hostId,
-    name: (name || 'Host').trim() || 'Host',
+    name: (playerName || name || 'Host').trim() || 'Host',
     isHost: true,
     ready: true,
     finished: false,
     roleIndex: 0
   };
 
+  const cleanRoomName = (roomName || name || 'ห้องพากษ์ ' + code).trim();
   const room = {
     code,
-    name: (name || 'Room ' + code).trim(),
-    password: password ? String(password) : '',
-    status: 'waiting',
+    name: cleanRoomName,
+    password: password ? String(password).trim() : '',
+    status: 'waiting', // 'waiting' (lobby) -> 'recording' (playing) -> 'finished'
     pack: {
+      id: packId || '',
       fingerprint: packHash || '',
       title: packTitle || 'Voice Pack',
       lineCount: Number(lineCount) || 1
     },
     tokens: new Map([[hostToken, hostId]]),
     players: [hostPlayer],
+    turnOrder: [hostId],
+    currentTurnPlayerId: hostId,
+    lastTurnPass: null,
     roles: [],
     takes: [],
     allFinished: false,
-    openRoleIndexes: []
+    openRoleIndexes: [],
+    createdAt: Date.now()
   };
 
   rooms.set(code, room);
+  saveRoomsToCache();
 
   const roomState = getClientRoomState(room, hostId);
   res.json({
@@ -262,19 +393,30 @@ function getClientRoomState(room, playerId) {
     finished: false
   };
 
+  const turnOrder = room.turnOrder && room.turnOrder.length > 0
+    ? room.turnOrder
+    : room.players.map(p => p.id);
+
+  const currentTurnPlayerId = room.currentTurnPlayerId || turnOrder[0] || (room.players[0]?.id || null);
+
   return {
     code: room.code,
     name: room.name,
     hasPassword: Boolean(room.password),
     status: room.status,
     pack: room.pack,
-    players: room.players.map(p => ({
+    currentTurnPlayerId,
+    turnOrder,
+    lastTurnPass: room.lastTurnPass || null,
+    players: room.players.map((p, idx) => ({
       id: p.id,
       name: p.name,
       isHost: p.isHost,
       ready: p.ready,
       finished: p.finished,
-      roleIndex: p.roleIndex
+      roleIndex: p.roleIndex,
+      turnNumber: turnOrder.indexOf(p.id) >= 0 ? turnOrder.indexOf(p.id) + 1 : idx + 1,
+      isCurrentTurn: p.id === currentTurnPlayerId
     })),
     roles: room.roles,
     takes: room.takes,
@@ -314,18 +456,18 @@ app.post('/api/rooms/:code', (req, res) => {
     return res.status(404).json({ error: 'Room not found' });
   }
 
-  const { action, name, password, playerId, finished } = req.body || {};
+  const { action, name, playerName, password, playerId, targetPlayerId, finished } = req.body || {};
 
   if (action === 'join') {
-    if (room.password && room.password !== String(password || '')) {
-      return res.status(403).json({ error: 'Incorrect password' });
+    if (room.password && room.password !== String(password || '').trim()) {
+      return res.status(403).json({ error: 'รหัสผ่านห้องไม่ถูกต้อง (Incorrect room password)' });
     }
 
     const newPlayerId = 'p_' + crypto.randomBytes(4).toString('hex');
     const token = 'tok_' + crypto.randomBytes(16).toString('hex');
     const newPlayer = {
       id: newPlayerId,
-      name: (name || 'Player ' + (room.players.length + 1)).trim(),
+      name: (playerName || name || 'Player ' + (room.players.length + 1)).trim(),
       isHost: false,
       ready: true,
       finished: false,
@@ -335,6 +477,16 @@ app.post('/api/rooms/:code', (req, res) => {
     room.players.push(newPlayer);
     room.tokens.set(token, newPlayerId);
 
+    if (!room.turnOrder) {
+      room.turnOrder = room.players.map(p => p.id);
+    } else if (!room.turnOrder.includes(newPlayerId)) {
+      room.turnOrder.push(newPlayerId);
+    }
+    if (!room.currentTurnPlayerId) {
+      room.currentTurnPlayerId = room.turnOrder[0];
+    }
+
+    saveRoomsToCache();
     return res.json({
       token,
       state: getClientRoomState(room, newPlayerId)
@@ -348,10 +500,61 @@ app.post('/api/rooms/:code', (req, res) => {
 
   if (action === 'start') {
     if (!player.isHost) {
-      return res.status(403).json({ error: 'Only the host can start the game' });
+      return res.status(403).json({ error: 'มีเพียงหัวหน้าห้อง (Host) เท่านั้นที่เริ่มเกมได้' });
     }
     room.status = 'recording';
-    return res.json({ state: getClientRoomState(room, player.id) });
+    if (!room.currentTurnPlayerId && room.turnOrder && room.turnOrder.length > 0) {
+      room.currentTurnPlayerId = room.turnOrder[0];
+    }
+    saveRoomsToCache();
+    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
+  }
+
+  // Pass dubbing turn to another player
+  if (action === 'pass-turn') {
+    const target = room.players.find(p => p.id === targetPlayerId);
+    if (!target) {
+      return res.status(400).json({ error: 'ไม่พบผู้เล่นที่ต้องการส่งคิวพากษ์ให้' });
+    }
+
+    const isCurrent = room.currentTurnPlayerId === player.id;
+    if (!isCurrent && !player.isHost) {
+      return res.status(403).json({ error: 'เฉพาะคนที่ถึงคิวพากษ์เท่านั้นที่สามารถส่งคิวให้คนอื่นได้' });
+    }
+
+    room.currentTurnPlayerId = target.id;
+    room.lastTurnPass = {
+      fromId: player.id,
+      fromName: player.name,
+      toId: target.id,
+      toName: target.name,
+      timestamp: Date.now()
+    };
+
+    saveRoomsToCache();
+    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
+  }
+
+  // Advance turn to next in cyclic sequence
+  if (action === 'next-turn') {
+    if (!room.turnOrder || room.turnOrder.length === 0) {
+      room.turnOrder = room.players.map(p => p.id);
+    }
+    const currIdx = room.turnOrder.indexOf(room.currentTurnPlayerId);
+    const nextIdx = (currIdx + 1) % room.turnOrder.length;
+    room.currentTurnPlayerId = room.turnOrder[nextIdx];
+
+    const nextPlayer = room.players.find(p => p.id === room.currentTurnPlayerId);
+    room.lastTurnPass = {
+      fromId: player.id,
+      fromName: player.name,
+      toId: room.currentTurnPlayerId,
+      toName: nextPlayer ? nextPlayer.name : 'Next Player',
+      timestamp: Date.now()
+    };
+
+    saveRoomsToCache();
+    return res.json({ ok: true, state: getClientRoomState(room, player.id) });
   }
 
   if (action === 'leave') {
@@ -359,12 +562,19 @@ app.post('/api/rooms/:code', (req, res) => {
     for (const [t, pid] of room.tokens.entries()) {
       if (pid === player.id) room.tokens.delete(t);
     }
+    if (room.turnOrder) {
+      room.turnOrder = room.turnOrder.filter(id => id !== player.id);
+    }
+    if (room.currentTurnPlayerId === player.id) {
+      room.currentTurnPlayerId = room.turnOrder?.[0] || (room.players[0]?.id || null);
+    }
     if (player.isHost && room.players.length > 0) {
       room.players[0].isHost = true;
     }
     if (room.players.length === 0) {
       rooms.delete(code);
     }
+    saveRoomsToCache();
     return res.json({ ok: true, state: getClientRoomState(room, null) });
   }
 
@@ -375,6 +585,12 @@ app.post('/api/rooms/:code', (req, res) => {
     room.players = room.players.filter(p => p.id !== playerId);
     for (const [t, pid] of room.tokens.entries()) {
       if (pid === playerId) room.tokens.delete(t);
+    }
+    if (room.turnOrder) {
+      room.turnOrder = room.turnOrder.filter(id => id !== playerId);
+    }
+    if (room.currentTurnPlayerId === playerId) {
+      room.currentTurnPlayerId = room.turnOrder?.[0] || (room.players[0]?.id || null);
     }
     return res.json({ state: getClientRoomState(room, player.id) });
   }
@@ -517,6 +733,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, HOST, () => {
-  console.log(`Choicer Voicer server running on http://${HOST}:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    console.log(`Choicer Voicer server running on http://${HOST}:${PORT}`);
+  });
+}
+
+module.exports = app;

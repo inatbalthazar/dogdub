@@ -11,6 +11,61 @@
 
   const SELECTOR_DIALOG_ID = 'voicePackDialog';
 
+  const BUILTIN_DEFAULT_PACKS = [
+    {
+      id: 'guardians_meet_avengers',
+      filename: 'guardians_meet_avengers.zip',
+      title: 'Guardians Meet Avengers',
+      author: 'Choicer Voicer',
+      description: 'When the Guardians of the Galaxy encounter the unconscious Thor floating in deep space.',
+      linesCount: 5,
+      characters: ['STAR-LORD', 'DRAX', 'GAMORA', 'THOR'],
+      size: 359136,
+      sizeFormatted: '351 KB',
+      updatedAt: 1788373105791,
+      url: '/packs/guardians_meet_avengers.zip'
+    },
+    {
+      id: 'pulp_fiction_royale',
+      filename: 'pulp_fiction_royale.zip',
+      title: 'Pulp Fiction: Royale with Cheese',
+      author: 'Choicer Voicer',
+      description: 'Vincent and Jules discuss the little differences between America and Europe.',
+      linesCount: 5,
+      characters: ['VINCENT', 'JULES'],
+      size: 364158,
+      sizeFormatted: '356 KB',
+      updatedAt: 1788373159977,
+      url: '/packs/pulp_fiction_royale.zip'
+    },
+    {
+      id: 'star_wars_father',
+      filename: 'star_wars_father.zip',
+      title: 'Star Wars: I Am Your Father',
+      author: 'Choicer Voicer',
+      description: 'The legendary confrontation between Darth Vader and Luke Skywalker on Cloud City.',
+      linesCount: 3,
+      characters: ['DARTH VADER', 'LUKE'],
+      size: 270446,
+      sizeFormatted: '264 KB',
+      updatedAt: 1788373105836,
+      url: '/packs/star_wars_father.zip'
+    },
+    {
+      id: 'matrix_red_pill',
+      filename: 'matrix_red_pill.zip',
+      title: 'The Matrix: Red or Blue Pill',
+      author: 'Choicer Voicer',
+      description: 'Morpheus offers Neo the choice between blissful illusion and harsh reality.',
+      linesCount: 3,
+      characters: ['MORPHEUS'],
+      size: 357510,
+      sizeFormatted: '349 KB',
+      updatedAt: 1788373160025,
+      url: '/packs/matrix_red_pill.zip'
+    }
+  ];
+
   // Format bytes helper
   function formatBytes(bytes) {
     if (!bytes) return '0 KB';
@@ -23,14 +78,18 @@
   async function fetchPacks() {
     try {
       const res = await fetch('/api/packs', { cache: 'no-cache' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      availablePacks = Array.isArray(data.packs) ? data.packs : [];
-      return availablePacks;
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.packs) && data.packs.length > 0) {
+          availablePacks = data.packs;
+          return availablePacks;
+        }
+      }
     } catch (err) {
-      console.warn('Failed to fetch voice packs from server:', err);
-      return [];
+      console.warn('Failed to fetch voice packs from server, using fallback packs:', err);
     }
+    availablePacks = BUILTIN_DEFAULT_PACKS;
+    return availablePacks;
   }
 
   // Load a pack by fetching its ZIP and importing it

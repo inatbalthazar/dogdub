@@ -15,24 +15,25 @@
 
       gtag('config', 'G-SZPG534ELL');
     </script>
-    <title>Choicer Voicer Studio — Free Online Voice-Over Game</title>
-    <meta name="description" content="Play Choicer Voicer in your browser. Import a voice pack, record your lines, and make a finished dub solo or with friends. Voice packs stay on your device." />
+    <title>Choicer Voicer Studio — เว็บเกมพากษ์เสียงออนไลน์</title>
+    <meta name="description" content="เว็บเกมพากษ์เสียงออนไลน์ เล่นกับเพื่อนแบบแบ่งคิวพากษ์ มี Scene Pack ให้เลือก หลากหลายฉาก สร้างห้องหรือเข้าร่วมห้องเล่นเกมได้ทันที" />
     <link rel="canonical" href="https://thechoicervoicer.app/" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Choicer Voicer" />
-    <meta property="og:title" content="Choicer Voicer Studio — Free Online Voice-Over Game" />
-    <meta property="og:description" content="Import a voice pack, record your lines, and watch your own dub in the browser. Free, no account needed." />
+    <meta property="og:site_name" content="Choicer Voicer Studio" />
+    <meta property="og:title" content="Choicer Voicer Studio — เว็บเกมพากษ์เสียงออนไลน์" />
+    <meta property="og:description" content="เว็บเกมพากษ์เสียงออนไลน์ เล่นกับเพื่อนแบบแบ่งคิวพากษ์ มี Scene Pack ให้เลือก หลากหลายฉาก สร้างห้องหรือเข้าร่วมห้องเล่นเกมได้ทันที" />
     <meta property="og:url" content="https://thechoicervoicer.app/" />
     <meta property="og:image" content="https://thechoicervoicer.app/social-preview.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Choicer Voicer dub studio: a CRT monitor showing a scene with a recording waveform below it." />
+    <meta property="og:image:alt" content="Choicer Voicer Studio — เว็บเกมพากษ์เสียงออนไลน์" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Choicer Voicer Studio — Free Online Voice-Over Game" />
-    <meta name="twitter:description" content="Import a voice pack, record your lines, and watch your own dub in the browser. Free, no account needed." />
+    <meta name="twitter:title" content="Choicer Voicer Studio — เว็บเกมพากษ์เสียงออนไลน์" />
+    <meta name="twitter:description" content="เว็บเกมพากษ์เสียงออนไลน์ เล่นกับเพื่อนแบบแบ่งคิวพากษ์ มี Scene Pack ให้เลือก หลากหลายฉาก สร้างห้องหรือเข้าร่วมห้องเล่นเกมได้ทันที" />
     <meta name="twitter:image" content="https://thechoicervoicer.app/social-preview.png" />
     <link rel="preload" href="fonts/bowlby-one-sc-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="voice-pack-selector.css?v=20260902-1" />
+    <link rel="stylesheet" href="multiplayer-lobby.css?v=20260902-1" />
     <style data-critical>@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/barlow-condensed-600-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/barlow-condensed-700-latin.woff2') format('woff2'); }
 @font-face { font-family: 'Bowlby One SC'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/bowlby-one-sc-latin.woff2') format('woff2'); }
@@ -422,6 +423,15 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
       </div>
 
       <div class="top-actions">
+        <div class="topbar-lobby-addons">
+          <div class="user-profile-badge" id="userProfileBadge">
+            <span class="user-avatar-icon">👤</span>
+            <span class="user-label">ผู้เล่น:</span>
+            <strong class="user-name" id="topbarPlayerName">Player</strong>
+            <button type="button" class="btn-edit-user" id="btnEditPlayerName" title="แก้ไขชื่อผู้เล่น">✏️</button>
+          </div>
+          <button type="button" class="btn-top-create-room" id="btnTopCreateRoom">➕ สร้างห้องใหม่</button>
+        </div>
         <div class="multiplayer-top-controls" hidden>
           <button class="multiplayer-button" id="multiplayerButton" type="button" aria-label="Open multiplayer" title="Open multiplayer">
             <svg class="multiplayer-button-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M18 21a8 8 0 0 0-16 0"></path><circle cx="10" cy="8" r="5"></circle><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"></path></svg>
@@ -443,6 +453,186 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
     </header>
 
     <main class="layout" id="main-content">
+      <!-- ================================================================= -->
+      <!-- VIEW 1: หน้าแรก (Home / Lobby Rooms List) -->
+      <!-- ================================================================= -->
+      <section class="app-view-container" id="viewHomeLobby">
+        <div class="home-hero-card">
+          <div class="home-hero-badge">
+            <span class="pulse-dot"></span>
+            <span>MULTI-ROOM VOICE DUBBING</span>
+          </div>
+          <h1 class="home-hero-title">🎙️ ห้องเล่นเกมพากษ์เสียงออนไลน์</h1>
+          <p class="home-hero-subtitle">
+            รวมแก๊งมาช่วยกันพากษ์เสียงฉากหนังสุดฮา! เลือกห้องเพื่อเข้าร่วมเล่น หรือกดสร้างห้องใหม่แล้วแชร์รหัสให้เพื่อน
+          </p>
+        </div>
+
+        <div class="lobby-controls-bar">
+          <div class="lobby-search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="inputLobbySearch" class="lobby-search-input" placeholder="ค้นหาชื่อห้อง หรือ Scene Pack..." />
+            <button type="button" id="btnClearLobbySearch" class="btn-clear-search" style="display: none;">×</button>
+          </div>
+
+          <div class="lobby-filter-group">
+            <button type="button" class="filter-chip is-active" data-filter="all">ทั้งหมด</button>
+            <button type="button" class="filter-chip" data-filter="waiting">🟡 รอผู้เล่น</button>
+            <button type="button" class="filter-chip" data-filter="recording">🔴 กำลังพากษ์</button>
+            <button type="button" class="filter-chip" data-filter="public">🔓 สาธารณะ</button>
+            <button type="button" class="filter-chip" data-filter="private">🔒 มีรหัส</button>
+          </div>
+
+          <div class="lobby-action-buttons">
+            <button type="button" class="btn-lobby-action btn-refresh" id="btnRefreshLobby" title="รีเฟรชรายการห้อง">
+              <span>🔄 รีเฟรช</span>
+            </button>
+            <button type="button" class="btn-lobby-action btn-create-room" id="btnOpenCreateRoom">
+              <span>➕ สร้างห้องใหม่</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="lobby-status-strip">
+          <span class="lobby-status-text" id="lobbyRoomsCountText">กำลังโหลดรายการห้อง...</span>
+          <span class="lobby-auto-sync-indicator">⚡ อัปเดตห้องอัตโนมัติ</span>
+        </div>
+
+        <div class="rooms-grid" id="roomsListGrid">
+          <div class="rooms-empty-state">
+            <div class="rooms-empty-icon">⏳</div>
+            <p>กำลังค้นหาห้องพากษ์เสียงที่เปิดอยู่...</p>
+          </div>
+        </div>
+
+        <!-- Scene Pack Showcase Section -->
+        <div class="scene-packs-showcase" id="scenePacksShowcase">
+          <div class="showcase-header">
+            <h3>🎬 Scene Pack ที่เปิดให้เล่นตอนนี้</h3>
+            <span class="showcase-sub">เลือกฉากที่ชอบแล้วกดสร้างห้องได้ทันที</span>
+          </div>
+          <div class="showcase-grid" id="showcasePacksGrid">
+            <!-- Scene packs cards will be dynamically rendered here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- VIEW 2: หน้าห้องรอ (Lobby Waiting Room View) -->
+      <!-- ================================================================= -->
+      <section class="app-view-container" id="viewWaitingRoom" style="display: none;">
+        <div class="waiting-room-card">
+          <div class="waiting-room-topbar">
+            <button type="button" class="btn-back-to-home" id="btnWaitingLeave">
+              <span>← ออกจากห้อง (กลับหน้าแรก)</span>
+            </button>
+            <span class="waiting-room-badge" id="waitingRoomLockBadge">🔓 ห้องสาธารณะ</span>
+          </div>
+
+          <div class="waiting-room-header">
+            <div class="waiting-room-title-col">
+              <span class="waiting-room-eyebrow">ห้องพากษ์เสียง</span>
+              <h2 class="waiting-room-title" id="waitingRoomTitle">ชื่อห้อง</h2>
+              <div class="waiting-room-pack-tag" id="waitingRoomPackTitle">🎬 Scene Pack: -</div>
+            </div>
+
+            <div class="waiting-code-box">
+              <span class="code-label">รหัสห้อง (Room Code)</span>
+              <div class="code-display-row">
+                <span class="code-number" id="waitingRoomCode">------</span>
+                <button type="button" class="btn-copy-action" id="btnWaitingCopyCode" title="คัดลอกรหัสห้อง">
+                  📋 คัดลอกรหัส
+                </button>
+                <button type="button" class="btn-copy-action" id="btnWaitingCopyLink" title="คัดลอกลิงก์ชวนเพื่อน">
+                  🔗 ลิงก์ชวนเพื่อน
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pack preview in waiting room -->
+          <div class="waiting-pack-preview" id="waitingPackPreview">
+            <div class="waiting-pack-icon">🎬</div>
+            <div class="waiting-pack-meta">
+              <h4 id="waitingPackName">Scene Name</h4>
+              <p id="waitingPackDesc">Description of scene</p>
+              <div class="waiting-pack-tags" id="waitingPackTags"></div>
+            </div>
+          </div>
+
+          <!-- Players Queue -->
+          <div class="waiting-players-section">
+            <div class="waiting-players-head">
+              <h3>👥 สมาชิกในห้อง (<span id="waitingPlayerCountNum">0</span> คน)</h3>
+              <span class="waiting-players-hint">ผู้เล่นจะสลับกันพากษ์เสียงตามลำดับคิวนี้</span>
+            </div>
+            <ul class="waiting-players-list" id="waitingPlayersList">
+              <!-- Players list -->
+            </ul>
+          </div>
+
+          <!-- Host / Guest Actions -->
+          <div class="waiting-action-area">
+            <div class="host-controls-box" id="waitingHostBox" style="display: none;">
+              <button type="button" class="btn-host-start-game" id="btnHostStartGame">
+                🚀 เริ่มเล่นเกม (Start Game)
+              </button>
+              <p class="host-controls-sub">เมื่อผู้เล่นพร้อมแล้ว กดเริ่มเกมเพื่อเข้าสู่หน้าเล่นเกมพากษ์เสียงพร้อมกันทันที</p>
+            </div>
+
+            <div class="guest-waiting-box" id="waitingGuestBox" style="display: none;">
+              <div class="guest-waiting-spinner">⏳</div>
+              <div>
+                <strong>คุณเข้าร่วมห้องแล้ว กำลังรอหัวหน้าห้อง (Host) กดเริ่มเล่นเกม...</strong>
+                <p>เมื่อ Host กดเริ่มเกม หน้าจอจะเปลี่ยนเป็นหน้าเล่นเกมโดยอัตโนมัติ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- In-Game Turn Bar (Displays at top of game screen) -->
+      <!-- ================================================================= -->
+      <section class="ingame-turn-bar" id="inGameTurnBar" style="display: none;">
+        <div class="ingame-turn-header">
+          <div class="ingame-room-badge">
+            <button type="button" class="btn-ingame-back" id="btnIngameLeave">← ออกจากห้อง</button>
+            <span class="ingame-badge-sep">|</span>
+            <span>🎮 ห้อง: <b id="ingameRoomTitle">ห้องพากษ์</b></span>
+            <span class="ingame-badge-sep">|</span>
+            <span>รหัส: <b id="ingameRoomCode">------</b></span>
+            <span class="ingame-badge-sep">|</span>
+            <span>🎬 Scene: <b id="ingamePackTitle">Pack</b></span>
+          </div>
+          <div class="ingame-right-actions">
+            <button type="button" class="btn-secondary-action" id="btnViewLobbyDetails" style="min-height: 30px; padding: 0 10px; font-size: 0.75rem;">👥 ดูสมาชิกในห้อง</button>
+          </div>
+        </div>
+
+        <div class="ingame-turn-track" id="ingameTurnTrack">
+          <!-- Turn pills -->
+        </div>
+
+        <div class="turn-action-banner" id="turnActionBanner">
+          <div class="turn-banner-copy">
+            <span id="turnStatusIcon" class="turn-status-icon">🎙️</span>
+            <div>
+              <strong id="turnStatusHeadline">กำลังรอเริ่มคิวพากษ์...</strong>
+              <div id="turnStatusSub">ผู้เล่นในคิวจะสลับกันพากษ์เสียงตามลำดับ</div>
+            </div>
+          </div>
+          <div class="turn-action-buttons" id="turnActionButtons">
+            <button type="button" class="btn-pass-turn" id="btnPassTurn" title="ส่งให้คนอื่นพากษ์แทน">
+              <span>🔄 ส่งให้คนอื่นพากษ์แทน</span>
+            </button>
+            <button type="button" class="btn-next-turn" id="btnNextTurn" title="ส่งคิวไปยังลำดับถัดไป">
+              <span>⏭️ คิวถัดไป</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <div class="studio-intro">
           <h1>Make your own dub — a free online voice-over game</h1>
           <p>Load a voice pack, record each line in your own voice, then watch the finished dub. Play solo or split the lines with friends online.</p>
@@ -1132,10 +1322,126 @@ html:not(.app-styles-ready) dialog[open] { display: none; }
       </form>
     </dialog>
 
+    <!-- ================================================================= -->
+    <!-- Modal: สร้างห้องใหม่ (Create Room Modal) -->
+    <!-- ================================================================= -->
+    <dialog class="lobby-modal" id="createRoomModal">
+      <div class="lobby-modal-inner">
+        <div class="lobby-modal-head">
+          <h3>➕ สร้างห้องเล่นเกมพากษ์เสียง</h3>
+          <button type="button" class="btn-modal-close" id="btnCloseCreateModal">×</button>
+        </div>
+        <form id="createRoomForm" class="lobby-modal-content">
+          <div class="form-group">
+            <label for="inputHostName">ชื่อของคุณ (Player Name) *</label>
+            <input type="text" id="inputHostName" class="form-input" required maxlength="24" placeholder="เช่น Somchai, VoiceMaster" />
+          </div>
+
+          <div class="form-group">
+            <label for="inputRoomName">ชื่อห้อง (Room Name) *</label>
+            <input type="text" id="inputRoomName" class="form-input" required maxlength="40" placeholder="เช่น แก๊งฮากระจาย, Avengers Dub Room" />
+          </div>
+
+          <div class="form-group">
+            <label for="selectRoomPack">เลือก Scene Pack ที่จะเล่นด้วยกัน *</label>
+            <select id="selectRoomPack" class="form-select" required>
+              <option value="">-- กำลังโหลด Scene Pack --</option>
+            </select>
+            <!-- Visual Cards for Scene Pack Selection -->
+            <div class="pack-select-cards-grid" id="createPackCardsGrid">
+              <!-- Dynamically rendered pack cards for quick clicking -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputRoomPassword">รหัสผ่านห้อง (Password - ตั้งหรือไม่ตั้งก็ได้)</label>
+            <input type="text" id="inputRoomPassword" class="form-input" maxlength="20" placeholder="เว้นว่างไว้หากต้องการให้เป็นห้องสาธารณะ (ใครก็เข้าได้)" />
+            <span class="form-help">🔒 หากตั้งรหัสผ่าน ผู้เล่นคนอื่นจะต้องใส่รหัสผ่านก่อนเข้าห้อง</span>
+          </div>
+
+          <p id="createRoomError" style="color: var(--coral, #ff6b6b); font-size: 0.8rem; margin: 0; display: none;"></p>
+
+          <div class="modal-btn-row">
+            <button type="button" class="btn-secondary-action" id="btnCancelCreateModal">ยกเลิก</button>
+            <button type="submit" class="btn-primary-action" id="btnSubmitCreateRoom">🚀 สร้างห้องและเข้าห้องรอ</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- ================================================================= -->
+    <!-- Modal: เข้าสู่ห้อง (Join Room Modal) -->
+    <!-- ================================================================= -->
+    <dialog class="lobby-modal" id="joinRoomModal">
+      <div class="lobby-modal-inner">
+        <div class="lobby-modal-head">
+          <h3 id="joinModalTitle">🔑 เข้าสู่ห้องพากษ์เสียง</h3>
+          <button type="button" class="btn-modal-close" id="btnCloseJoinModal">×</button>
+        </div>
+        <form id="joinRoomForm" class="lobby-modal-content">
+          <input type="hidden" id="joinRoomCode" />
+
+          <div class="waiting-pack-preview" id="joinRoomMetaPreview" style="margin-bottom: 4px;">
+            <div class="waiting-pack-icon">🎬</div>
+            <div class="waiting-pack-meta">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span class="room-card-code-pill" id="joinPreviewCode">ABC234</span>
+                <span id="joinLockBadge" style="font-size: 0.75rem; color: var(--amber);">🔒 ต้องใช้รหัสผ่าน</span>
+              </div>
+              <h4 id="joinPreviewRoomName" style="margin: 0; font-size: 1rem; color: var(--paper);">ชื่อห้อง</h4>
+              <p id="joinPreviewPackTitle" style="margin: 2px 0 0; font-size: 0.8rem; color: var(--cyan);">Scene: ...</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputJoinPlayerName">ชื่อของคุณ (Player Name) *</label>
+            <input type="text" id="inputJoinPlayerName" class="form-input" required maxlength="24" placeholder="เช่น NongNoi, Guest 1" />
+          </div>
+
+          <div class="form-group" id="joinPasswordGroup">
+            <label for="inputJoinPassword">รหัสผ่านห้อง (Room Password) *</label>
+            <input type="password" id="inputJoinPassword" class="form-input" placeholder="ใส่รหัสผ่านห้องที่ตั้งไว้" />
+          </div>
+
+          <p id="joinRoomError" style="color: var(--coral, #ff6b6b); font-size: 0.8rem; margin: 0; display: none;"></p>
+
+          <div class="modal-btn-row">
+            <button type="button" class="btn-secondary-action" id="btnCancelJoinModal">ยกเลิก</button>
+            <button type="submit" class="btn-primary-action" id="btnSubmitJoinRoom">👉 เข้าสู่ห้อง</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- ================================================================= -->
+    <!-- Modal: แก้ไขชื่อผู้เล่น (Edit Player Name Modal) -->
+    <!-- ================================================================= -->
+    <dialog class="lobby-modal" id="editNameModal">
+      <div class="lobby-modal-inner">
+        <div class="lobby-modal-head">
+          <h3>👤 แก้ไขชื่อผู้เล่น (Player Name)</h3>
+          <button type="button" class="btn-modal-close" id="btnCloseEditNameModal">×</button>
+        </div>
+        <form id="editNameForm" class="lobby-modal-content">
+          <div class="form-group">
+            <label for="inputNewPlayerName">ชื่อที่คุณต้องการใช้แสดงในห้องพากษ์ *</label>
+            <input type="text" id="inputNewPlayerName" class="form-input" required maxlength="24" placeholder="เช่น Somchai, Jane, VoiceDubber" />
+            <span class="form-help">ชื่อนี้จะแสดงในรายชื่อผู้เล่นและลำดับคิวพากษ์เสียง</span>
+          </div>
+
+          <div class="modal-btn-row">
+            <button type="button" class="btn-secondary-action" id="btnCancelEditNameModal">ยกเลิก</button>
+            <button type="submit" class="btn-primary-action">บันทึกชื่อ</button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
     <script type="module" src="monitoring.js?v=20260829-1"></script>
     <script defer src="voice-effects.js?v=20260829-1"></script>
     <script defer src="multiplayer.js?v=20260902-5"></script>
     <script defer src="app.js?v=20260902-1"></script>
     <script defer src="voice-pack-selector.js?v=20260902-1"></script>
+    <script defer src="multiplayer-lobby.js?v=20260902-1"></script>
   </body>
 </html>
