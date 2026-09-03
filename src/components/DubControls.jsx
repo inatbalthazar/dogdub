@@ -54,7 +54,7 @@ export default function DubControls({
 
   // Trigger next turn (advances scene & shifts mic to next player)
   const handleNextTurnClick = () => {
-    if (!hasRecordedTake) return; // Next turn disabled until current scene is recorded!
+    if (!isMyTurn || !hasRecordedTake) return; // Must be mic holder AND must have recorded take!
     if (onNextTurn) {
       onNextTurn();
     } else if (onNextClip) {
@@ -62,7 +62,8 @@ export default function DubControls({
     }
   };
 
-  const isNextTurnDisabled = !hasRecordedTake || currentLineIndex >= (totalLines - 1);
+  // Next turn is disabled if you are NOT holding mic OR scene has NOT been recorded yet!
+  const isNextTurnDisabled = !isMyTurn || !hasRecordedTake || currentLineIndex >= (totalLines - 1);
 
   return (
     <aside className="chapter-panel flex flex-col gap-3 max-w-[320px] w-full" aria-label="Dub controls">
@@ -101,7 +102,7 @@ export default function DubControls({
             ✅ พากย์เสียงเรียบร้อยแล้ว {recorderName ? `(${recorderName})` : ''}
           </span>
           <span className="block text-[10px] text-emerald-200/80 mt-0.5">
-            กด Next turn เพื่อส่งคิวต่อไปให้เพื่อน!
+            {isMyTurn ? 'กด Next turn เพื่อส่งคิวต่อไปให้เพื่อน!' : 'รอผู้ถือไมค์กด Next turn ส่งคิวถัดไป'}
           </span>
         </div>
       ) : (
@@ -111,7 +112,7 @@ export default function DubControls({
             <span>คิวพากย์ของเพื่อน: <b className="text-white font-extrabold">{recorderName || 'ผู้เล่นในคิว'}</b></span>
           </span>
           <span className="block text-[10px] text-gray-400 mt-0.5">
-            เตรียมพร้อมสำหรับคิวของคุณ!
+            รอให้ถึงคิวพากย์ของคุณ!
           </span>
         </div>
       )}
@@ -212,7 +213,7 @@ export default function DubControls({
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
 
-          {/* Next Turn Button (Disabled until current scene is recorded) */}
+          {/* Next Turn Button (Disabled if NOT holding mic OR scene is not recorded) */}
           <button
             onClick={handleNextTurnClick}
             disabled={isNextTurnDisabled}
@@ -221,7 +222,9 @@ export default function DubControls({
             }`}
             type="button"
             title={
-              !hasRecordedTake
+              !isMyTurn
+                ? 'เฉพาะผู้ถือไมค์พากย์เสียงเท่านั้นที่กด Next turn ได้ (Only mic holder can advance turn)'
+                : !hasRecordedTake
                 ? 'พากย์เสียงฉากนี้ให้เสร็จก่อนส่งคิวถัดไป (Record this scene first)'
                 : 'ส่งต่อคิวพากย์ฉากถัดไป'
             }
