@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { X, Lock, Users, Sparkles } from 'lucide-react';
 
-export default function CreateRoomModal({ isOpen, onClose, packs = [], onCreateRoom, currentUser, initialPackId = '' }) {
+export default function CreateRoomModal({ isOpen, onClose, packs = [], onCreateRoom, currentUser, defaultPackId = '' }) {
   const [roomName, setRoomName] = useState('ห้องพากย์สนุกๆ');
   const [password, setPassword] = useState('');
-  const [selectedPackId, setSelectedPackId] = useState(initialPackId || packs[0]?.id || '');
+  const [selectedPackId, setSelectedPackId] = useState('');
   const [hostName, setHostName] = useState(currentUser?.name || 'นักพากย์');
 
   useEffect(() => {
     if (isOpen) {
       const activeName = currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';
       setHostName(activeName);
-      if (initialPackId) {
-        setSelectedPackId(initialPackId);
+      // Use defaultPackId (from clicking a specific pack card) if provided, otherwise keep current or use first
+      if (defaultPackId && packs.some(p => p.id === defaultPackId)) {
+        setSelectedPackId(defaultPackId);
       } else if (packs && packs.length > 0 && !selectedPackId) {
         setSelectedPackId(packs[0].id);
       }
     }
-  }, [isOpen, initialPackId, packs, currentUser]);
+  }, [isOpen, packs, defaultPackId, currentUser]);
 
   if (!isOpen) return null;
 

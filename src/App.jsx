@@ -49,7 +49,6 @@ export default function App() {
   const [isSetNameModalOpen, setIsSetNameModalOpen] = useState(false);
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [selectedPreviewPack, setSelectedPreviewPack] = useState(null);
-  const [createRoomPackId, setCreateRoomPackId] = useState('');
 
   // Fetch available scene packs, rooms, and check saved player name on mount
   useEffect(() => {
@@ -1470,14 +1469,7 @@ const DEFAULT_FALLBACK_PACKS = [
             rooms={rooms}
             packs={packs}
             onRefresh={fetchRooms}
-            onOpenCreateModal={(packId) => {
-              setCreateRoomPackId(typeof packId === 'string' ? packId : '');
-              setIsCreateModalOpen(true);
-            }}
-            onCreateRoomForPack={(pack) => {
-              setCreateRoomPackId(pack.id);
-              setIsCreateModalOpen(true);
-            }}
+            onOpenCreateModal={() => setIsCreateModalOpen(true)}
             onJoinRoom={handleJoinRoom}
             onPreviewPack={(pack) => setSelectedPreviewPack(pack)}
             onSelectPack={(id) => {
@@ -1565,14 +1557,11 @@ const DEFAULT_FALLBACK_PACKS = [
 
       <CreateRoomModal
         isOpen={isCreateModalOpen}
-        onClose={() => {
-          setIsCreateModalOpen(false);
-          setCreateRoomPackId('');
-        }}
-        initialPackId={createRoomPackId}
+        onClose={() => setIsCreateModalOpen(false)}
         packs={packs}
         currentUser={currentUser}
         onCreateRoom={handleCreateRoom}
+        defaultPackId={selectedPackId}
       />
 
       <WatchDubModal
@@ -1610,7 +1599,7 @@ const DEFAULT_FALLBACK_PACKS = [
           setCurrentView('inGame');
         }}
         onCreateRoom={(pack) => {
-          setCreateRoomPackId(pack.id);
+          setSelectedPackId(pack.id);
           setIsCreateModalOpen(true);
         }}
       />
