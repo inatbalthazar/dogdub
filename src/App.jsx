@@ -411,43 +411,52 @@ const DEFAULT_FALLBACK_PACKS = [
     });
   }
 
+  const isRecordingBusyRef = React.useRef(false);
+
   // Audio recording handlers
   const handleToggleRecord = async () => {
-    if (isRecording) {
-      const result = await audioEngine.stopRecording();
-      setIsRecording(false);
-      if (result) {
-        setRecordedTakes((prev) => ({
-          ...prev,
-          [currentLineIndex]: result.url,
-        }));
+    if (isRecordingBusyRef.current) return;
+    isRecordingBusyRef.current = true;
 
-        // Upload voice recording blob to server so everyone in the room can listen!
-        if (activeRoom && result.blob) {
-          const code = activeRoom.code || activeRoom.roomCode;
-          try {
-            const uploadRes = await fetch(`/api/rooms/${code}/takes/${currentLineIndex}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': result.blob.type || 'audio/webm',
-                'x-room-token': currentUser?.token || '',
-              },
-              body: result.blob,
-            });
-            if (uploadRes.ok) {
-              const data = await uploadRes.json();
-              if (data.state) {
-                setActiveRoom(data.state);
+    try {
+      if (isRecording) {
+        setIsRecording(false);
+        const result = await audioEngine.stopRecording();
+        if (result) {
+          setRecordedTakes((prev) => ({
+            ...prev,
+            [currentLineIndex]: result.url,
+          }));
+
+          // Upload voice recording blob to server so everyone in the room can listen!
+          if (activeRoom && result.blob) {
+            const code = activeRoom.code || activeRoom.roomCode;
+            try {
+              const uploadRes = await fetch(`/api/rooms/${code}/takes/${currentLineIndex}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': result.blob.type || 'audio/webm',
+                  'x-room-token': currentUser?.token || '',
+                },
+                body: result.blob,
+              });
+              if (uploadRes.ok) {
+                const data = await uploadRes.json();
+                if (data.state) {
+                  setActiveRoom(data.state);
+                }
               }
+            } catch (err) {
+              console.warn('Failed to upload recorded voice take to server:', err);
             }
-          } catch (err) {
-            console.warn('Failed to upload recorded voice take to server:', err);
           }
         }
+      } else {
+        await audioEngine.prepareRecording();
+        setIsRecording(true);
       }
-    } else {
-      await audioEngine.prepareRecording();
-      setIsRecording(true);
+    } finally {
+      isRecordingBusyRef.current = false;
     }
   };
 

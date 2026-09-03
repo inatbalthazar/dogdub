@@ -219,10 +219,16 @@ export default function DubMonitor({
   }, [recordedTakeUrl]);
 
   // Recording & Playback Animation Loop:
-  // When recording: 1.0s lead-in prep (-1.0 to 0.0), video & media recorder start EXACTLY at 0.0!
+  // When recording: 1.0s lead-in prep (-1.0 to 0.0), video & media recorder start EXACTLY at 0.0s!
+  const onAutoStopRef = useRef(onAutoStopRecord);
+  useEffect(() => {
+    onAutoStopRef.current = onAutoStopRecord;
+  }, [onAutoStopRecord]);
+
   useEffect(() => {
     let animFrame = null;
     let micRecorderStarted = false;
+    let hasTriggeredAutoStop = false;
 
     if (isRecording) {
       const startTime = performance.now();
@@ -238,11 +244,14 @@ export default function DubMonitor({
           audioEngine.beginMediaRecorder();
         }
 
-        // Auto-stop when playhead reaches the 2nd red dashed line (clipDurationNum)
+        // Auto-stop when playhead reaches the end of current scene
         if (currentPlaybackTime >= clipDurationNum) {
           setPlaybackTime(clipDurationNum);
-          if (onAutoStopRecord) {
-            onAutoStopRecord();
+          if (!hasTriggeredAutoStop) {
+            hasTriggeredAutoStop = true;
+            if (onAutoStopRef.current) {
+              onAutoStopRef.current();
+            }
           }
           return;
         }
