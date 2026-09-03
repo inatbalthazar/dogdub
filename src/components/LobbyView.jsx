@@ -184,34 +184,61 @@ export default function LobbyView({
           </h3>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {packs.map((pack) => (
             <div
               key={pack.id}
               onClick={() => onPreviewPack && onPreviewPack(pack)}
-              className="flex flex-col justify-between rounded-2xl border border-[oklch(38%_0.01_190)] bg-gradient-to-b from-[oklch(18%_0.01_190)] to-[oklch(13%_0.01_190)] p-4 shadow-lg transition-all duration-300 hover:border-[var(--cyan)] hover:shadow-[0_0_20px_rgba(0,243,255,0.2)] hover:-translate-y-1 cursor-pointer group"
+              className="flex flex-col justify-between overflow-hidden rounded-2xl border border-[oklch(38%_0.01_190)] bg-gradient-to-b from-[oklch(20%_0.01_190)] to-[oklch(12%_0.01_190)] shadow-lg transition-all duration-300 hover:border-[var(--cyan)] hover:shadow-[0_0_25px_rgba(0,243,255,0.25)] hover:-translate-y-1.5 cursor-pointer group"
             >
-              <div>
-                <span className="inline-block rounded-md bg-[var(--cyan)]/15 px-2 py-0.5 text-[10px] font-extrabold uppercase text-[var(--cyan)] border border-[var(--cyan)]/30">
-                  {pack.linesCount || 0} {t.linesCount || "scenes"}
-                </span>
-                <h4 className="mt-2 font-bold text-white text-sm group-hover:text-[var(--cyan)] transition-colors">{pack.title}</h4>
-                <p className="mt-1 text-xs text-[var(--muted)] line-clamp-2">
-                  {pack.description || 'High-quality dubbing video scenes'}
-                </p>
+              {/* Cover Artwork Header */}
+              <div className="relative aspect-video w-full overflow-hidden bg-black/40">
+                <img
+                  src={pack.cover || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop'}
+                  alt={pack.title}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop';
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(12%_0.01_190)] via-transparent to-black/30" />
+
+                {/* Badges Overlay */}
+                <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5">
+                  <span className="rounded-md bg-black/70 backdrop-blur-md px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-[var(--amber)] border border-[var(--amber)]/40 shadow">
+                    {pack.category || 'Movie'}
+                  </span>
+                  <span className="rounded-md bg-[var(--cyan)]/80 backdrop-blur-md px-2 py-0.5 text-[10px] font-black uppercase text-black shadow">
+                    {pack.linesCount || 5} {t.linesCount || "scenes"}
+                  </span>
+                </div>
               </div>
 
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (onPreviewPack) onPreviewPack(pack);
-                }}
-                className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 py-2 text-xs font-extrabold text-[var(--cyan)] transition-all hover:bg-[var(--cyan)] hover:text-black shadow"
-              >
-                <PlayCircle className="h-4 w-4" />
-                <span>{t.previewScene || "▶️ Preview Scene"}</span>
-              </button>
+              {/* Card Body */}
+              <div className="flex flex-col justify-between p-4 flex-1">
+                <div>
+                  <h4 className="font-bold text-white text-sm leading-snug group-hover:text-[var(--cyan)] transition-colors line-clamp-1">
+                    {pack.title}
+                  </h4>
+                  <p className="mt-1 text-xs text-[var(--muted)] line-clamp-2">
+                    {pack.description || 'High-quality dubbing video scenes'}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onPreviewPack) onPreviewPack(pack);
+                  }}
+                  className="mt-4 flex items-center justify-center gap-1.5 rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 py-2 text-xs font-extrabold text-[var(--cyan)] transition-all group-hover:bg-[var(--cyan)] group-hover:text-black shadow"
+                >
+                  <PlayCircle className="h-4 w-4" />
+                  <span>{t.previewScene || "▶️ Preview Scene"}</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>

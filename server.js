@@ -188,50 +188,58 @@ const DEFAULT_PACKS = [
   {
     "id": "-__09bf5",
     "filename": "-__09bf5.zip",
-    "title": "09bf5",
+    "title": "",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: 09bf5",
+    "description": "Scene voice pack: ",
     "linesCount": 5,
     "characters": [],
     "size": 49126895,
     "sizeFormatted": "46.9 MB",
-    "url": "/api/packs/stream/-__09bf5.zip"
+    "url": "/api/packs/stream/-__09bf5.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "-__75374",
     "filename": "-__75374.zip",
-    "title": "75374",
+    "title": "",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: 75374",
+    "description": "Scene voice pack: ",
     "linesCount": 5,
     "characters": [],
     "size": 27857379,
     "sizeFormatted": "26.6 MB",
-    "url": "/api/packs/stream/-__75374.zip"
+    "url": "/api/packs/stream/-__75374.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "300_-_this_is_sparta_",
     "filename": "300_-_this_is_sparta_.zip",
-    "title": "300 This Is Sparta",
+    "title": "300: This is Sparta!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: 300 This Is Sparta",
+    "description": "Scene voice pack: 300: This is Sparta!",
     "linesCount": 5,
     "characters": [],
     "size": 297625319,
     "sizeFormatted": "283.8 MB",
-    "url": "/api/packs/stream/300_-_this_is_sparta_.zip"
+    "url": "/api/packs/stream/300_-_this_is_sparta_.zip",
+    "category": "Action",
+    "cover": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "annoying_orange_4a4e0",
     "filename": "annoying_orange_4a4e0.zip",
-    "title": "Annoying Orange 4a4e0",
+    "title": "Annoying Orange",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Annoying Orange 4a4e0",
+    "description": "Scene voice pack: Annoying Orange",
     "linesCount": 5,
     "characters": [],
     "size": 13952441,
     "sizeFormatted": "13.3 MB",
-    "url": "/api/packs/stream/annoying_orange_4a4e0.zip"
+    "url": "/api/packs/stream/annoying_orange_4a4e0.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Are you the Strongest",
@@ -243,67 +251,79 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 25449640,
     "sizeFormatted": "24.3 MB",
-    "url": "/api/packs/stream/Are%20you%20the%20Strongest.zip"
+    "url": "/api/packs/stream/Are%20you%20the%20Strongest.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "attack_on_titan_-_you_traitor",
     "filename": "attack_on_titan_-_you_traitor.zip",
-    "title": "Attack On Titan You Traitor",
+    "title": "Attack on Titan: You Traitor!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Attack On Titan You Traitor",
+    "description": "Scene voice pack: Attack on Titan: You Traitor!",
     "linesCount": 5,
     "characters": [],
     "size": 188012205,
     "sizeFormatted": "179.3 MB",
-    "url": "/api/packs/stream/attack_on_titan_-_you_traitor.zip"
+    "url": "/api/packs/stream/attack_on_titan_-_you_traitor.zip",
+    "category": "Anime",
+    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "avengers_arguing",
     "filename": "avengers_arguing.zip",
-    "title": "Avengers Arguing",
+    "title": "Avengers: Arguing Scene",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Avengers Arguing",
+    "description": "Scene voice pack: Avengers: Arguing Scene",
     "linesCount": 5,
     "characters": [],
     "size": 208966886,
     "sizeFormatted": "199.3 MB",
-    "url": "/api/packs/stream/avengers_arguing.zip"
+    "url": "/api/packs/stream/avengers_arguing.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "backrooms_-_dinner_scene_e80f0",
     "filename": "backrooms_-_dinner_scene_e80f0.zip",
-    "title": "Backrooms Dinner Scene E80f0",
+    "title": "Backrooms Dinner Scene",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Backrooms Dinner Scene E80f0",
+    "description": "Scene voice pack: Backrooms Dinner Scene",
     "linesCount": 5,
     "characters": [],
     "size": 39495110,
     "sizeFormatted": "37.7 MB",
-    "url": "/api/packs/stream/backrooms_-_dinner_scene_e80f0.zip"
+    "url": "/api/packs/stream/backrooms_-_dinner_scene_e80f0.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "batman_interrogates_the_joker_-_the_dark_knight_96d29",
     "filename": "batman_interrogates_the_joker_-_the_dark_knight_96d29.zip",
-    "title": "Batman Interrogates The Joker The Dark Knight 96d29",
+    "title": "The Dark Knight: Batman Interrogates Joker",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Batman Interrogates The Joker The Dark Knight 96d29",
+    "description": "Scene voice pack: The Dark Knight: Batman Interrogates Joker",
     "linesCount": 5,
     "characters": [],
     "size": 74649260,
     "sizeFormatted": "71.2 MB",
-    "url": "/api/packs/stream/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip"
+    "url": "/api/packs/stream/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip",
+    "category": "DC",
+    "cover": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "beyond_the_spiderverse_trailer_0d846",
     "filename": "beyond_the_spiderverse_trailer_0d846.zip",
-    "title": "Beyond The Spiderverse Trailer 0d846",
+    "title": "Spider-Man: Across the Spider-Verse",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Beyond The Spiderverse Trailer 0d846",
+    "description": "Scene voice pack: Spider-Man: Across the Spider-Verse",
     "linesCount": 5,
     "characters": [],
     "size": 108981486,
     "sizeFormatted": "103.9 MB",
-    "url": "/api/packs/stream/beyond_the_spiderverse_trailer_0d846.zip"
+    "url": "/api/packs/stream/beyond_the_spiderverse_trailer_0d846.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Dexter - Cargo Scene",
@@ -315,19 +335,23 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 38113883,
     "sizeFormatted": "36.3 MB",
-    "url": "/api/packs/stream/Dexter%20-%20Cargo%20Scene.zip"
+    "url": "/api/packs/stream/Dexter%20-%20Cargo%20Scene.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "don_t_let_me_leave_murph",
     "filename": "don_t_let_me_leave_murph.zip",
-    "title": "Don T Let Me Leave Murph",
+    "title": "Interstellar: Don't Let Me Leave Murph!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Don T Let Me Leave Murph",
+    "description": "Scene voice pack: Interstellar: Don't Let Me Leave Murph!",
     "linesCount": 5,
     "characters": [],
     "size": 37885013,
     "sizeFormatted": "36.1 MB",
-    "url": "/api/packs/stream/don_t_let_me_leave_murph.zip"
+    "url": "/api/packs/stream/don_t_let_me_leave_murph.zip",
+    "category": "Sci-Fi",
+    "cover": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Elsa Flees From Arendelle",
@@ -339,31 +363,37 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 138054924,
     "sizeFormatted": "131.7 MB",
-    "url": "/api/packs/stream/Elsa%20Flees%20From%20Arendelle.zip"
+    "url": "/api/packs/stream/Elsa%20Flees%20From%20Arendelle.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "engame",
     "filename": "engame.zip",
-    "title": "Engame",
+    "title": "Avengers: Endgame Final Battle",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Engame",
+    "description": "Scene voice pack: Avengers: Endgame Final Battle",
     "linesCount": 5,
     "characters": [],
     "size": 171845399,
     "sizeFormatted": "163.9 MB",
-    "url": "/api/packs/stream/engame.zip"
+    "url": "/api/packs/stream/engame.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "eren_manipulates",
     "filename": "eren_manipulates.zip",
-    "title": "Eren Manipulates",
+    "title": "Attack on Titan: Eren Manipulates Grisha",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Eren Manipulates",
+    "description": "Scene voice pack: Attack on Titan: Eren Manipulates Grisha",
     "linesCount": 5,
     "characters": [],
     "size": 72909518,
     "sizeFormatted": "69.5 MB",
-    "url": "/api/packs/stream/eren_manipulates.zip"
+    "url": "/api/packs/stream/eren_manipulates.zip",
+    "category": "Anime",
+    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "erwin_s_plan_aot_3_",
@@ -375,7 +405,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 72463513,
     "sizeFormatted": "69.1 MB",
-    "url": "/api/packs/stream/erwin_s_plan_aot_3_.zip"
+    "url": "/api/packs/stream/erwin_s_plan_aot_3_.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "evil_dead_rise_bande_annonce_vf_",
@@ -387,19 +419,23 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 40066671,
     "sizeFormatted": "38.2 MB",
-    "url": "/api/packs/stream/evil_dead_rise_bande_annonce_vf_.zip"
+    "url": "/api/packs/stream/evil_dead_rise_bande_annonce_vf_.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "forrest_gump_-_life_is_like_a_box_of_chocolates",
     "filename": "forrest_gump_-_life_is_like_a_box_of_chocolates.zip",
-    "title": "Forrest Gump Life Is Like A Box Of Chocolates",
+    "title": "Forrest Gump: Box of Chocolates",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Forrest Gump Life Is Like A Box Of Chocolates",
+    "description": "Scene voice pack: Forrest Gump: Box of Chocolates",
     "linesCount": 5,
     "characters": [],
     "size": 53627602,
     "sizeFormatted": "51.1 MB",
-    "url": "/api/packs/stream/forrest_gump_-_life_is_like_a_box_of_chocolates.zip"
+    "url": "/api/packs/stream/forrest_gump_-_life_is_like_a_box_of_chocolates.zip",
+    "category": "Drama",
+    "cover": "https://images.unsplash.com/photo-1511381939415-e44015466834?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "GIVE ME THE BALL",
@@ -411,7 +447,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 246633065,
     "sizeFormatted": "235.2 MB",
-    "url": "/api/packs/stream/GIVE%20ME%20THE%20BALL.zip"
+    "url": "/api/packs/stream/GIVE%20ME%20THE%20BALL.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "GOTG Vol 2 - Now I Know That Sounds Bad",
@@ -423,7 +461,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 236342447,
     "sizeFormatted": "225.4 MB",
-    "url": "/api/packs/stream/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip"
+    "url": "/api/packs/stream/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Guardians meet avengers",
@@ -435,7 +475,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 79137929,
     "sizeFormatted": "75.5 MB",
-    "url": "/api/packs/stream/Guardians%20meet%20avengers.zip"
+    "url": "/api/packs/stream/Guardians%20meet%20avengers.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "guardians_meet_avengers",
@@ -447,7 +489,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 79059303,
     "sizeFormatted": "75.4 MB",
-    "url": "/api/packs/stream/guardians_meet_avengers.zip"
+    "url": "/api/packs/stream/guardians_meet_avengers.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "guardians_of_the_galaxy_vol_3_i_",
@@ -459,7 +503,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 24195306,
     "sizeFormatted": "23.1 MB",
-    "url": "/api/packs/stream/guardians_of_the_galaxy_vol_3_i_.zip"
+    "url": "/api/packs/stream/guardians_of_the_galaxy_vol_3_i_.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "harrypotterduel",
@@ -471,31 +517,37 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 179428633,
     "sizeFormatted": "171.1 MB",
-    "url": "/api/packs/stream/harrypotterduel.zip"
+    "url": "/api/packs/stream/harrypotterduel.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_1",
     "filename": "harry_potter_4_-_harry_vs_voldemort_pt_1.zip",
-    "title": "Harry Potter 4 Harry Vs Voldemort Pt 1",
+    "title": "Harry Potter: Harry vs Voldemort Part 1",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Harry Potter 4 Harry Vs Voldemort Pt 1",
+    "description": "Scene voice pack: Harry Potter: Harry vs Voldemort Part 1",
     "linesCount": 5,
     "characters": [],
     "size": 67414873,
     "sizeFormatted": "64.3 MB",
-    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_1.zip"
+    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_1.zip",
+    "category": "Fantasy",
+    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "harry_potter_4_-_harry_vs_voldemort_pt_2",
     "filename": "harry_potter_4_-_harry_vs_voldemort_pt_2.zip",
-    "title": "Harry Potter 4 Harry Vs Voldemort Pt 2",
+    "title": "Harry Potter: Harry vs Voldemort Part 2",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Harry Potter 4 Harry Vs Voldemort Pt 2",
+    "description": "Scene voice pack: Harry Potter: Harry vs Voldemort Part 2",
     "linesCount": 5,
     "characters": [],
     "size": 121083320,
     "sizeFormatted": "115.5 MB",
-    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_2.zip"
+    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_2.zip",
+    "category": "Fantasy",
+    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "harry_potter_train_scene",
@@ -507,19 +559,23 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 20293488,
     "sizeFormatted": "19.4 MB",
-    "url": "/api/packs/stream/harry_potter_train_scene.zip"
+    "url": "/api/packs/stream/harry_potter_train_scene.zip",
+    "category": "Fantasy",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "homelander_vs_butcher",
     "filename": "homelander_vs_butcher.zip",
-    "title": "Homelander Vs Butcher",
+    "title": "The Boys: Homelander vs Butcher",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Homelander Vs Butcher",
+    "description": "Scene voice pack: The Boys: Homelander vs Butcher",
     "linesCount": 5,
     "characters": [],
     "size": 18008127,
     "sizeFormatted": "17.2 MB",
-    "url": "/api/packs/stream/homelander_vs_butcher.zip"
+    "url": "/api/packs/stream/homelander_vs_butcher.zip",
+    "category": "TV Series",
+    "cover": "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "i-m-tired-boss-the-green-mile-1999-nominee",
@@ -531,79 +587,93 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 23288565,
     "sizeFormatted": "22.2 MB",
-    "url": "/api/packs/stream/i-m-tired-boss-the-green-mile-1999-nominee.zip"
+    "url": "/api/packs/stream/i-m-tired-boss-the-green-mile-1999-nominee.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "ichigo_vs_byakuya_choicervoicer_54255",
     "filename": "ichigo_vs_byakuya_choicervoicer_54255.zip",
-    "title": "Ichigo Vs Byakuya Choicervoicer 54255",
+    "title": "Ichigo Vs Byakuya Choicervoicer",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Ichigo Vs Byakuya Choicervoicer 54255",
+    "description": "Scene voice pack: Ichigo Vs Byakuya Choicervoicer",
     "linesCount": 5,
     "characters": [],
     "size": 61226559,
     "sizeFormatted": "58.4 MB",
-    "url": "/api/packs/stream/ichigo_vs_byakuya_choicervoicer_54255.zip"
+    "url": "/api/packs/stream/ichigo_vs_byakuya_choicervoicer_54255.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "incredibles_-_im_thirsty",
     "filename": "incredibles_-_im_thirsty.zip",
-    "title": "Incredibles Im Thirsty",
+    "title": "The Incredibles: Where is My Super Suit?",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Incredibles Im Thirsty",
+    "description": "Scene voice pack: The Incredibles: Where is My Super Suit?",
     "linesCount": 5,
     "characters": [],
     "size": 67458892,
     "sizeFormatted": "64.3 MB",
-    "url": "/api/packs/stream/incredibles_-_im_thirsty.zip"
+    "url": "/api/packs/stream/incredibles_-_im_thirsty.zip",
+    "category": "Animation",
+    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "invincible_-_are_you_sure",
     "filename": "invincible_-_are_you_sure.zip",
-    "title": "Invincible Are You Sure",
+    "title": "Invincible: Think Mark!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Invincible Are You Sure",
+    "description": "Scene voice pack: Invincible: Think Mark!",
     "linesCount": 5,
     "characters": [],
     "size": 11566301,
     "sizeFormatted": "11.0 MB",
-    "url": "/api/packs/stream/invincible_-_are_you_sure.zip"
+    "url": "/api/packs/stream/invincible_-_are_you_sure.zip",
+    "category": "Animation",
+    "cover": "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "it-2017-pennywise-meets-georgie",
     "filename": "it-2017-pennywise-meets-georgie.zip",
-    "title": "It 2017 Pennywise Meets Georgie",
+    "title": "IT (2017): Pennywise Meets Georgie",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: It 2017 Pennywise Meets Georgie",
+    "description": "Scene voice pack: IT (2017): Pennywise Meets Georgie",
     "linesCount": 5,
     "characters": [],
     "size": 39662490,
     "sizeFormatted": "37.8 MB",
-    "url": "/api/packs/stream/it-2017-pennywise-meets-georgie.zip"
+    "url": "/api/packs/stream/it-2017-pennywise-meets-georgie.zip",
+    "category": "Horror",
+    "cover": "https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "i_robot_-_can_you_4c11c",
     "filename": "i_robot_-_can_you_4c11c.zip",
-    "title": "I Robot Can You 4c11c",
+    "title": "I Robot Can You",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: I Robot Can You 4c11c",
+    "description": "Scene voice pack: I Robot Can You",
     "linesCount": 5,
     "characters": [],
     "size": 3868945,
     "sizeFormatted": "3.7 MB",
-    "url": "/api/packs/stream/i_robot_-_can_you_4c11c.zip"
+    "url": "/api/packs/stream/i_robot_-_can_you_4c11c.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "jotaro_vs_dio",
     "filename": "jotaro_vs_dio.zip",
-    "title": "Jotaro Vs Dio",
+    "title": "JoJo's Bizarre Adventure: Jotaro vs DIO",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Jotaro Vs Dio",
+    "description": "Scene voice pack: JoJo's Bizarre Adventure: Jotaro vs DIO",
     "linesCount": 5,
     "characters": [],
     "size": 105616788,
     "sizeFormatted": "100.7 MB",
-    "url": "/api/packs/stream/jotaro_vs_dio.zip"
+    "url": "/api/packs/stream/jotaro_vs_dio.zip",
+    "category": "Anime",
+    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "kung_fu_panda_-_oogway_ascends",
@@ -615,19 +685,23 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 87842233,
     "sizeFormatted": "83.8 MB",
-    "url": "/api/packs/stream/kung_fu_panda_-_oogway_ascends.zip"
+    "url": "/api/packs/stream/kung_fu_panda_-_oogway_ascends.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "kung_fu_panda_-_shifu_vs_tai_lung",
     "filename": "kung_fu_panda_-_shifu_vs_tai_lung.zip",
-    "title": "Kung Fu Panda Shifu Vs Tai Lung",
+    "title": "Kung Fu Panda: Shifu vs Tai Lung",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Kung Fu Panda Shifu Vs Tai Lung",
+    "description": "Scene voice pack: Kung Fu Panda: Shifu vs Tai Lung",
     "linesCount": 5,
     "characters": [],
     "size": 132790504,
     "sizeFormatted": "126.6 MB",
-    "url": "/api/packs/stream/kung_fu_panda_-_shifu_vs_tai_lung.zip"
+    "url": "/api/packs/stream/kung_fu_panda_-_shifu_vs_tai_lung.zip",
+    "category": "Animation",
+    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "light_yagami_perfect_victory",
@@ -639,7 +713,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 37504302,
     "sizeFormatted": "35.8 MB",
-    "url": "/api/packs/stream/light_yagami_perfect_victory.zip"
+    "url": "/api/packs/stream/light_yagami_perfect_victory.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Loki in Germany Avengers 2012",
@@ -651,67 +727,79 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 56946847,
     "sizeFormatted": "54.3 MB",
-    "url": "/api/packs/stream/Loki%20in%20Germany%20Avengers%202012.zip"
+    "url": "/api/packs/stream/Loki%20in%20Germany%20Avengers%202012.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "minions_-_banana_song_barbara_ann_",
     "filename": "minions_-_banana_song_barbara_ann_.zip",
-    "title": "Minions Banana Song Barbara Ann",
+    "title": "Minions: Banana Song",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Minions Banana Song Barbara Ann",
+    "description": "Scene voice pack: Minions: Banana Song",
     "linesCount": 5,
     "characters": [],
     "size": 47717035,
     "sizeFormatted": "45.5 MB",
-    "url": "/api/packs/stream/minions_-_banana_song_barbara_ann_.zip"
+    "url": "/api/packs/stream/minions_-_banana_song_barbara_ann_.zip",
+    "category": "Animation",
+    "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "monsters_inc_-_waternoose_scandal_scene_6a3b5",
     "filename": "monsters_inc_-_waternoose_scandal_scene_6a3b5.zip",
-    "title": "Monsters Inc Waternoose Scandal Scene 6a3b5",
+    "title": "Monsters Inc Waternoose Scandal Scene",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Monsters Inc Waternoose Scandal Scene 6a3b5",
+    "description": "Scene voice pack: Monsters Inc Waternoose Scandal Scene",
     "linesCount": 5,
     "characters": [],
     "size": 100160645,
     "sizeFormatted": "95.5 MB",
-    "url": "/api/packs/stream/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip"
+    "url": "/api/packs/stream/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "no_way_home",
     "filename": "no_way_home.zip",
-    "title": "No Way Home",
+    "title": "Spider-Man: No Way Home",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: No Way Home",
+    "description": "Scene voice pack: Spider-Man: No Way Home",
     "linesCount": 5,
     "characters": [],
     "size": 81895474,
     "sizeFormatted": "78.1 MB",
-    "url": "/api/packs/stream/no_way_home.zip"
+    "url": "/api/packs/stream/no_way_home.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "obsession_-_diner_scene_040e7",
     "filename": "obsession_-_diner_scene_040e7.zip",
-    "title": "Obsession Diner Scene 040e7",
+    "title": "Obsession Diner Scene",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Obsession Diner Scene 040e7",
+    "description": "Scene voice pack: Obsession Diner Scene",
     "linesCount": 5,
     "characters": [],
     "size": 20416681,
     "sizeFormatted": "19.5 MB",
-    "url": "/api/packs/stream/obsession_-_diner_scene_040e7.zip"
+    "url": "/api/packs/stream/obsession_-_diner_scene_040e7.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "pulp_fiction_-_say_what_again",
     "filename": "pulp_fiction_-_say_what_again.zip",
-    "title": "Pulp Fiction Say What Again",
+    "title": "Pulp Fiction: Say What Again!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Pulp Fiction Say What Again",
+    "description": "Scene voice pack: Pulp Fiction: Say What Again!",
     "linesCount": 5,
     "characters": [],
     "size": 36923034,
     "sizeFormatted": "35.2 MB",
-    "url": "/api/packs/stream/pulp_fiction_-_say_what_again.zip"
+    "url": "/api/packs/stream/pulp_fiction_-_say_what_again.zip",
+    "category": "Classic",
+    "cover": "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Spider-Man 2 - Could You Pay Me In Advance",
@@ -723,115 +811,135 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 46832703,
     "sizeFormatted": "44.7 MB",
-    "url": "/api/packs/stream/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip"
+    "url": "/api/packs/stream/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "spider-man_3_rent_scene_modpack",
     "filename": "spider-man_3_rent_scene_modpack.zip",
-    "title": "Spider Man 3 Rent Scene Modpack",
+    "title": "Spider-Man 3: Give Me Rent!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Spider Man 3 Rent Scene Modpack",
+    "description": "Scene voice pack: Spider-Man 3: Give Me Rent!",
     "linesCount": 5,
     "characters": [],
     "size": 43404519,
     "sizeFormatted": "41.4 MB",
-    "url": "/api/packs/stream/spider-man_3_rent_scene_modpack.zip"
+    "url": "/api/packs/stream/spider-man_3_rent_scene_modpack.zip",
+    "category": "Marvel",
+    "cover": "https://images.unsplash.com/photo-1635863138275-d9b33299680b?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "star_wars-i_am_your_father",
     "filename": "star_wars-i_am_your_father.zip",
-    "title": "Star Wars I Am Your Father",
+    "title": "Star Wars: I Am Your Father",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Star Wars I Am Your Father",
+    "description": "Scene voice pack: Star Wars: I Am Your Father",
     "linesCount": 5,
     "characters": [],
     "size": 43457409,
     "sizeFormatted": "41.4 MB",
-    "url": "/api/packs/stream/star_wars-i_am_your_father.zip"
+    "url": "/api/packs/stream/star_wars-i_am_your_father.zip",
+    "category": "Star Wars",
+    "cover": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "star_wars_-_you_turned_her_against_me_20ba1",
     "filename": "star_wars_-_you_turned_her_against_me_20ba1.zip",
-    "title": "Star Wars You Turned Her Against Me 20ba1",
+    "title": "Star Wars You Turned Her Against Me",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Star Wars You Turned Her Against Me 20ba1",
+    "description": "Scene voice pack: Star Wars You Turned Her Against Me",
     "linesCount": 5,
     "characters": [],
     "size": 50355311,
     "sizeFormatted": "48.0 MB",
-    "url": "/api/packs/stream/star_wars_-_you_turned_her_against_me_20ba1.zip"
+    "url": "/api/packs/stream/star_wars_-_you_turned_her_against_me_20ba1.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "sukuna_awakens_in_shibuya_for_windows_zip_",
     "filename": "sukuna_awakens_in_shibuya_for_windows_zip_.zip",
-    "title": "Sukuna Awakens In Shibuya For Windows Zip",
+    "title": "Jujutsu Kaisen: Sukuna Awakens in Shibuya",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Sukuna Awakens In Shibuya For Windows Zip",
+    "description": "Scene voice pack: Jujutsu Kaisen: Sukuna Awakens in Shibuya",
     "linesCount": 5,
     "characters": [],
     "size": 28070969,
     "sizeFormatted": "26.8 MB",
-    "url": "/api/packs/stream/sukuna_awakens_in_shibuya_for_windows_zip_.zip"
+    "url": "/api/packs/stream/sukuna_awakens_in_shibuya_for_windows_zip_.zip",
+    "category": "Anime",
+    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "the_good_doctor_-_i_am_a_surgeon",
     "filename": "the_good_doctor_-_i_am_a_surgeon.zip",
-    "title": "The Good Doctor I Am A Surgeon",
+    "title": "The Good Doctor: I Am A Surgeon!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: The Good Doctor I Am A Surgeon",
+    "description": "Scene voice pack: The Good Doctor: I Am A Surgeon!",
     "linesCount": 5,
     "characters": [],
     "size": 62961885,
     "sizeFormatted": "60.0 MB",
-    "url": "/api/packs/stream/the_good_doctor_-_i_am_a_surgeon.zip"
+    "url": "/api/packs/stream/the_good_doctor_-_i_am_a_surgeon.zip",
+    "category": "TV Series",
+    "cover": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "Toji vs Gojo",
     "filename": "Toji vs Gojo.zip",
-    "title": "Toji Vs Gojo",
+    "title": "Jujutsu Kaisen: Toji vs Gojo",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Toji Vs Gojo",
+    "description": "Scene voice pack: Jujutsu Kaisen: Toji vs Gojo",
     "linesCount": 5,
     "characters": [],
     "size": 27091222,
     "sizeFormatted": "25.8 MB",
-    "url": "/api/packs/stream/Toji%20vs%20Gojo.zip"
+    "url": "/api/packs/stream/Toji%20vs%20Gojo.zip",
+    "category": "Anime",
+    "cover": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "twilight_-_i_know_what_you_are_d9110",
     "filename": "twilight_-_i_know_what_you_are_d9110.zip",
-    "title": "Twilight I Know What You Are D9110",
+    "title": "Twilight I Know What You Are",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: Twilight I Know What You Are D9110",
+    "description": "Scene voice pack: Twilight I Know What You Are",
     "linesCount": 5,
     "characters": [],
     "size": 104816547,
     "sizeFormatted": "100.0 MB",
-    "url": "/api/packs/stream/twilight_-_i_know_what_you_are_d9110.zip"
+    "url": "/api/packs/stream/twilight_-_i_know_what_you_are_d9110.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "what_is_your_name_5718b",
     "filename": "what_is_your_name_5718b.zip",
-    "title": "What Is Your Name 5718b",
+    "title": "What Is Your Name",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: What Is Your Name 5718b",
+    "description": "Scene voice pack: What Is Your Name",
     "linesCount": 5,
     "characters": [],
     "size": 47312596,
     "sizeFormatted": "45.1 MB",
-    "url": "/api/packs/stream/what_is_your_name_5718b.zip"
+    "url": "/api/packs/stream/what_is_your_name_5718b.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "white_chicks_-_a_thousand_miles",
     "filename": "white_chicks_-_a_thousand_miles.zip",
-    "title": "White Chicks A Thousand Miles",
+    "title": "White Chicks: A Thousand Miles",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: White Chicks A Thousand Miles",
+    "description": "Scene voice pack: White Chicks: A Thousand Miles",
     "linesCount": 5,
     "characters": [],
     "size": 31793098,
     "sizeFormatted": "30.3 MB",
-    "url": "/api/packs/stream/white_chicks_-_a_thousand_miles.zip"
+    "url": "/api/packs/stream/white_chicks_-_a_thousand_miles.zip",
+    "category": "Comedy",
+    "cover": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "will_byers_coming_out",
@@ -843,7 +951,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 108735142,
     "sizeFormatted": "103.7 MB",
-    "url": "/api/packs/stream/will_byers_coming_out.zip"
+    "url": "/api/packs/stream/will_byers_coming_out.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "you_are_a_toy",
@@ -855,19 +965,23 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 15835095,
     "sizeFormatted": "15.1 MB",
-    "url": "/api/packs/stream/you_are_a_toy.zip"
+    "url": "/api/packs/stream/you_are_a_toy.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "you_shall_not_pass_lotr_scene",
     "filename": "you_shall_not_pass_lotr_scene.zip",
-    "title": "You Shall Not Pass Lotr Scene",
+    "title": "Lord of the Rings: You Shall Not Pass!",
     "author": "Choicer Voicer",
-    "description": "Scene voice pack: You Shall Not Pass Lotr Scene",
+    "description": "Scene voice pack: Lord of the Rings: You Shall Not Pass!",
     "linesCount": 5,
     "characters": [],
     "size": 48920992,
     "sizeFormatted": "46.7 MB",
-    "url": "/api/packs/stream/you_shall_not_pass_lotr_scene.zip"
+    "url": "/api/packs/stream/you_shall_not_pass_lotr_scene.zip",
+    "category": "Fantasy",
+    "cover": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "ytdowncom_youtube_dementor_on_bo",
@@ -879,7 +993,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 101232070,
     "sizeFormatted": "96.5 MB",
-    "url": "/api/packs/stream/ytdowncom_youtube_dementor_on_bo.zip"
+    "url": "/api/packs/stream/ytdowncom_youtube_dementor_on_bo.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   },
   {
     "id": "yu_and_mi_-_rush_hour",
@@ -891,7 +1007,9 @@ const DEFAULT_PACKS = [
     "characters": [],
     "size": 37954983,
     "sizeFormatted": "36.2 MB",
-    "url": "/api/packs/stream/yu_and_mi_-_rush_hour.zip"
+    "url": "/api/packs/stream/yu_and_mi_-_rush_hour.zip",
+    "category": "Movie",
+    "cover": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=600&auto=format&fit=crop"
   }
 ];
 
