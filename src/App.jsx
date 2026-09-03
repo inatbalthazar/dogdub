@@ -12,6 +12,7 @@ import SetPlayerNameModal from './components/SetPlayerNameModal';
 import HowToPlayModal from './components/HowToPlayModal';
 import ScenePackPreviewModal from './components/ScenePackPreviewModal';
 import LoadingOverlay from './components/LoadingOverlay';
+import Footer from './components/Footer';
 import { parseScenePackZip } from './services/packReader';
 import { audioEngine } from './services/audioEngine';
 import { translations } from './translations';
@@ -567,6 +568,8 @@ const DEFAULT_FALLBACK_PACKS = [
           setIsCreateModalOpen(true);
         }}
       />
+
+      <Footer />
 
       <LoadingOverlay
         isOpen={globalLoading.isOpen}

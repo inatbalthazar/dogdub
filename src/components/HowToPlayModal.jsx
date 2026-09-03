@@ -157,6 +157,34 @@ export default function HowToPlayModal({ isOpen, onClose }) {
           </div>
         </div>
 
+        {/* License Block */}
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-gray-800 bg-black/40 px-3.5 py-2 text-[10px] text-gray-400">
+          <div className="flex items-center gap-2">
+            <a
+              href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png"
+                alt="CC BY-NC-ND 4.0"
+                className="h-4.5 w-auto rounded opacity-80 hover:opacity-100 transition"
+              />
+            </a>
+            <span>
+              This work is licensed under a{' '}
+              <a
+                href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--amber)] hover:underline font-bold"
+              >
+                Creative Commons Attribution-NonCommercial-NoDerivs 4.0 Unported License
+              </a>
+            </span>
+          </div>
+        </div>
+
         {/* Footer */}
         <div className="mt-6 flex justify-end">
           <button
