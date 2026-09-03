@@ -142,12 +142,12 @@ export default function DubControls({
           } ${!canRecord ? 'opacity-50 cursor-not-allowed grayscale-[0.3]' : ''}`}
           title={
             !hasMicrophone
-              ? 'ไม่พบไมโครโฟน กรุณาเสียบไมค์ก่อนอัดเสียง (No mic detected)'
-              : isAlreadyRecorded
-              ? `อัดเสียงแล้วโดย ${recorderName || 'ผู้เล่นอื่น'}`
-              : !isMyTurn
-              ? 'รอให้ถึงคิวพากย์ของคุณ (Wait for your turn)'
-              : 'Press [R] to record'
+              ? 'ไม่พบไมโครโฟน กรุณาเสียบไมค์ก่อนอัดเสียง'
+              : !canRecord
+              ? 'รอให้ถึงคิวพากย์ของคุณ'
+              : (hasRecordedTake || isAlreadyRecorded)
+              ? 'กดอัดเสียงใหม่ (Record again)'
+              : 'กดเพื่ออัดเสียง (Start recording)'
           }
           type="button"
         >
@@ -165,19 +165,18 @@ export default function DubControls({
             ) : canRecord ? (
               <>
                 <span className="h-3 w-3 rounded-full bg-red-600 border border-white/80 shadow-sm animate-pulse" />
-                <span>{isAlreadyRecorded ? (t.reRecord || "Re-record (พากย์ใหม่)") : (t.startRecord || "Start recording")}</span>
-              </>
-            ) : isAlreadyRecorded ? (
-              <>
-                <Lock className="h-3.5 w-3.5 text-amber-400" />
-                <span className="text-xs font-bold text-amber-300">
-                  {recorderName ? `พากย์แล้ว (${recorderName})` : 'พากย์เรียบร้อยแล้ว'}
+                <span className="font-bold">
+                  {(hasRecordedTake || isAlreadyRecorded)
+                    ? (t.reRecord || "🔴 Record again (พากย์ใหม่)")
+                    : (t.startRecord || "🔴 Start recording")}
                 </span>
               </>
             ) : (
               <>
-                <span className="h-3 w-3 rounded-full bg-gray-500 border border-gray-400" />
-                <span>{t.waitTurn || "Wait for your turn"}</span>
+                <Lock className="h-3.5 w-3.5 text-amber-400" />
+                <span className="text-xs font-bold text-amber-300">
+                  {recorderName ? `พากย์แล้ว (${recorderName})` : 'คิวพากย์ของเพื่อน'}
+                </span>
               </>
             )}
           </div>

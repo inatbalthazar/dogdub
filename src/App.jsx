@@ -1236,11 +1236,13 @@ const DEFAULT_FALLBACK_PACKS = [
 
   const isMyTurn = Boolean(
     !activeRoom || // Solo mode: always your turn!
-    (activeRoom?.players && activeRoom?.players?.length === 1) || // Single player room: always your turn!
+    (activeRoom?.players && activeRoom?.players?.length <= 1) || // Single player room: always your turn!
+    (activeRoom?.you && activeRoom?.you?.isHost && (!activeRoom.players || activeRoom.players.length <= 1)) ||
     (currentTurnPlayer && (
       (currentTurnPlayerId && myPlayerId && currentTurnPlayerId === myPlayerId) ||
-      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name === myPlayerName) ||
-      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name.includes(myPlayerName))
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name.trim().toLowerCase() === myPlayerName.trim().toLowerCase()) ||
+      (currentTurnPlayer.name && myPlayerName && currentTurnPlayer.name.toLowerCase().includes(myPlayerName.toLowerCase())) ||
+      (currentTurnPlayer.name && myPlayerName && myPlayerName.toLowerCase().includes(currentTurnPlayer.name.toLowerCase()))
     ))
   );
 
