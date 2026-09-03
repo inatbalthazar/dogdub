@@ -54,7 +54,7 @@ export default function DubControls({
 
   // Trigger next turn (advances scene & shifts mic to next player)
   const handleNextTurnClick = () => {
-    if (!isMyTurn || !hasRecordedTake) return; // Must be mic holder AND must have recorded take!
+    if (!hasRecordedTake) return; // Next turn unlocks once scene is recorded!
     if (onNextTurn) {
       onNextTurn();
     } else if (onNextClip) {
@@ -62,8 +62,8 @@ export default function DubControls({
     }
   };
 
-  // Next turn is disabled if you are NOT holding mic OR scene has NOT been recorded yet!
-  const isNextTurnDisabled = !isMyTurn || !hasRecordedTake || currentLineIndex >= (totalLines - 1);
+  // Next turn is disabled if scene has NOT been recorded yet or at end of pack
+  const isNextTurnDisabled = !hasRecordedTake || currentLineIndex >= (totalLines - 1);
 
   return (
     <aside className="chapter-panel flex flex-col gap-3 max-w-[320px] w-full" aria-label="Dub controls">
@@ -102,7 +102,7 @@ export default function DubControls({
             ✅ พากย์เสียงเรียบร้อยแล้ว {recorderName ? `(${recorderName})` : ''}
           </span>
           <span className="block text-[10px] text-emerald-200/80 mt-0.5">
-            {isMyTurn ? 'กด Next turn เพื่อส่งคิวต่อไปให้เพื่อน!' : 'รอผู้ถือไมค์กด Next turn ส่งคิวถัดไป'}
+            กด Next turn ด้านล่างเพื่อส่งคิวถัดไป!
           </span>
         </div>
       ) : (
@@ -213,7 +213,7 @@ export default function DubControls({
             <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
           </button>
 
-          {/* Next Turn Button (Disabled if NOT holding mic OR scene is not recorded) */}
+          {/* Next Turn Button (Unlocks as soon as scene is recorded so room can advance to next clip!) */}
           <button
             onClick={handleNextTurnClick}
             disabled={isNextTurnDisabled}
@@ -222,11 +222,9 @@ export default function DubControls({
             }`}
             type="button"
             title={
-              !isMyTurn
-                ? 'เฉพาะผู้ถือไมค์พากย์เสียงเท่านั้นที่กด Next turn ได้ (Only mic holder can advance turn)'
-                : !hasRecordedTake
+              !hasRecordedTake
                 ? 'พากย์เสียงฉากนี้ให้เสร็จก่อนส่งคิวถัดไป (Record this scene first)'
-                : 'ส่งต่อคิวพากย์ฉากถัดไป'
+                : 'กดเพื่อเปลี่ยนฉากและส่งคิวให้เพื่อนทั้งห้อง (Next turn)'
             }
           >
             <span>{t.nextTurn || "Next turn"}</span>
