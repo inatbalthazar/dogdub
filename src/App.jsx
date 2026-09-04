@@ -33,6 +33,9 @@ export default function App() {
   const [rooms, setRooms] = useState([]);
   const [selectedPackId, setSelectedPackId] = useState('');
   const [activePackData, setActivePackData] = useState(null);
+  const [activeRoom, setActiveRoom] = useState(null);
+  const [currentUser, setCurrentUser] = useState({ name: 'นักพากย์', isHost: false, token: '' });
+  const [activeTurnIndex, setActiveTurnIndex] = useState(0);
 
   const [initLoading, setInitLoading] = useState({
     isInit: true,
