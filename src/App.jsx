@@ -1148,9 +1148,9 @@ const DEFAULT_FALLBACK_PACKS = [
 
     setGlobalLoading({
       isOpen: true,
-      percent: 10,
-      title: lang === 'en' ? 'Downloading Voice Pack...' : 'กำลังดาวน์โหลดฉากภาพและเสียงพากย์...',
-      subtext: '10%'
+      percent: 2,
+      title: lang === 'en' ? 'Connecting to Voice Server...' : 'กำลังเชื่อมต่อเซิร์ฟเวอร์บทพากย์...',
+      subtext: '0.0 MB / -- MB (0.0 MB/s)'
     });
 
     try {
@@ -1163,21 +1163,80 @@ const DEFAULT_FALLBACK_PACKS = [
           const res = await fetch(candidateUrl);
           if (!res.ok) continue;
 
-          const arrayBuffer = await res.arrayBuffer();
+          const contentLengthHeader = res.headers.get('content-length');
+          const totalBytes = contentLengthHeader ? parseInt(contentLengthHeader, 10) : (foundPack?.size || 0);
+
+          let arrayBuffer = null;
+
+          if (res.body && typeof res.body.getReader === 'function') {
+            const reader = res.body.getReader();
+            const chunks = [];
+            let receivedBytes = 0;
+            const startTime = performance.now();
+            let lastUpdate = 0;
+
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+
+              chunks.push(value);
+              receivedBytes += value.length;
+
+              const now = performance.now();
+              if (now - lastUpdate > 50 || (totalBytes > 0 && receivedBytes >= totalBytes)) {
+                lastUpdate = now;
+                const durationSec = Math.max(0.05, (now - startTime) / 1000);
+                const speedMBps = ((receivedBytes / (1024 * 1024)) / durationSec).toFixed(1);
+                const receivedMB = (receivedBytes / (1024 * 1024)).toFixed(1);
+                const totalMB = totalBytes > 0 ? (totalBytes / (1024 * 1024)).toFixed(1) : null;
+
+                // Real download progress spans 5% -> 50%
+                const pct = totalBytes > 0
+                  ? Math.min(50, Math.max(5, Math.round(5 + (receivedBytes / totalBytes) * 45)))
+                  : Math.min(50, Math.max(5, Math.round(5 + Math.log2(receivedBytes / 1024 + 1) * 3)));
+
+                const sizeStr = totalMB ? `${receivedMB} MB / ${totalMB} MB` : `${receivedMB} MB`;
+                const speedStr = `${speedMBps} MB/s`;
+
+                setGlobalLoading({
+                  isOpen: true,
+                  percent: pct,
+                  title: lang === 'en' ? 'Downloading Voice Pack...' : 'กำลังดาวน์โหลดฉากภาพและเสียงพากย์...',
+                  subtext: `${sizeStr} • ${speedStr}`
+                });
+              }
+            }
+
+            if (chunks.length > 0) {
+              const concatenated = new Uint8Array(receivedBytes);
+              let offset = 0;
+              for (const chunk of chunks) {
+                concatenated.set(chunk, offset);
+                offset += chunk.length;
+              }
+              arrayBuffer = concatenated.buffer;
+            }
+          }
+
+          if (!arrayBuffer) {
+            arrayBuffer = await res.arrayBuffer();
+          }
+
           if (!arrayBuffer || arrayBuffer.byteLength < 100) continue;
 
           setGlobalLoading({
             isOpen: true,
-            percent: 35,
-            title: lang === 'en' ? 'Processing Pack Archive...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...',
-            subtext: '35%'
+            percent: 52,
+            title: lang === 'en' ? 'Extracting Pack Archive...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...',
+            subtext: '52%'
           });
 
           packData = await parseScenePackZip(arrayBuffer, (pct, status) => {
+            const overallPct = Math.max(50, Math.min(100, Math.round(50 + (pct / 100) * 50)));
             setGlobalLoading({
               isOpen: true,
-              percent: Math.max(30, Math.min(100, Math.round(pct))),
-              title: lang === 'en' ? 'Loading Voice Pack...' : 'กำลังโหลดฉากภาพและเสียงพากย์...',
+              percent: overallPct,
+              title: lang === 'en' ? 'Processing Pack Archive...' : 'กำลังเตรียมฉากและคลิปพากย์...',
               subtext: status
             });
           });

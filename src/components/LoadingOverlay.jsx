@@ -58,7 +58,7 @@ export default function LoadingOverlay({
             <Sparkles className="h-4 w-4 text-[var(--amber)] animate-bounce" />
             <span>{title}</span>
           </h3>
-          <p className="text-xs font-semibold text-[var(--muted)] animate-pulse">
+          <p className="text-xs font-medium text-cyan-200/90 font-mono tracking-wide">
             {subtext}
           </p>
         </div>
