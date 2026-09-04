@@ -224,7 +224,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 49126895,
     "sizeFormatted": "46.9 MB",
-    "url": "/api/packs/stream/-__09bf5.zip",
+    "url": "/packs/-__09bf5.zip",
     "category": "Movie",
     "cover": "/pack-covers/-__09bf5.jpg"
   },
@@ -238,7 +238,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 27857379,
     "sizeFormatted": "26.6 MB",
-    "url": "/api/packs/stream/-__75374.zip",
+    "url": "/packs/-__75374.zip",
     "category": "Movie",
     "cover": "/pack-covers/-__75374.jpg"
   },
@@ -252,7 +252,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 297625319,
     "sizeFormatted": "283.8 MB",
-    "url": "/api/packs/stream/300_-_this_is_sparta_.zip",
+    "url": "/packs/300_-_this_is_sparta_.zip",
     "category": "Movie",
     "cover": "/pack-covers/300_-_this_is_sparta_.png"
   },
@@ -266,7 +266,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 13952441,
     "sizeFormatted": "13.3 MB",
-    "url": "/api/packs/stream/annoying_orange_4a4e0.zip",
+    "url": "/packs/annoying_orange_4a4e0.zip",
     "category": "Movie",
     "cover": "/pack-covers/annoying_orange_4a4e0.png"
   },
@@ -280,7 +280,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 25449640,
     "sizeFormatted": "24.3 MB",
-    "url": "/api/packs/stream/Are%20you%20the%20Strongest.zip",
+    "url": "/packs/Are%20you%20the%20Strongest.zip",
     "category": "Anime",
     "cover": "/pack-covers/Are you the Strongest.png"
   },
@@ -294,7 +294,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 188012205,
     "sizeFormatted": "179.3 MB",
-    "url": "/api/packs/stream/attack_on_titan_-_you_traitor.zip",
+    "url": "/packs/attack_on_titan_-_you_traitor.zip",
     "category": "Anime",
     "cover": "/pack-covers/attack_on_titan_-_you_traitor.png"
   },
@@ -308,7 +308,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 208966886,
     "sizeFormatted": "199.3 MB",
-    "url": "/api/packs/stream/avengers_arguing.zip",
+    "url": "/packs/avengers_arguing.zip",
     "category": "Marvel",
     "cover": "/pack-covers/avengers_arguing.png"
   },
@@ -322,7 +322,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 39495110,
     "sizeFormatted": "37.7 MB",
-    "url": "/api/packs/stream/backrooms_-_dinner_scene_e80f0.zip",
+    "url": "/packs/backrooms_-_dinner_scene_e80f0.zip",
     "category": "Horror",
     "cover": "/pack-covers/backrooms_-_dinner_scene_e80f0.png"
   },
@@ -336,7 +336,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 74649260,
     "sizeFormatted": "71.2 MB",
-    "url": "/api/packs/stream/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip",
+    "url": "/packs/batman_interrogates_the_joker_-_the_dark_knight_96d29.zip",
     "category": "DC",
     "cover": "/pack-covers/batman_interrogates_the_joker_-_the_dark_knight_96d29.jpg"
   },
@@ -350,7 +350,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 108981486,
     "sizeFormatted": "103.9 MB",
-    "url": "/api/packs/stream/beyond_the_spiderverse_trailer_0d846.zip",
+    "url": "/packs/beyond_the_spiderverse_trailer_0d846.zip",
     "category": "Marvel",
     "cover": "/pack-covers/beyond_the_spiderverse_trailer_0d846.png"
   },
@@ -364,7 +364,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 38113883,
     "sizeFormatted": "36.3 MB",
-    "url": "/api/packs/stream/Dexter%20-%20Cargo%20Scene.zip",
+    "url": "/packs/Dexter%20-%20Cargo%20Scene.zip",
     "category": "TV Series",
     "cover": "/pack-covers/Dexter - Cargo Scene.png"
   },
@@ -378,7 +378,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 37885013,
     "sizeFormatted": "36.1 MB",
-    "url": "/api/packs/stream/don_t_let_me_leave_murph.zip",
+    "url": "/packs/don_t_let_me_leave_murph.zip",
     "category": "Movie",
     "cover": "/pack-covers/don_t_let_me_leave_murph.jpg"
   },
@@ -392,7 +392,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 138054924,
     "sizeFormatted": "131.7 MB",
-    "url": "/api/packs/stream/Elsa%20Flees%20From%20Arendelle.zip",
+    "url": "/packs/Elsa%20Flees%20From%20Arendelle.zip",
     "category": "Animation",
     "cover": "/pack-covers/Elsa Flees From Arendelle.png"
   },
@@ -406,7 +406,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 171845399,
     "sizeFormatted": "163.9 MB",
-    "url": "/api/packs/stream/engame.zip",
+    "url": "/packs/engame.zip",
     "category": "Marvel",
     "cover": "/pack-covers/engame.png"
   },
@@ -420,7 +420,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 72909518,
     "sizeFormatted": "69.5 MB",
-    "url": "/api/packs/stream/eren_manipulates.zip",
+    "url": "/packs/eren_manipulates.zip",
     "category": "Anime",
     "cover": "/pack-covers/eren_manipulates.png"
   },
@@ -434,7 +434,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 72463513,
     "sizeFormatted": "69.1 MB",
-    "url": "/api/packs/stream/erwin_s_plan_aot_3_.zip",
+    "url": "/packs/erwin_s_plan_aot_3_.zip",
     "category": "Anime",
     "cover": "/pack-covers/erwin_s_plan_aot_3_.jpg"
   },
@@ -448,7 +448,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 40066671,
     "sizeFormatted": "38.2 MB",
-    "url": "/api/packs/stream/evil_dead_rise_bande_annonce_vf_.zip",
+    "url": "/packs/evil_dead_rise_bande_annonce_vf_.zip",
     "category": "Horror",
     "cover": "/pack-covers/evil_dead_rise_bande_annonce_vf_.jpg"
   },
@@ -462,7 +462,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 53627602,
     "sizeFormatted": "51.1 MB",
-    "url": "/api/packs/stream/forrest_gump_-_life_is_like_a_box_of_chocolates.zip",
+    "url": "/packs/forrest_gump_-_life_is_like_a_box_of_chocolates.zip",
     "category": "Movie",
     "cover": "/pack-covers/forrest_gump_-_life_is_like_a_box_of_chocolates.jpg"
   },
@@ -476,7 +476,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 246633065,
     "sizeFormatted": "235.2 MB",
-    "url": "/api/packs/stream/GIVE%20ME%20THE%20BALL.zip",
+    "url": "/packs/GIVE%20ME%20THE%20BALL.zip",
     "category": "Anime",
     "cover": "/pack-covers/GIVE ME THE BALL.png"
   },
@@ -490,7 +490,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 236342447,
     "sizeFormatted": "225.4 MB",
-    "url": "/api/packs/stream/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip",
+    "url": "/packs/GOTG%20Vol%202%20-%20Now%20I%20Know%20That%20Sounds%20Bad.zip",
     "category": "Marvel",
     "cover": "/pack-covers/GOTG Vol 2 - Now I Know That Sounds Bad.png"
   },
@@ -504,7 +504,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 79137929,
     "sizeFormatted": "75.5 MB",
-    "url": "/api/packs/stream/Guardians%20meet%20avengers.zip",
+    "url": "/packs/Guardians%20meet%20avengers.zip",
     "category": "Marvel",
     "cover": "/pack-covers/Guardians meet avengers.png"
   },
@@ -518,7 +518,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 79059303,
     "sizeFormatted": "75.4 MB",
-    "url": "/api/packs/stream/guardians_meet_avengers.zip",
+    "url": "/packs/guardians_meet_avengers.zip",
     "category": "Marvel",
     "cover": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop"
   },
@@ -532,7 +532,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 24195306,
     "sizeFormatted": "23.1 MB",
-    "url": "/api/packs/stream/guardians_of_the_galaxy_vol_3_i_.zip",
+    "url": "/packs/guardians_of_the_galaxy_vol_3_i_.zip",
     "category": "Marvel",
     "cover": "/pack-covers/guardians_of_the_galaxy_vol_3_i_.jpg"
   },
@@ -546,7 +546,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 179428633,
     "sizeFormatted": "171.1 MB",
-    "url": "/api/packs/stream/harrypotterduel.zip",
+    "url": "/packs/harrypotterduel.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/harrypotterduel.png"
   },
@@ -560,7 +560,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 67414873,
     "sizeFormatted": "64.3 MB",
-    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_1.zip",
+    "url": "/packs/harry_potter_4_-_harry_vs_voldemort_pt_1.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/harry_potter_4_-_harry_vs_voldemort_pt_1.png"
   },
@@ -574,7 +574,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 121083320,
     "sizeFormatted": "115.5 MB",
-    "url": "/api/packs/stream/harry_potter_4_-_harry_vs_voldemort_pt_2.zip",
+    "url": "/packs/harry_potter_4_-_harry_vs_voldemort_pt_2.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/harry_potter_4_-_harry_vs_voldemort_pt_2.png"
   },
@@ -588,7 +588,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 20293488,
     "sizeFormatted": "19.4 MB",
-    "url": "/api/packs/stream/harry_potter_train_scene.zip",
+    "url": "/packs/harry_potter_train_scene.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/harry_potter_train_scene.jpg"
   },
@@ -602,7 +602,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 18008127,
     "sizeFormatted": "17.2 MB",
-    "url": "/api/packs/stream/homelander_vs_butcher.zip",
+    "url": "/packs/homelander_vs_butcher.zip",
     "category": "TV Series",
     "cover": "/pack-covers/homelander_vs_butcher.jpg"
   },
@@ -616,7 +616,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 23288565,
     "sizeFormatted": "22.2 MB",
-    "url": "/api/packs/stream/i-m-tired-boss-the-green-mile-1999-nominee.zip",
+    "url": "/packs/i-m-tired-boss-the-green-mile-1999-nominee.zip",
     "category": "Movie",
     "cover": "/pack-covers/i-m-tired-boss-the-green-mile-1999-nominee.jpg"
   },
@@ -630,7 +630,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 61226559,
     "sizeFormatted": "58.4 MB",
-    "url": "/api/packs/stream/ichigo_vs_byakuya_choicervoicer_54255.zip",
+    "url": "/packs/ichigo_vs_byakuya_choicervoicer_54255.zip",
     "category": "Anime",
     "cover": "/pack-covers/ichigo_vs_byakuya_choicervoicer_54255.png"
   },
@@ -644,7 +644,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 67458892,
     "sizeFormatted": "64.3 MB",
-    "url": "/api/packs/stream/incredibles_-_im_thirsty.zip",
+    "url": "/packs/incredibles_-_im_thirsty.zip",
     "category": "Animation",
     "cover": "/pack-covers/incredibles_-_im_thirsty.png"
   },
@@ -658,7 +658,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 11566301,
     "sizeFormatted": "11.0 MB",
-    "url": "/api/packs/stream/invincible_-_are_you_sure.zip",
+    "url": "/packs/invincible_-_are_you_sure.zip",
     "category": "Movie",
     "cover": "/pack-covers/invincible_-_are_you_sure.png"
   },
@@ -672,7 +672,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 39662490,
     "sizeFormatted": "37.8 MB",
-    "url": "/api/packs/stream/it-2017-pennywise-meets-georgie.zip",
+    "url": "/packs/it-2017-pennywise-meets-georgie.zip",
     "category": "Horror",
     "cover": "/pack-covers/it-2017-pennywise-meets-georgie.jpg"
   },
@@ -686,7 +686,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 3868945,
     "sizeFormatted": "3.7 MB",
-    "url": "/api/packs/stream/i_robot_-_can_you_4c11c.zip",
+    "url": "/packs/i_robot_-_can_you_4c11c.zip",
     "category": "Movie",
     "cover": "/pack-covers/i_robot_-_can_you_4c11c.png"
   },
@@ -700,7 +700,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 105616788,
     "sizeFormatted": "100.7 MB",
-    "url": "/api/packs/stream/jotaro_vs_dio.zip",
+    "url": "/packs/jotaro_vs_dio.zip",
     "category": "Anime",
     "cover": "/pack-covers/jotaro_vs_dio.png"
   },
@@ -714,7 +714,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 87842233,
     "sizeFormatted": "83.8 MB",
-    "url": "/api/packs/stream/kung_fu_panda_-_oogway_ascends.zip",
+    "url": "/packs/kung_fu_panda_-_oogway_ascends.zip",
     "category": "Animation",
     "cover": "/pack-covers/kung_fu_panda_-_oogway_ascends.png"
   },
@@ -728,7 +728,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 132790504,
     "sizeFormatted": "126.6 MB",
-    "url": "/api/packs/stream/kung_fu_panda_-_shifu_vs_tai_lung.zip",
+    "url": "/packs/kung_fu_panda_-_shifu_vs_tai_lung.zip",
     "category": "Animation",
     "cover": "/pack-covers/kung_fu_panda_-_shifu_vs_tai_lung.png"
   },
@@ -742,7 +742,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 37504302,
     "sizeFormatted": "35.8 MB",
-    "url": "/api/packs/stream/light_yagami_perfect_victory.zip",
+    "url": "/packs/light_yagami_perfect_victory.zip",
     "category": "Movie",
     "cover": "/pack-covers/light_yagami_perfect_victory.png"
   },
@@ -756,7 +756,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 56946847,
     "sizeFormatted": "54.3 MB",
-    "url": "/api/packs/stream/Loki%20in%20Germany%20Avengers%202012.zip",
+    "url": "/packs/Loki%20in%20Germany%20Avengers%202012.zip",
     "category": "Marvel",
     "cover": "/pack-covers/Loki in Germany Avengers 2012.png"
   },
@@ -770,7 +770,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 47717035,
     "sizeFormatted": "45.5 MB",
-    "url": "/api/packs/stream/minions_-_banana_song_barbara_ann_.zip",
+    "url": "/packs/minions_-_banana_song_barbara_ann_.zip",
     "category": "Animation",
     "cover": "/pack-covers/minions_-_banana_song_barbara_ann_.png"
   },
@@ -784,7 +784,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 100160645,
     "sizeFormatted": "95.5 MB",
-    "url": "/api/packs/stream/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip",
+    "url": "/packs/monsters_inc_-_waternoose_scandal_scene_6a3b5.zip",
     "category": "Animation",
     "cover": "/pack-covers/monsters_inc_-_waternoose_scandal_scene_6a3b5.png"
   },
@@ -798,7 +798,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 81895474,
     "sizeFormatted": "78.1 MB",
-    "url": "/api/packs/stream/no_way_home.zip",
+    "url": "/packs/no_way_home.zip",
     "category": "Marvel",
     "cover": "/pack-covers/no_way_home.png"
   },
@@ -812,7 +812,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 20416681,
     "sizeFormatted": "19.5 MB",
-    "url": "/api/packs/stream/obsession_-_diner_scene_040e7.zip",
+    "url": "/packs/obsession_-_diner_scene_040e7.zip",
     "category": "Movie",
     "cover": "/pack-covers/obsession_-_diner_scene_040e7.png"
   },
@@ -826,7 +826,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 36923034,
     "sizeFormatted": "35.2 MB",
-    "url": "/api/packs/stream/pulp_fiction_-_say_what_again.zip",
+    "url": "/packs/pulp_fiction_-_say_what_again.zip",
     "category": "Movie",
     "cover": "/pack-covers/pulp_fiction_-_say_what_again.png"
   },
@@ -840,7 +840,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 46832703,
     "sizeFormatted": "44.7 MB",
-    "url": "/api/packs/stream/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip",
+    "url": "/packs/Spider-Man%202%20-%20Could%20You%20Pay%20Me%20In%20Advance.zip",
     "category": "Marvel",
     "cover": "/pack-covers/Spider-Man 2 - Could You Pay Me In Advance.png"
   },
@@ -854,7 +854,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 43404519,
     "sizeFormatted": "41.4 MB",
-    "url": "/api/packs/stream/spider-man_3_rent_scene_modpack.zip",
+    "url": "/packs/spider-man_3_rent_scene_modpack.zip",
     "category": "Marvel",
     "cover": "/pack-covers/spider-man_3_rent_scene_modpack.png"
   },
@@ -868,7 +868,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 43457409,
     "sizeFormatted": "41.4 MB",
-    "url": "/api/packs/stream/star_wars-i_am_your_father.zip",
+    "url": "/packs/star_wars-i_am_your_father.zip",
     "category": "Movie",
     "cover": "/pack-covers/star_wars-i_am_your_father.png"
   },
@@ -882,7 +882,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 50355311,
     "sizeFormatted": "48.0 MB",
-    "url": "/api/packs/stream/star_wars_-_you_turned_her_against_me_20ba1.zip",
+    "url": "/packs/star_wars_-_you_turned_her_against_me_20ba1.zip",
     "category": "Movie",
     "cover": "/pack-covers/star_wars_-_you_turned_her_against_me_20ba1.png"
   },
@@ -896,7 +896,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 28070969,
     "sizeFormatted": "26.8 MB",
-    "url": "/api/packs/stream/sukuna_awakens_in_shibuya_for_windows_zip_.zip",
+    "url": "/packs/sukuna_awakens_in_shibuya_for_windows_zip_.zip",
     "category": "Anime",
     "cover": "/pack-covers/sukuna_awakens_in_shibuya_for_windows_zip_.png"
   },
@@ -910,7 +910,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 62961885,
     "sizeFormatted": "60.0 MB",
-    "url": "/api/packs/stream/the_good_doctor_-_i_am_a_surgeon.zip",
+    "url": "/packs/the_good_doctor_-_i_am_a_surgeon.zip",
     "category": "TV Series",
     "cover": "/pack-covers/the_good_doctor_-_i_am_a_surgeon.png"
   },
@@ -924,7 +924,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 27091222,
     "sizeFormatted": "25.8 MB",
-    "url": "/api/packs/stream/Toji%20vs%20Gojo.zip",
+    "url": "/packs/Toji%20vs%20Gojo.zip",
     "category": "Anime",
     "cover": "/pack-covers/Toji vs Gojo.png"
   },
@@ -938,7 +938,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 104816547,
     "sizeFormatted": "100.0 MB",
-    "url": "/api/packs/stream/twilight_-_i_know_what_you_are_d9110.zip",
+    "url": "/packs/twilight_-_i_know_what_you_are_d9110.zip",
     "category": "Movie",
     "cover": "/pack-covers/twilight_-_i_know_what_you_are_d9110.png"
   },
@@ -952,7 +952,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 47312596,
     "sizeFormatted": "45.1 MB",
-    "url": "/api/packs/stream/what_is_your_name_5718b.zip",
+    "url": "/packs/what_is_your_name_5718b.zip",
     "category": "Anime",
     "cover": "/pack-covers/what_is_your_name_5718b.png"
   },
@@ -966,7 +966,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 31793098,
     "sizeFormatted": "30.3 MB",
-    "url": "/api/packs/stream/white_chicks_-_a_thousand_miles.zip",
+    "url": "/packs/white_chicks_-_a_thousand_miles.zip",
     "category": "Movie",
     "cover": "/pack-covers/white_chicks_-_a_thousand_miles.png"
   },
@@ -980,7 +980,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 108735142,
     "sizeFormatted": "103.7 MB",
-    "url": "/api/packs/stream/will_byers_coming_out.zip",
+    "url": "/packs/will_byers_coming_out.zip",
     "category": "TV Series",
     "cover": "/pack-covers/will_byers_coming_out.jpg"
   },
@@ -994,7 +994,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 15835095,
     "sizeFormatted": "15.1 MB",
-    "url": "/api/packs/stream/you_are_a_toy.zip",
+    "url": "/packs/you_are_a_toy.zip",
     "category": "Animation",
     "cover": "/pack-covers/you_are_a_toy.png"
   },
@@ -1008,7 +1008,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 48920992,
     "sizeFormatted": "46.7 MB",
-    "url": "/api/packs/stream/you_shall_not_pass_lotr_scene.zip",
+    "url": "/packs/you_shall_not_pass_lotr_scene.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/you_shall_not_pass_lotr_scene.jpg"
   },
@@ -1022,7 +1022,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 101232070,
     "sizeFormatted": "96.5 MB",
-    "url": "/api/packs/stream/ytdowncom_youtube_dementor_on_bo.zip",
+    "url": "/packs/ytdowncom_youtube_dementor_on_bo.zip",
     "category": "Fantasy",
     "cover": "/pack-covers/ytdowncom_youtube_dementor_on_bo.jpg"
   },
@@ -1036,7 +1036,7 @@ const DEFAULT_FALLBACK_PACKS = [
     "characters": [],
     "size": 37954983,
     "sizeFormatted": "36.2 MB",
-    "url": "/api/packs/stream/yu_and_mi_-_rush_hour.zip",
+    "url": "/packs/yu_and_mi_-_rush_hour.zip",
     "category": "Movie",
     "cover": "/pack-covers/yu_and_mi_-_rush_hour.png"
   }
@@ -1090,7 +1090,7 @@ const DEFAULT_FALLBACK_PACKS = [
     
     // Candidate URLs to try in order
     const candidateUrls = Array.from(new Set([
-      `/api/packs/stream/${encodeURIComponent(packFilename)}`,
+      `/packs/${encodeURIComponent(packFilename)}`,
       foundPack?.url,
       packUrl,
       `/packs/${encodeURIComponent(packFilename)}`
@@ -1157,18 +1157,18 @@ const DEFAULT_FALLBACK_PACKS = [
 
   // Auto-load room's scene pack upon entering inGame view or joining room
   useEffect(() => {
-    if (currentView === 'inGame' && activeRoom) {
-      const roomPackId = activeRoom.packId || activeRoom.pack?.id;
-      const foundPack = packs.find(p => p.id === roomPackId || p.filename === roomPackId || p.filename === `${roomPackId}.zip`);
-      const roomPackUrl = activeRoom.pack?.url || foundPack?.url;
+    if (currentView === 'inGame') {
+      const roomPackId = activeRoom?.packId || activeRoom?.pack?.id || selectedPackId || packs[0]?.id;
+      const foundPack = packs.find(p => p.id === roomPackId || p.filename === roomPackId || p.filename === `${roomPackId}.zip`) || packs[0];
+      const roomPackUrl = foundPack?.url || activeRoom?.pack?.url;
 
-      if (roomPackId && selectedPackId !== roomPackId) {
-        loadPack(roomPackId, roomPackUrl);
-      } else if (!activePackData && roomPackId) {
-        loadPack(roomPackId, roomPackUrl);
+      if (!activePackData || (roomPackId && activePackData?.id !== roomPackId && selectedPackId !== roomPackId)) {
+        if (foundPack) {
+          loadPack(foundPack.id, roomPackUrl);
+        }
       }
     }
-  }, [currentView, activeRoom?.packId, activeRoom?.pack?.id, activeRoom?.code]);
+  }, [currentView, activeRoom?.packId, activeRoom?.pack?.id, activeRoom?.code, Boolean(activePackData)]);
 
   const handleCreateRoom = async (roomData) => {
     const hostName = roomData?.hostName || currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';
@@ -1629,53 +1629,65 @@ const DEFAULT_FALLBACK_PACKS = [
               t={t}
             />
 
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="md:col-span-2">
-                <DubMonitor
-                  currentLine={currentLine}
-                  currentLineIndex={currentLineIndex}
-                  totalLines={activePackData?.lines?.length || 0}
-                  packTitle={activePackData?.title}
-                  recordedTakeUrl={mergedRecordedTakes[currentLineIndex]}
-                  isPlaying={isPlayingAudio}
-                  isRecording={isRecording}
-                  onAutoStopRecord={handleToggleRecord}
-                />
+            {!activePackData ? (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[oklch(38%_0.01_190)] bg-[oklch(12%_0.01_190)] p-12 text-center my-6 shadow-xl">
+                <div className="h-10 w-10 animate-spin rounded-full border-3 border-[var(--cyan)] border-t-transparent mb-3" />
+                <h4 className="text-base font-bold text-white">
+                  {lang === 'en' ? 'Preparing Voice Pack Scenes...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...'}
+                </h4>
+                <p className="mt-1 text-xs text-[var(--muted)]">
+                  {lang === 'en' ? 'Setting up live dubbing studio for players' : 'กำลังเตรียมสตูดิโอพากย์เสียงสดสำหรับผู้เล่นในห้อง'}
+                </p>
               </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <DubMonitor
+                    currentLine={currentLine}
+                    currentLineIndex={currentLineIndex}
+                    totalLines={activePackData?.lines?.length || 0}
+                    packTitle={activePackData?.title}
+                    recordedTakeUrl={mergedRecordedTakes[currentLineIndex]}
+                    isPlaying={isPlayingAudio}
+                    isRecording={isRecording}
+                    onAutoStopRecord={handleToggleRecord}
+                  />
+                </div>
 
-              <div>
-                <DubControls
-                  currentLineIndex={currentLineIndex}
-                  totalLines={activePackData?.lines?.length || 0}
-                  recordedTakesCount={Object.keys(mergedRecordedTakes).length}
-                  isRecording={isRecording}
-                  hasRecordedTake={Boolean(mergedRecordedTakes[currentLineIndex])}
-                  isMyTurn={isMyTurn}
-                  canRecord={canRecordCurrentLine}
-                  isAlreadyRecorded={isLineAlreadyRecorded}
-                  recorderName={recorderName}
-                  hasMicrophone={hasMicrophone}
-                  onHearClip={handleHearClip}
-                  onToggleRecord={handleToggleRecord}
-                  onPlayRecording={handlePlayRecording}
-                  onPrevClip={() => setCurrentLineIndex((prev) => Math.max(0, prev - 1))}
-                  onNextClip={handleNextTurn}
-                  onNextTurn={handleNextTurn}
-                  onWatchDub={() => setIsWatchDubOpen(true)}
-                  onOpenMicSettings={() => setIsMicSettingsOpen(true)}
-                  onOpenFeedback={() => alert(lang === 'en' ? 'Feedback submitted successfully' : 'ส่งข้อเสนอแนะสำเร็จ')}
-                  voicePreset={voicePreset}
-                  onPresetChange={setVoicePreset}
-                  voicePitch={voicePitch}
-                  onPitchChange={setVoicePitch}
-                  voiceTone={voiceTone}
-                  onToneChange={setVoiceTone}
-                  voiceEcho={voiceEcho}
-                  onEchoChange={setVoiceEcho}
-                  t={t}
-                />
+                <div>
+                  <DubControls
+                    currentLineIndex={currentLineIndex}
+                    totalLines={activePackData?.lines?.length || 0}
+                    recordedTakesCount={Object.keys(mergedRecordedTakes).length}
+                    isRecording={isRecording}
+                    hasRecordedTake={Boolean(mergedRecordedTakes[currentLineIndex])}
+                    isMyTurn={isMyTurn}
+                    canRecord={canRecordCurrentLine}
+                    isAlreadyRecorded={isLineAlreadyRecorded}
+                    recorderName={recorderName}
+                    hasMicrophone={hasMicrophone}
+                    onHearClip={handleHearClip}
+                    onToggleRecord={handleToggleRecord}
+                    onPlayRecording={handlePlayRecording}
+                    onPrevClip={() => setCurrentLineIndex((prev) => Math.max(0, prev - 1))}
+                    onNextClip={handleNextTurn}
+                    onNextTurn={handleNextTurn}
+                    onWatchDub={() => setIsWatchDubOpen(true)}
+                    onOpenMicSettings={() => setIsMicSettingsOpen(true)}
+                    onOpenFeedback={() => alert(lang === 'en' ? 'Feedback submitted successfully' : 'ส่งข้อเสนอแนะสำเร็จ')}
+                    voicePreset={voicePreset}
+                    onPresetChange={setVoicePreset}
+                    voicePitch={voicePitch}
+                    onPitchChange={setVoicePitch}
+                    voiceTone={voiceTone}
+                    onToneChange={setVoiceTone}
+                    voiceEcho={voiceEcho}
+                    onEchoChange={setVoiceEcho}
+                    t={t}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </main>
