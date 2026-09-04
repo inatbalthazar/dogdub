@@ -23,6 +23,12 @@
           for (var i = 0; i < names.length; i++) caches.delete(names[i]);
         });
       }
+      // Suppress benign ogv.js WASM demuxer cancellation warnings when seeking/switching clips
+      window.addEventListener('unhandledrejection', function(e) {
+        if (e.reason && (e.reason.name === 'AbortError' || String(e.reason).includes('Aborted') || String(e.reason).includes('receiveInput'))) {
+          e.preventDefault();
+        }
+      });
     </script>
     
     <!-- Google Fonts Imports: Kanit (Thai/UI), Outfit, Barlow Condensed, Bowlby One SC, JetBrains Mono -->
