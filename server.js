@@ -1795,7 +1795,15 @@ app.get('/terms*', (req, res) => {
 
 // Production static build serving
 if (fs.existsSync(path.join(__dirname, 'dist'))) {
-  app.use(express.static(path.join(__dirname, 'dist')));
+  app.use(express.static(path.join(__dirname, 'dist'), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
+    }
+  }));
 }
 
 // Default SPA fallback
@@ -1803,6 +1811,10 @@ app.get('*', (req, res) => {
   if (ASSET_EXT_REGEX.test(req.path)) {
     return res.status(404).send('Not Found');
   }
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
   if (fs.existsSync(path.join(__dirname, 'dist', 'index.html'))) {
     return res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   }
