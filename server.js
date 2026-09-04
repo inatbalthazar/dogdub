@@ -1510,15 +1510,35 @@ app.get('/api/packs/:id/progressive/line/:index', async (req, res) => {
     const { targetDir, info } = await getOrUnpackPack(req.params.id);
     const lineIdx = parseInt(req.params.index, 10);
     const lineItem = info.lines && info.lines[lineIdx];
+    const lineId = lineItem?.id;
     const ext = lineItem?.audioExt || 'ogg';
 
-    const linePath = path.join(targetDir, 'lines', `${lineIdx}.${ext}`);
-    if (fs.existsSync(linePath)) {
-      const mime = ext === 'ogg' ? 'audio/ogg' : ext === 'wav' ? 'audio/wav' : 'audio/mp3';
-      res.setHeader('Content-Type', mime);
-      res.setHeader('Cache-Control', 'public, max-age=86400');
-      return res.sendFile(linePath);
+    const candidateFiles = Array.from(new Set([
+      lineId !== undefined ? `${lineId}.${ext}` : null,
+      `${lineIdx}.${ext}`,
+      `${lineIdx + 1}.${ext}`,
+      lineId !== undefined ? `${lineId}.ogg` : null,
+      lineId !== undefined ? `${lineId}.wav` : null,
+      lineId !== undefined ? `${lineId}.mp3` : null,
+      `${lineIdx}.ogg`,
+      `${lineIdx}.wav`,
+      `${lineIdx}.mp3`,
+      `${lineIdx + 1}.ogg`,
+      `${lineIdx + 1}.wav`,
+      `${lineIdx + 1}.mp3`
+    ].filter(Boolean)));
+
+    for (const fileName of candidateFiles) {
+      const linePath = path.join(targetDir, 'lines', fileName);
+      if (fs.existsSync(linePath)) {
+        const fileExt = fileName.split('.').pop().toLowerCase();
+        const mime = fileExt === 'ogg' ? 'audio/ogg' : fileExt === 'wav' ? 'audio/wav' : 'audio/mp3';
+        res.setHeader('Content-Type', mime);
+        res.setHeader('Cache-Control', 'public, max-age=86400');
+        return res.sendFile(linePath);
+      }
     }
+
     res.status(404).json({ error: 'Line audio not found' });
   } catch (err) {
     res.status(404).json({ error: err.message });

@@ -100,15 +100,17 @@ class ProgressiveLoader {
       const res = await fetch(url);
       if (res.ok) {
         const blob = await res.blob();
-        const objectUrl = URL.createObjectURL(blob);
-        this.audioBlobCache.set(key, objectUrl);
+        if (blob && blob.size > 100 && !blob.type.includes('html')) {
+          const objectUrl = URL.createObjectURL(blob);
+          this.audioBlobCache.set(key, objectUrl);
 
-        // Update audioUrl in currentPackData if active
-        if (this.currentPackData && this.currentPackData.id === packId && this.currentPackData.lines[lineIndex]) {
-          this.currentPackData.lines[lineIndex].audioUrl = objectUrl;
+          // Update audioUrl in currentPackData if active
+          if (this.currentPackData && this.currentPackData.id === packId && this.currentPackData.lines[lineIndex]) {
+            this.currentPackData.lines[lineIndex].audioUrl = objectUrl;
+          }
+
+          return objectUrl;
         }
-
-        return objectUrl;
       }
     } catch (e) {
       console.warn(`Progressive preloader failed for line ${lineIndex}:`, e);
