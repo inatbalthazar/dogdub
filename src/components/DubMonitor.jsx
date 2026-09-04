@@ -42,6 +42,10 @@ export default function DubMonitor({
 
   const rawVideoUrl = currentLine?.videoUrl || null;
   const lineTimestamp = currentLine?.timestamp || 0;
+  const isOgvVideo = Boolean(
+    currentLine?.isOgvVideo ||
+    (rawVideoUrl && (rawVideoUrl.toLowerCase().includes('.ogv') || rawVideoUrl.toLowerCase().endsWith('.ogv')))
+  );
 
   // Initialize OGV.js Player for WebAssembly .ogv video decoding
   useEffect(() => {
@@ -447,7 +451,7 @@ export default function DubMonitor({
             {/* Full Screen Visual Content (Native Video, OGV Video, or HD Scene Image) */}
             <div className="absolute inset-0 flex items-center justify-center bg-black overflow-hidden">
               {/* Native HTML5 Video Element */}
-              {rawVideoUrl && !currentLine?.isOgvVideo && (
+              {rawVideoUrl && !isOgvVideo && (
                 <video
                   ref={videoRef}
                   src={rawVideoUrl}
@@ -461,7 +465,7 @@ export default function DubMonitor({
               {/* OGV.js Video Player Container */}
               <div 
                 ref={ogvContainerRef} 
-                className={`h-full w-full flex items-center justify-center ${rawVideoUrl && currentLine?.isOgvVideo ? 'block' : 'hidden'}`}
+                className={`h-full w-full flex items-center justify-center ${rawVideoUrl && isOgvVideo ? 'block' : 'hidden'}`}
               />
 
               {/* Image Frame Fallback when no video URL */}

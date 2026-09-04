@@ -43,10 +43,12 @@ class ProgressiveLoader {
     // Construct pack data object compatible with App.jsx
     const videoStreamUrl = `/api/packs/${encodeURIComponent(packId)}/progressive/video`;
 
+    const isOgvVideo = Boolean(info.isOgvVideo || info.packVideoExt === 'ogv');
     const lines = info.lines.map((line, idx) => ({
       ...line,
       audioUrl: this.getAudioUrl(packId, idx),
       videoUrl: videoStreamUrl,
+      isOgvVideo: isOgvVideo,
     }));
 
     this.currentPackData = {
