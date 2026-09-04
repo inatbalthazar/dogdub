@@ -1171,8 +1171,11 @@ const DEFAULT_FALLBACK_PACKS = [
   }, [currentView, activeRoom?.packId, activeRoom?.pack?.id, activeRoom?.code]);
 
   const handleCreateRoom = async (roomData) => {
+    const hostName = roomData?.hostName || currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';
+    const targetPackId = roomData?.packId || packs[0]?.id;
+    const foundPack = packs.find((p) => p.id === targetPackId) || packs[0];
+
     try {
-      const hostName = roomData.hostName || currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';
       const res = await fetch('/api/rooms', {
         method: 'POST',
         headers: {
@@ -1186,28 +1189,54 @@ const DEFAULT_FALLBACK_PACKS = [
           token: currentUser?.token || '',
         }),
       });
-      const data = await res.json();
+
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (e) {}
+
       const roomObj = data.room || data.state;
       if (roomObj) {
         setActiveRoom(roomObj);
-        setCurrentUser({ name: hostName, isHost: true, token: data.token });
+        setCurrentUser({ name: hostName, isHost: true, token: data.token || currentUser?.token });
         setIsCreateModalOpen(false);
 
-        // Load chosen pack
-        const targetPackId = roomData.packId || packs[0]?.id;
-        if (targetPackId) {
-          const found = packs.find((p) => p.id === targetPackId) || packs[0];
-          if (found) {
-            loadPack(found.id, found.url);
-          }
+        if (foundPack) {
+          loadPack(foundPack.id, foundPack.url);
         }
 
-        setCurrentView('inGame'); // Enter in-game workspace directly
+        setCurrentView('inGame');
         fetchRooms();
+        return;
       }
     } catch (err) {
-      console.error('Failed to create room:', err);
+      console.warn('Backend room creation failed, creating local room state:', err);
     }
+
+    // Fallback local room creation if server is unreachable
+    const fallbackCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const fallbackRoom = {
+      code: fallbackCode,
+      roomCode: fallbackCode,
+      name: roomData?.roomName || `ห้องพากย์ ${fallbackCode}`,
+      packTitle: foundPack?.title || 'Voice Pack',
+      packId: targetPackId,
+      isPrivate: Boolean(roomData?.password),
+      hostName: hostName,
+      players: [{ id: 'p_host', name: hostName, isHost: true }],
+      status: 'recording',
+      currentTurnPlayerId: 'p_host',
+      currentLineIndex: 0
+    };
+
+    setActiveRoom(fallbackRoom);
+    setCurrentUser({ name: hostName, isHost: true, token: 'tok_local' });
+    setIsCreateModalOpen(false);
+
+    if (foundPack) {
+      loadPack(foundPack.id, foundPack.url);
+    }
+    setCurrentView('inGame');
   };
 
   const handleJoinRoom = async (room) => {

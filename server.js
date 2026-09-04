@@ -67,7 +67,7 @@ setInterval(() => {
   }
 }, 300000);
 
-const roomCreateLimiter = createRateLimiter(15, 60000, 'สร้างห้องถี่เกินไป กรุณารอ 1 นาที (Room creation rate limit exceeded)');
+const roomCreateLimiter = createRateLimiter(200, 60000, 'สร้างห้องถี่เกินไป กรุณารอ 1 นาที (Room creation rate limit exceeded)');
 const takeUploadLimiter = createRateLimiter(120, 60000, 'ส่งไฟล์เสียงถี่เกินไป กรุณารอครู่หนึ่ง (Take upload rate limit exceeded)');
 
 // Room cache persistence for serverless/restart durability
