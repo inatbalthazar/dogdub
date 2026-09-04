@@ -23,8 +23,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check endpoint for Cloud hosts (Render, Koyeb, Railway)
-app.get('/healthz', (req, res) => res.status(200).json({ ok: true }));
+// Health check endpoints for Cloud hosts (Render, Koyeb, Railway)
+app.get(['/healthz', '/ping', '/health'], (req, res) => res.status(200).json({ ok: true, status: 'live' }));
+app.head(['/healthz', '/ping', '/health', '/'], (req, res) => res.status(200).end());
 
 // In-memory room and take storage
 const rooms = new Map();
