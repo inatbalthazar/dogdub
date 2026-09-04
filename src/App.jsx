@@ -1056,7 +1056,7 @@ const DEFAULT_FALLBACK_PACKS = [
         if (data.ok && data.packs && data.packs.length > 0) {
           setPacks(data.packs);
           if (!selectedPackId) {
-            loadPack(data.packs[0].id, data.packs[0].url);
+            setSelectedPackId(data.packs[0].id);
           }
           return;
         }
@@ -1067,7 +1067,7 @@ const DEFAULT_FALLBACK_PACKS = [
     // Fallback to local default packs if backend is offline
     setPacks(DEFAULT_FALLBACK_PACKS);
     if (!selectedPackId && DEFAULT_FALLBACK_PACKS.length > 0) {
-      loadPack(DEFAULT_FALLBACK_PACKS[0].id, DEFAULT_FALLBACK_PACKS[0].url);
+      setSelectedPackId(DEFAULT_FALLBACK_PACKS[0].id);
     }
   };
 
