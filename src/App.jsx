@@ -33,10 +33,13 @@ export default function App() {
   const [rooms, setRooms] = useState([]);
   const [selectedPackId, setSelectedPackId] = useState('');
   const [activePackData, setActivePackData] = useState(null);
-  
-  const [activeRoom, setActiveRoom] = useState(null);
-  const [currentUser, setCurrentUser] = useState({ name: t.defaultPlayerName || 'Dubber', isHost: false });
-  const [activeTurnIndex, setActiveTurnIndex] = useState(0);
+
+  const [initLoading, setInitLoading] = useState({
+    isInit: true,
+    percent: 15,
+    title: lang === 'en' ? 'Launching DOGDUB Studio...' : 'กำลังเริ่มต้นระบบ DOGDUB Studio...',
+    subtext: 'Initializing audio & room engines... 15%'
+  });
 
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
@@ -1078,6 +1081,50 @@ const DEFAULT_FALLBACK_PACKS = [
       console.warn('Backend /api/rooms offline:', err);
     }
   };
+  useEffect(() => {
+    let isMounted = true;
+
+    async function initApp() {
+      if (isMounted) {
+        setInitLoading({
+          isInit: true,
+          percent: 35,
+          title: lang === 'en' ? 'Connecting to DOGDUB Studio...' : 'กำลังเชื่อมต่อระบบสตูดิโอพากย์เสียง...',
+          subtext: '35%'
+        });
+      }
+
+      await Promise.all([fetchPacks(), fetchRooms()]);
+
+      if (isMounted) {
+        setInitLoading({
+          isInit: true,
+          percent: 75,
+          title: lang === 'en' ? 'Loading Voice Packs & Rooms...' : 'กำลังโหลดรายการฉากพากย์และห้องพากย์...',
+          subtext: '75%'
+        });
+      }
+
+      if (isMounted) {
+        setInitLoading({
+          isInit: true,
+          percent: 100,
+          title: lang === 'en' ? 'Studio Ready!' : 'ระบบพร้อมใช้งาน! เข้าสู่ล็อบบี้...',
+          subtext: '100%'
+        });
+      }
+
+      setTimeout(() => {
+        if (isMounted) setInitLoading((prev) => ({ ...prev, isInit: false }));
+      }, 600);
+    }
+
+    initApp();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const [globalLoading, setGlobalLoading] = useState({ isOpen: false, percent: 0, title: '', subtext: '' });
 
@@ -1746,10 +1793,10 @@ const DEFAULT_FALLBACK_PACKS = [
       <Footer />
 
       <LoadingOverlay
-        isOpen={globalLoading.isOpen}
-        percent={globalLoading.percent}
-        title={globalLoading.title}
-        subtext={globalLoading.subtext}
+        isOpen={initLoading.isInit || globalLoading.isOpen}
+        percent={initLoading.isInit ? initLoading.percent : globalLoading.percent}
+        title={initLoading.isInit ? initLoading.title : globalLoading.title}
+        subtext={initLoading.isInit ? initLoading.subtext : globalLoading.subtext}
       />
     </div>
   );
