@@ -1251,30 +1251,53 @@ async function getOrUnpackPack(rawPackId) {
     `${packId}`
   ];
 
-  if (fs.existsSync(PACKS_DIR)) {
-    for (const name of possibleZipNames) {
-      const p = path.join(PACKS_DIR, name);
-      if (fs.existsSync(p)) {
-        zipPath = p;
-        break;
+  const possibleSearchDirs = [
+    PACKS_DIR,
+    path.join(__dirname, 'public', 'packs'),
+    path.join(__dirname, 'dist', 'packs')
+  ];
+
+  for (const searchDir of possibleSearchDirs) {
+    if (fs.existsSync(searchDir)) {
+      for (const name of possibleZipNames) {
+        const p = path.join(searchDir, name);
+        if (fs.existsSync(p)) {
+          zipPath = p;
+          break;
+        }
       }
     }
+    if (zipPath) break;
   }
 
   let zipBuf = null;
   if (zipPath) {
     zipBuf = fs.readFileSync(zipPath);
   } else {
-    const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip`);
-    if (foundDefault && foundDefault.url) {
-      const downloadUrl = foundDefault.url.startsWith('http') ? foundDefault.url : `https://dogdub.codenat.me${foundDefault.url}`;
+    const r2BaseUrl = (process.env.R2_PUBLIC_URL || 'https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev').replace(/\/$/, '');
+    const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip` || p.filename === packId);
+    const filename = foundDefault?.filename || `${packId}.zip`;
+
+    const candidateUrls = [
+      `${r2BaseUrl}/packs/${encodeURIComponent(filename)}`,
+      `${r2BaseUrl}/packs/${filename}`,
+      foundDefault?.url && foundDefault.url.startsWith('http') ? foundDefault.url : null
+    ].filter(Boolean);
+
+    for (const downloadUrl of candidateUrls) {
       try {
+        console.log(`Downloading zip for unpacking from R2: ${downloadUrl}`);
         const r = await fetch(downloadUrl);
         if (r.ok) {
           const arr = await r.arrayBuffer();
-          zipBuf = Buffer.from(arr);
+          if (arr && arr.byteLength > 100) {
+            zipBuf = Buffer.from(arr);
+            break;
+          }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn(`Failed downloading pack zip from R2 URL ${downloadUrl}:`, e.message);
+      }
     }
   }
 

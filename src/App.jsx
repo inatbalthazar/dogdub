@@ -1170,12 +1170,13 @@ const DEFAULT_FALLBACK_PACKS = [
     const foundPack = packs.find((p) => p.id === packId || p.filename === packId || p.filename === `${packId}.zip`);
     const packFilename = foundPack?.filename || `${packId}.zip`;
     
-    // Candidate URLs to try in order
+    const R2_PUBLIC_URL = 'https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev';
     const candidateUrls = Array.from(new Set([
       `/packs/${encodeURIComponent(packFilename)}`,
+      `${R2_PUBLIC_URL}/packs/${encodeURIComponent(packFilename)}`,
+      `${R2_PUBLIC_URL}/packs/${packFilename}`,
       foundPack?.url,
       packUrl,
-      `/packs/${encodeURIComponent(packFilename)}`
     ].filter(Boolean)));
 
     try {
