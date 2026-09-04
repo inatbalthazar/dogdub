@@ -1468,7 +1468,12 @@ async function getOrUnpackPack(rawPackId) {
         item.text = captionText || text;
       } else if (['mp3', 'ogg', 'wav'].includes(ext)) {
         fs.writeFileSync(path.join(linesDir, `${lineNum}.${ext}`), Buffer.from(unzipped[entryName]));
+        const cleanBase = fileName.toLowerCase();
+        if (cleanBase !== `${lineNum}.${ext}`) {
+          fs.writeFileSync(path.join(linesDir, cleanBase), Buffer.from(unzipped[entryName]));
+        }
         item.audioExt = ext;
+        item.audioFile = cleanBase;
       }
     }
   }

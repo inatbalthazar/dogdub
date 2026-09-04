@@ -45,7 +45,7 @@ class ProgressiveLoader {
 
     const lines = info.lines.map((line, idx) => ({
       ...line,
-      audioUrl: this.getAudioUrl(packId, idx) || `/api/packs/${encodeURIComponent(packId)}/progressive/line/${idx}`,
+      audioUrl: this.getAudioUrl(packId, idx),
       videoUrl: videoStreamUrl,
     }));
 
