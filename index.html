@@ -11,6 +11,20 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     
+    <script>
+      // Clear legacy Service Workers & CacheStorage holding old bundles (e.g. index-BU84DDN8.js)
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for (var i = 0; i < regs.length; i++) regs[i].unregister();
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (var i = 0; i < names.length; i++) caches.delete(names[i]);
+        });
+      }
+    </script>
+    
     <!-- Google Fonts Imports: Kanit (Thai/UI), Outfit, Barlow Condensed, Bowlby One SC, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
