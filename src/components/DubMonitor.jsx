@@ -109,13 +109,17 @@ export default function DubMonitor({
     if (isVideoPlaying) {
       if (video && rawVideoUrl) {
         try {
-          video.currentTime = lineTimestamp || 0;
+          if (Math.abs(video.currentTime - (lineTimestamp || 0)) > 0.3) {
+            video.currentTime = lineTimestamp || 0;
+          }
           video.play().catch(() => {});
         } catch (e) {}
       }
       if (ogvPlayer && rawVideoUrl) {
         try {
-          ogvPlayer.currentTime = lineTimestamp || 0;
+          if (Math.abs(ogvPlayer.currentTime - (lineTimestamp || 0)) > 0.3) {
+            ogvPlayer.currentTime = lineTimestamp || 0;
+          }
           ogvPlayer.play();
         } catch (e) {}
       }
