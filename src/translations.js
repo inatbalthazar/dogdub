@@ -58,6 +58,8 @@ export const translations = {
     // Dub Controls Banners & Hints
     onClip: "ON CLIP",
     hearClip: "Hear clip",
+    originalClipBadge: "Original Audio",
+    myTakeBadge: "Dubbed Take",
     startRecord: "🔴 Start recording",
     recordAgain: "🔴 Record again",
     reRecord: "🔴 Record again",
@@ -194,6 +196,8 @@ export const translations = {
     // Dub Controls Banners & Hints
     onClip: "ON CLIP",
     hearClip: "Hear clip (ฟังเสียงต้นฉบับ)",
+    originalClipBadge: "เสียงต้นฉบับ",
+    myTakeBadge: "เสียงพากย์ของคุณ",
     startRecord: "🔴 Start recording (กดเริ่มพากย์)",
     recordAgain: "🔴 Record again (พากย์ใหม่)",
     reRecord: "🔴 Record again (พากย์ใหม่)",

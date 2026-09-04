@@ -146,11 +146,16 @@ export default function DubControls({
         {/* Hear Clip (Original Audio) */}
         <button
           onClick={onHearClip}
-          className="console-button flex items-center justify-center gap-2"
+          className="flex items-center justify-between rounded-xl border border-[var(--cyan)]/50 bg-gradient-to-r from-[oklch(22%_0.025_200)] via-[oklch(18%_0.02_195)] to-[oklch(14%_0.015_190)] px-3.5 py-2.5 text-xs font-extrabold text-white shadow-md hover:border-[var(--cyan)] hover:bg-[oklch(26%_0.03_200)] active:scale-95 transition-all group"
           type="button"
         >
-          <Play className="h-4 w-4 fill-current text-gray-900" />
-          <span>{t.hearClip || "Hear clip"}</span>
+          <div className="flex items-center gap-2">
+            <Volume2 className="h-4 w-4 text-[var(--cyan)] group-hover:scale-110 transition-transform" />
+            <span>{t.hearClip || "Hear clip"}</span>
+          </div>
+          <span className="rounded bg-[var(--cyan)]/20 px-2 py-0.5 text-[10px] font-black text-[var(--cyan)] uppercase tracking-wider border border-[var(--cyan)]/40 shadow-sm">
+            🎬 {t.originalClipBadge || "Original Audio"}
+          </span>
         </button>
 
         {/* Record Button */}
@@ -215,13 +220,24 @@ export default function DubControls({
         <button
           onClick={onPlayRecording}
           disabled={!hasRecordedTake}
-          className={`console-button flex items-center justify-center gap-2 ${
-            hasRecordedTake ? 'ring-2 ring-[var(--cyan)]/50 shadow-[0_0_12px_rgba(0,243,255,0.3)]' : 'opacity-50 cursor-not-allowed'
+          className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-extrabold transition-all duration-200 ${
+            hasRecordedTake
+              ? 'bg-gradient-to-r from-emerald-500 via-teal-400 to-[var(--cyan)] text-black font-black shadow-lg hover:brightness-110 active:scale-95'
+              : 'border border-[oklch(28%_0.01_190)] bg-[oklch(12%_0.01_190)] text-gray-500 opacity-50 cursor-not-allowed'
           }`}
           type="button"
         >
-          <Play className="h-4 w-4 fill-current text-gray-900" />
-          <span>{t.playRecording || "Play recording"}</span>
+          <div className="flex items-center gap-2">
+            <Play className={`h-4 w-4 ${hasRecordedTake ? 'fill-black text-black' : 'fill-gray-500 text-gray-500'}`} />
+            <span>{t.playRecording || "Play recording"}</span>
+          </div>
+          <span className={`rounded px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+            hasRecordedTake
+              ? 'bg-black/30 text-black border border-black/20'
+              : 'bg-black/20 text-gray-500 border border-white/5'
+          }`}>
+            🎙️ {t.myTakeBadge || "Dubbed Take"}
+          </span>
         </button>
 
         {/* Navigation Buttons Row */}
