@@ -1191,6 +1191,13 @@ const DEFAULT_FALLBACK_PACKS = [
         setCurrentLineIndex(0);
       } else {
         console.error('All pack download URLs failed:', lastError);
+        const hasAutoReloaded = sessionStorage.getItem('dogdub_auto_reloaded_bundle');
+        if (!hasAutoReloaded) {
+          sessionStorage.setItem('dogdub_auto_reloaded_bundle', 'true');
+          console.log('Legacy bundle detected. Automatically refreshing browser to latest app build...');
+          window.location.reload();
+          return;
+        }
         alert(lang === 'en' ? 'Failed to download or parse pack archive. Please try another pack.' : 'ไม่สามารถดาวน์โหลดไฟล์บทพากย์ได้ กรุณาลองฉากอื่น');
       }
     } catch (err) {
