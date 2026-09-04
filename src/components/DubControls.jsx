@@ -9,7 +9,8 @@ import {
   Lock,
   MicOff,
   Mic,
-  Sparkles
+  Sparkles,
+  Volume2
 } from 'lucide-react';
 import VoiceEffectsPanel from './VoiceEffectsPanel';
 

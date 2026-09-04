@@ -1086,10 +1086,15 @@ const DEFAULT_FALLBACK_PACKS = [
     setSelectedPackId(packId);
 
     const foundPack = packs.find((p) => p.id === packId || p.filename === packId || p.filename === `${packId}.zip`);
-    const r2Url = foundPack?.url || (packUrl && packUrl.startsWith('http') ? packUrl : null);
-    const localUrl = `/packs/${encodeURIComponent(foundPack?.filename || `${packId}.zip`)}`;
-
-    const targetUrl = r2Url || packUrl || localUrl;
+    const packFilename = foundPack?.filename || `${packId}.zip`;
+    
+    // Candidate URLs to try in order
+    const candidateUrls = Array.from(new Set([
+      `/api/packs/stream/${encodeURIComponent(packFilename)}`,
+      foundPack?.url,
+      packUrl,
+      `/packs/${encodeURIComponent(packFilename)}`
+    ].filter(Boolean)));
 
     setGlobalLoading({
       isOpen: true,
@@ -1099,43 +1104,47 @@ const DEFAULT_FALLBACK_PACKS = [
     });
 
     try {
-      let res = null;
-      try {
-        res = await fetch(targetUrl);
-      } catch (err) {
-        console.warn(`Primary fetch failed for ${targetUrl}, trying fallback...`, err);
-      }
+      let packData = null;
+      let lastError = null;
 
-      if ((!res || !res.ok) && targetUrl !== localUrl) {
+      for (const candidateUrl of candidateUrls) {
         try {
-          console.log(`Retrying pack download with local URL: ${localUrl}`);
-          res = await fetch(localUrl);
+          console.log(`Attempting to fetch pack archive from: ${candidateUrl}`);
+          const res = await fetch(candidateUrl);
+          if (!res.ok) continue;
+
+          const arrayBuffer = await res.arrayBuffer();
+          if (!arrayBuffer || arrayBuffer.byteLength < 100) continue;
+
+          setGlobalLoading({
+            isOpen: true,
+            percent: 35,
+            title: lang === 'en' ? 'Processing Pack Archive...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...',
+            subtext: '35%'
+          });
+
+          packData = await parseScenePackZip(arrayBuffer, (pct, status) => {
+            setGlobalLoading({
+              isOpen: true,
+              percent: Math.max(30, Math.min(100, Math.round(pct))),
+              title: lang === 'en' ? 'Loading Voice Pack...' : 'กำลังโหลดฉากภาพและเสียงพากย์...',
+              subtext: status
+            });
+          });
+
+          if (packData) break;
         } catch (err) {
-          console.warn(`Fallback fetch failed for ${localUrl}`, err);
+          console.warn(`Failed loading pack from ${candidateUrl}:`, err);
+          lastError = err;
         }
       }
 
-      if (res && res.ok) {
-        setGlobalLoading({
-          isOpen: true,
-          percent: 30,
-          title: lang === 'en' ? 'Processing Pack Archive...' : 'กำลังแตกไฟล์บทพากย์และวิดีโอ...',
-          subtext: '30%'
-        });
-
-        const arrayBuffer = await res.arrayBuffer();
-        const packData = await parseScenePackZip(arrayBuffer, (pct, status) => {
-          setGlobalLoading({
-            isOpen: true,
-            percent: Math.max(30, Math.min(100, Math.round(pct))),
-            title: lang === 'en' ? 'Loading Voice Pack...' : 'กำลังโหลดฉากภาพและเสียงพากย์...',
-            subtext: status
-          });
-        });
+      if (packData) {
         setActivePackData(packData);
         setCurrentLineIndex(0);
       } else {
-        alert(lang === 'en' ? 'Failed to download pack archive. Please try another pack.' : 'ไม่สามารถดาวน์โหลดไฟล์บทพากย์ได้ กรุณาลองฉากอื่น');
+        console.error('All pack download URLs failed:', lastError);
+        alert(lang === 'en' ? 'Failed to download or parse pack archive. Please try another pack.' : 'ไม่สามารถดาวน์โหลดไฟล์บทพากย์ได้ กรุณาลองฉากอื่น');
       }
     } catch (err) {
       console.error('Error loading pack:', err);
