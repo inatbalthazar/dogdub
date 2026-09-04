@@ -1280,13 +1280,232 @@ app.post('/api/packs/upload', (req, res) => {
   }
 });
 
-// Progressive Scene Pack Unpacker & Streaming Helpers
+// Progressive Scene Pack Unpacker & Streaming Helpers (Memory-Efficient Zero-OOM Streaming Implementation)
 const UNPACKED_DIR = path.join(CACHE_DIR, 'unpacked_packs');
 try {
   if (!fs.existsSync(UNPACKED_DIR)) {
     fs.mkdirSync(UNPACKED_DIR, { recursive: true });
   }
 } catch (e) {}
+
+const unpackingPromises = new Map();
+
+function unpackPackStream(zipFilePath, packId, targetDir) {
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+    const linesDir = path.join(targetDir, 'lines');
+    if (!fs.existsSync(linesDir)) fs.mkdirSync(linesDir, { recursive: true });
+
+    let title = packId;
+    let author = 'Choicer Voicer';
+    let description = '';
+    let packVideoExt = null;
+    let isOgvVideo = false;
+    let hasBackingTrack = false;
+    const linesMap = new Map();
+    const characters = new Set();
+
+    let packInfoTextChunks = null;
+    const textChunkMap = new Map();
+
+    if (!fflateModule) {
+      return reject(new Error('fflateModule not available for streaming unzip'));
+    }
+
+    const unzip = new fflateModule.Unzip();
+    if (fflateModule.UnzipInflate) {
+      unzip.register(fflateModule.UnzipInflate);
+    }
+
+    let activeStreams = 0;
+    let isReadEnded = false;
+    let finished = false;
+
+    function checkFinish() {
+      if (finished) return;
+      if (isReadEnded && activeStreams === 0) {
+        finished = true;
+
+        if (packInfoTextChunks && packInfoTextChunks.length) {
+          const fullBuf = Buffer.concat(packInfoTextChunks);
+          const text = fflateModule.strFromU8(fullBuf);
+          for (const line of text.split('\n')) {
+            const [k, ...v] = line.split('=');
+            if (k && v.length) {
+              const key = k.trim().toLowerCase();
+              const val = v.join('=').trim().replace(/^["']|["']$/g, '');
+              if (key === 'title') title = val;
+              if (key === 'author' || key === 'authors' || key === 'credits') author = val;
+              if (key === 'description') description = val;
+            }
+          }
+        }
+
+        for (const [lineNum, chunks] of textChunkMap.entries()) {
+          const item = linesMap.get(lineNum);
+          if (!item || !chunks.length) continue;
+          const fullBuf = Buffer.concat(chunks);
+          const text = fflateModule.strFromU8(fullBuf).trim();
+          let captionText = '';
+          for (const line of text.split('\n')) {
+            const [k, ...v] = line.split('=');
+            if (k && v.length) {
+              const key = k.trim().toLowerCase();
+              const val = v.join('=').trim().replace(/^["']|["']$/g, '');
+              if (key === 'caption' || key === 'dialog' || key === 'text') {
+                captionText = val;
+              } else if (key === 'dub_characters' || key === 'character' || key === 'speaker') {
+                const cleanSpeaker = val.replace(/[\[\]"']/g, '').trim();
+                if (cleanSpeaker) {
+                  item.speaker = cleanSpeaker.toUpperCase();
+                  characters.add(item.speaker);
+                }
+              } else if (key === 'dub_timestamps' || key === 'timestamp' || key === 'time') {
+                const parsedTime = parseFloat(val.replace(/[\[\]"']/g, '').trim());
+                if (!isNaN(parsedTime)) item.timestamp = parsedTime;
+              }
+            }
+          }
+          item.text = captionText || text;
+        }
+
+        const sortedLines = Array.from(linesMap.entries())
+          .sort((a, b) => a[0] - b[0])
+          .map(([idx, item]) => item);
+
+        const info = {
+          id: packId,
+          title,
+          author,
+          description,
+          linesCount: sortedLines.length,
+          characters: Array.from(characters),
+          packVideoExt,
+          isOgvVideo,
+          hasBackingTrack,
+          lines: sortedLines,
+        };
+
+        const infoJsonPath = path.join(targetDir, 'info.json');
+        fs.writeFileSync(infoJsonPath, JSON.stringify(info, null, 2));
+        resolve({ targetDir, info });
+      }
+    }
+
+    unzip.onfile = (file) => {
+      const fileName = file.name.split('/').pop();
+      const lower = fileName.toLowerCase();
+      if (!fileName || lower.startsWith('.')) {
+        file.ondata = () => {};
+        file.start();
+        return;
+      }
+
+      activeStreams++;
+
+      let writeStream = null;
+      let targetFile = null;
+      let isPackInfo = false;
+      let targetLineNum = null;
+
+      if (lower === 'dub_video.ogv' || lower === 'video.ogv' || lower.endsWith('_video.ogv')) {
+        targetFile = path.join(targetDir, 'video.ogv');
+        packVideoExt = 'ogv';
+        isOgvVideo = true;
+      } else if (lower === 'dub_video.mp4' || lower === 'video.mp4' || lower.endsWith('_video.mp4')) {
+        targetFile = path.join(targetDir, 'video.mp4');
+        packVideoExt = 'mp4';
+        isOgvVideo = false;
+      } else if (lower === 'dub_video.webm' || lower === 'video.webm') {
+        targetFile = path.join(targetDir, 'video.webm');
+        packVideoExt = 'webm';
+        isOgvVideo = false;
+      } else if (lower.includes('backing') && (lower.endsWith('.ogg') || lower.endsWith('.mp3') || lower.endsWith('.wav'))) {
+        const ext = lower.split('.').pop();
+        targetFile = path.join(targetDir, `backing.${ext}`);
+        hasBackingTrack = true;
+      } else if (lower.endsWith('_pack_info.txt') || lower.endsWith('_pack_info.ini') || lower.endsWith('pack.ini') || lower.endsWith('pack_info.txt')) {
+        isPackInfo = true;
+        packInfoTextChunks = [];
+      } else {
+        const match = fileName.match(/^(\d+)_?([^.]+)?\.(txt|ini|mp3|ogg|wav|png|jpg|webp)$/i);
+        if (match) {
+          const lineNum = parseInt(match[1], 10);
+          const namePart = match[2] ? match[2].trim() : 'VOICE';
+          const ext = match[3].toLowerCase();
+
+          if (!linesMap.has(lineNum)) {
+            linesMap.set(lineNum, {
+              id: lineNum,
+              speaker: namePart.toUpperCase(),
+              text: '',
+              audioExt: null,
+              timestamp: 0,
+            });
+          }
+
+          const item = linesMap.get(lineNum);
+          if (ext === 'txt' || ext === 'ini') {
+            targetLineNum = lineNum;
+            if (!textChunkMap.has(lineNum)) textChunkMap.set(lineNum, []);
+          } else if (['mp3', 'ogg', 'wav'].includes(ext)) {
+            targetFile = path.join(linesDir, `${lineNum}.${ext}`);
+            item.audioExt = ext;
+            item.audioFile = `${lineNum}.${ext}`;
+          }
+        }
+      }
+
+      if (targetFile) {
+        writeStream = fs.createWriteStream(targetFile);
+      }
+
+      file.ondata = (err, chunk, final) => {
+        if (err) {
+          console.error(`Unzip error on ${file.name}:`, err);
+          if (writeStream) writeStream.destroy();
+          activeStreams--;
+          checkFinish();
+          return;
+        }
+
+        if (chunk) {
+          if (writeStream) {
+            writeStream.write(chunk);
+          } else if (isPackInfo) {
+            packInfoTextChunks.push(chunk);
+          } else if (targetLineNum !== null) {
+            textChunkMap.get(targetLineNum).push(chunk);
+          }
+        }
+
+        if (final) {
+          if (writeStream) {
+            writeStream.end();
+          }
+          activeStreams--;
+          checkFinish();
+        }
+      };
+
+      file.start();
+    };
+
+    const rs = fs.createReadStream(zipFilePath, { highWaterMark: 64 * 1024 });
+    rs.on('data', (chunk) => unzip.push(chunk, false));
+    rs.on('end', () => {
+      unzip.push(new Uint8Array(0), true);
+      isReadEnded = true;
+      checkFinish();
+    });
+    rs.on('error', (err) => {
+      if (!finished) {
+        finished = true;
+        reject(err);
+      }
+    });
+  });
+}
 
 async function getOrUnpackPack(rawPackId) {
   const packId = path.basename(decodeURIComponent(rawPackId)).replace(/\.zip$/i, '');
@@ -1300,205 +1519,99 @@ async function getOrUnpackPack(rawPackId) {
     } catch (e) {}
   }
 
-  let zipPath = null;
-  const possibleZipNames = [
-    `${packId}.zip`,
-    `${encodeURIComponent(packId)}.zip`,
-    `${packId}`
-  ];
-
-  const possibleSearchDirs = [
-    PACKS_DIR,
-    path.join(__dirname, 'public', 'packs'),
-    path.join(__dirname, 'dist', 'packs')
-  ];
-
-  for (const searchDir of possibleSearchDirs) {
-    if (fs.existsSync(searchDir)) {
-      for (const name of possibleZipNames) {
-        const p = path.join(searchDir, name);
-        if (fs.existsSync(p)) {
-          zipPath = p;
-          break;
-        }
-      }
-    }
-    if (zipPath) break;
+  if (unpackingPromises.has(packId)) {
+    return unpackingPromises.get(packId);
   }
 
-  let zipBuf = null;
-  if (zipPath) {
-    zipBuf = fs.readFileSync(zipPath);
-  } else {
-    const r2BaseUrl = (process.env.R2_PUBLIC_URL || 'https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev').replace(/\/$/, '');
-    const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip` || p.filename === packId);
-    const filename = foundDefault?.filename || `${packId}.zip`;
+  const unpackPromise = (async () => {
+    let zipPath = null;
+    let isTempZip = false;
 
-    const candidateUrls = Array.from(new Set([
-      `http://127.0.0.1:${PORT}/packs/${encodeURIComponent(filename)}`,
-      `http://127.0.0.1:${PORT}/packs/${filename}`,
-      `${r2BaseUrl}/packs/${encodeURIComponent(filename)}`,
-      `${r2BaseUrl}/packs/${filename}`,
-      foundDefault?.url && foundDefault.url.startsWith('http') ? foundDefault.url : null
-    ].filter(Boolean)));
+    const possibleZipNames = [
+      `${packId}.zip`,
+      `${encodeURIComponent(packId)}.zip`,
+      `${packId}`
+    ];
 
-    for (const downloadUrl of candidateUrls) {
-      try {
-        console.log(`Downloading zip for unpacking from R2: ${downloadUrl}`);
-        const r = await fetch(downloadUrl);
-        if (r.ok) {
-          const arr = await r.arrayBuffer();
-          if (arr && arr.byteLength > 100) {
-            zipBuf = Buffer.from(arr);
+    const possibleSearchDirs = [
+      PACKS_DIR,
+      path.join(__dirname, 'public', 'packs'),
+      path.join(__dirname, 'dist', 'packs')
+    ];
+
+    for (const searchDir of possibleSearchDirs) {
+      if (fs.existsSync(searchDir)) {
+        for (const name of possibleZipNames) {
+          const p = path.join(searchDir, name);
+          if (fs.existsSync(p)) {
+            zipPath = p;
             break;
           }
         }
-      } catch (e) {
-        console.warn(`Failed downloading pack zip from R2 URL ${downloadUrl}:`, e.message);
       }
-    }
-  }
-
-  if (!zipBuf || !fflateModule) {
-    throw new Error(`Pack zip unavailable for unpacking: ${packId}`);
-  }
-
-  const unzipped = fflateModule.unzipSync(new Uint8Array(zipBuf));
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true });
-  }
-
-  const linesDir = path.join(targetDir, 'lines');
-  if (!fs.existsSync(linesDir)) {
-    fs.mkdirSync(linesDir, { recursive: true });
-  }
-
-  let title = packId;
-  let author = 'Choicer Voicer';
-  let description = '';
-  let packVideoExt = null;
-  let isOgvVideo = false;
-  let hasBackingTrack = false;
-  const linesMap = new Map();
-  const characters = new Set();
-
-  for (const entryName in unzipped) {
-    const fileName = entryName.split('/').pop();
-    const lower = fileName.toLowerCase();
-    if (!fileName || lower.startsWith('.')) continue;
-
-    if (lower === 'dub_video.ogv' || lower === 'video.ogv' || lower.endsWith('_video.ogv')) {
-      fs.writeFileSync(path.join(targetDir, 'video.ogv'), Buffer.from(unzipped[entryName]));
-      packVideoExt = 'ogv';
-      isOgvVideo = true;
-    } else if (lower === 'dub_video.mp4' || lower === 'video.mp4' || lower.endsWith('_video.mp4')) {
-      fs.writeFileSync(path.join(targetDir, 'video.mp4'), Buffer.from(unzipped[entryName]));
-      packVideoExt = 'mp4';
-      isOgvVideo = false;
-    } else if (lower === 'dub_video.webm' || lower === 'video.webm') {
-      fs.writeFileSync(path.join(targetDir, 'video.webm'), Buffer.from(unzipped[entryName]));
-      packVideoExt = 'webm';
-      isOgvVideo = false;
+      if (zipPath) break;
     }
 
-    if (lower.includes('backing') && (lower.endsWith('.ogg') || lower.endsWith('.mp3') || lower.endsWith('.wav'))) {
-      const ext = lower.split('.').pop();
-      fs.writeFileSync(path.join(targetDir, `backing.${ext}`), Buffer.from(unzipped[entryName]));
-      hasBackingTrack = true;
-    }
-  }
+    if (!zipPath) {
+      const r2BaseUrl = (process.env.R2_PUBLIC_URL || 'https://pub-7d63b3d2ed6a4e379334dcfada056e24.r2.dev').replace(/\/$/, '');
+      const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip` || p.filename === packId);
+      const filename = foundDefault?.filename || `${packId}.zip`;
 
-  for (const entryName in unzipped) {
-    const fileName = entryName.split('/').pop();
-    const lower = fileName.toLowerCase();
-    if (!fileName || lower.startsWith('.')) continue;
+      const candidateUrls = Array.from(new Set([
+        `http://127.0.0.1:${PORT}/packs/${encodeURIComponent(filename)}`,
+        `http://127.0.0.1:${PORT}/packs/${filename}`,
+        `${r2BaseUrl}/packs/${encodeURIComponent(filename)}`,
+        `${r2BaseUrl}/packs/${filename}`,
+        foundDefault?.url && foundDefault.url.startsWith('http') ? foundDefault.url : null
+      ].filter(Boolean)));
 
-    if (lower.endsWith('_pack_info.txt') || lower.endsWith('_pack_info.ini') || lower.endsWith('pack.ini') || lower.endsWith('pack_info.txt')) {
-      const text = fflateModule.strFromU8(unzipped[entryName]);
-      for (const line of text.split('\n')) {
-        const [k, ...v] = line.split('=');
-        if (k && v.length) {
-          const key = k.trim().toLowerCase();
-          const val = v.join('=').trim().replace(/^["']|["']$/g, '');
-          if (key === 'title') title = val;
-          if (key === 'author' || key === 'authors' || key === 'credits') author = val;
-          if (key === 'description') description = val;
-        }
-      }
-      continue;
-    }
+      const tempZipPath = path.join(UNPACKED_DIR, `temp_${packId}_${Date.now()}.zip`);
 
-    const match = fileName.match(/^(\d+)_?([^.]+)?\.(txt|ini|mp3|ogg|wav|png|jpg|webp)$/i);
-    if (match) {
-      const lineNum = parseInt(match[1], 10);
-      const namePart = match[2] ? match[2].trim() : 'VOICE';
-      const ext = match[3].toLowerCase();
-
-      if (!linesMap.has(lineNum)) {
-        linesMap.set(lineNum, {
-          id: lineNum,
-          speaker: namePart.toUpperCase(),
-          text: '',
-          audioExt: null,
-          timestamp: 0,
-        });
-      }
-
-      const item = linesMap.get(lineNum);
-      if (ext === 'txt' || ext === 'ini') {
-        const text = fflateModule.strFromU8(unzipped[entryName]).trim();
-        let captionText = '';
-        for (const line of text.split('\n')) {
-          const [k, ...v] = line.split('=');
-          if (k && v.length) {
-            const key = k.trim().toLowerCase();
-            const val = v.join('=').trim().replace(/^["']|["']$/g, '');
-            if (key === 'caption' || key === 'dialog' || key === 'text') {
-              captionText = val;
-            } else if (key === 'dub_characters' || key === 'character' || key === 'speaker') {
-              const cleanSpeaker = val.replace(/[\[\]"']/g, '').trim();
-              if (cleanSpeaker) {
-                item.speaker = cleanSpeaker.toUpperCase();
-                characters.add(item.speaker);
-              }
-            } else if (key === 'dub_timestamps' || key === 'timestamp' || key === 'time') {
-              const parsedTime = parseFloat(val.replace(/[\[\]"']/g, '').trim());
-              if (!isNaN(parsedTime)) item.timestamp = parsedTime;
+      for (const downloadUrl of candidateUrls) {
+        try {
+          console.log(`Downloading zip stream for unpacking: ${downloadUrl}`);
+          const r = await fetch(downloadUrl);
+          if (r.ok && r.body) {
+            const { Readable } = require('stream');
+            const { pipeline } = require('stream/promises');
+            await pipeline(Readable.fromWeb(r.body), fs.createWriteStream(tempZipPath));
+            if (fs.existsSync(tempZipPath) && fs.statSync(tempZipPath).size > 100) {
+              zipPath = tempZipPath;
+              isTempZip = true;
+              break;
             }
           }
+        } catch (e) {
+          console.warn(`Failed downloading pack zip from ${downloadUrl}:`, e.message);
+          if (fs.existsSync(tempZipPath)) {
+            try { fs.unlinkSync(tempZipPath); } catch (_) {}
+          }
         }
-        item.text = captionText || text;
-      } else if (['mp3', 'ogg', 'wav'].includes(ext)) {
-        fs.writeFileSync(path.join(linesDir, `${lineNum}.${ext}`), Buffer.from(unzipped[entryName]));
-        const cleanBase = fileName.toLowerCase();
-        if (cleanBase !== `${lineNum}.${ext}`) {
-          fs.writeFileSync(path.join(linesDir, cleanBase), Buffer.from(unzipped[entryName]));
-        }
-        item.audioExt = ext;
-        item.audioFile = cleanBase;
       }
     }
+
+    if (!zipPath || !fs.existsSync(zipPath)) {
+      throw new Error(`Pack zip unavailable for unpacking: ${packId}`);
+    }
+
+    try {
+      const res = await unpackPackStream(zipPath, packId, targetDir);
+      return res;
+    } finally {
+      if (isTempZip && zipPath && fs.existsSync(zipPath)) {
+        try { fs.unlinkSync(zipPath); } catch (_) {}
+      }
+    }
+  })();
+
+  unpackingPromises.set(packId, unpackPromise);
+
+  try {
+    const result = await unpackPromise;
+    return result;
+  } finally {
+    unpackingPromises.delete(packId);
   }
-
-  const sortedLines = Array.from(linesMap.entries())
-    .sort((a, b) => a[0] - b[0])
-    .map(([idx, item]) => item);
-
-  const info = {
-    id: packId,
-    title,
-    author,
-    description,
-    linesCount: sortedLines.length,
-    characters: Array.from(characters),
-    packVideoExt,
-    isOgvVideo,
-    hasBackingTrack,
-    lines: sortedLines,
-  };
-
-  fs.writeFileSync(infoJsonPath, JSON.stringify(info, null, 2));
-  return { targetDir, info };
 }
 
 // Progressive Scene Pack API Endpoints
