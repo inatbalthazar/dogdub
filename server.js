@@ -187,6 +187,62 @@ try {
 // Built-in Voice Packs metadata fallback for serverless & static hosting
 const DEFAULT_PACKS = [
   {
+    "id": "guardians_meet_avengers",
+    "filename": "guardians_meet_avengers.zip",
+    "title": "Avengers: Guardians Meet Avengers",
+    "author": "Choicer Voicer",
+    "description": "Marvel scene voice pack: Guardians Meet Avengers",
+    "linesCount": 35,
+    "characters": ["STAR-LORD", "IRON MAN", "DRAX", "SPIDER-MAN"],
+    "size": 79128330,
+    "sizeFormatted": "75.5 MB",
+    "url": "/packs/guardians_meet_avengers.zip",
+    "category": "Marvel",
+    "cover": "/pack-covers/guardians_meet_avengers.jpg"
+  },
+  {
+    "id": "matrix_red_pill",
+    "filename": "matrix_red_pill.zip",
+    "title": "The Matrix: Red Pill or Blue Pill",
+    "author": "Choicer Voicer",
+    "description": "Sci-Fi scene voice pack: The Matrix",
+    "linesCount": 12,
+    "characters": ["Morpheus", "Neo"],
+    "size": 357510,
+    "sizeFormatted": "0.3 MB",
+    "url": "/packs/matrix_red_pill.zip",
+    "category": "Movie",
+    "cover": "/pack-covers/matrix_red_pill.jpg"
+  },
+  {
+    "id": "pulp_fiction_royale",
+    "filename": "pulp_fiction_royale.zip",
+    "title": "Pulp Fiction: Royale with Cheese",
+    "author": "Choicer Voicer",
+    "description": "Movie scene voice pack: Pulp Fiction",
+    "linesCount": 15,
+    "characters": ["Vincent", "Jules"],
+    "size": 364158,
+    "sizeFormatted": "0.4 MB",
+    "url": "/packs/pulp_fiction_royale.zip",
+    "category": "Movie",
+    "cover": "/pack-covers/pulp_fiction_royale.jpg"
+  },
+  {
+    "id": "star_wars-i_am_your_father",
+    "filename": "star_wars-i_am_your_father.zip",
+    "title": "Star Wars: I Am Your Father",
+    "author": "Choicer Voicer",
+    "description": "Sci-Fi scene voice pack: Star Wars",
+    "linesCount": 18,
+    "characters": ["Darth Vader", "Luke Skywalker"],
+    "size": 43457409,
+    "sizeFormatted": "41.4 MB",
+    "url": "/packs/star_wars-i_am_your_father.zip",
+    "category": "Movie",
+    "cover": "/pack-covers/star_wars-i_am_your_father.jpg"
+  },
+  {
     "id": "-__09bf5",
     "filename": "-__09bf5.zip",
     "title": "Custom Voice Clip #1",
@@ -1490,6 +1546,26 @@ app.get('/api/packs/:id/progressive/video', async (req, res) => {
 
 // Explicit static serving for /packs & /vendor
 app.use('/packs', express.static(PACKS_DIR, {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.zip')) {
+      res.setHeader('Content-Type', 'application/zip');
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+  }
+}));
+
+app.use('/packs', express.static(path.join(__dirname, 'public', 'packs'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.zip')) {
+      res.setHeader('Content-Type', 'application/zip');
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+  }
+}));
+
+app.use('/packs', express.static(path.join(__dirname, 'dist', 'packs'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.zip')) {
       res.setHeader('Content-Type', 'application/zip');
