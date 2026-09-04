@@ -14,6 +14,7 @@ import ScenePackPreviewModal from './components/ScenePackPreviewModal';
 import LoadingOverlay from './components/LoadingOverlay';
 import Footer from './components/Footer';
 import { parseScenePackZip } from './services/packReader';
+import { progressiveLoader } from './services/progressiveLoader';
 import { audioEngine } from './services/audioEngine';
 import { soundEffects } from './services/soundEffects';
 import { translations } from './translations';
@@ -1135,6 +1136,37 @@ const DEFAULT_FALLBACK_PACKS = [
     if (!packId) return;
     setSelectedPackId(packId);
 
+    setGlobalLoading({
+      isOpen: true,
+      percent: 15,
+      title: lang === 'en' ? 'Launching Scene Studio...' : 'กำลังเปิดห้องพากย์เสียง (Instant Stream)...',
+      subtext: '15%'
+    });
+
+    // 1. Primary Fast-Path: Progressive Instant Streaming (loads in ~1 second)
+    try {
+      console.log(`Attempting progressive instant streaming for pack: ${packId}`);
+      const progressiveData = await progressiveLoader.loadInitial(packId, (pct, status) => {
+        setGlobalLoading({
+          isOpen: true,
+          percent: pct,
+          title: lang === 'en' ? 'Launching Scene Studio...' : 'กำลังเปิดห้องพากย์เสียง (Instant Stream)...',
+          subtext: status
+        });
+      });
+
+      if (progressiveData) {
+        setActivePackData(progressiveData);
+        setCurrentLineIndex(0);
+        setTimeout(() => {
+          setGlobalLoading({ isOpen: false, percent: 100, title: '', subtext: '' });
+        }, 300);
+        return;
+      }
+    } catch (progErr) {
+      console.warn('Progressive streaming unavailable, falling back to full zip download:', progErr);
+    }
+
     const foundPack = packs.find((p) => p.id === packId || p.filename === packId || p.filename === `${packId}.zip`);
     const packFilename = foundPack?.filename || `${packId}.zip`;
     
@@ -1145,13 +1177,6 @@ const DEFAULT_FALLBACK_PACKS = [
       packUrl,
       `/packs/${encodeURIComponent(packFilename)}`
     ].filter(Boolean)));
-
-    setGlobalLoading({
-      isOpen: true,
-      percent: 2,
-      title: lang === 'en' ? 'Connecting to Voice Server...' : 'กำลังเชื่อมต่อเซิร์ฟเวอร์บทพากย์...',
-      subtext: '0.0 MB / -- MB (0.0 MB/s)'
-    });
 
     try {
       let packData = null;
@@ -1285,6 +1310,18 @@ const DEFAULT_FALLBACK_PACKS = [
       }
     }
   }, [currentView, activeRoom?.packId, activeRoom?.pack?.id, activeRoom?.code, Boolean(activePackData)]);
+
+  // Sliding Window Preloading: Pre-fetch upcoming line audio clips in background as player advances
+  useEffect(() => {
+    if (activePackData && activePackData.id) {
+      progressiveLoader.preloadAhead(
+        activePackData.id,
+        currentLineIndex,
+        activePackData.linesCount || activePackData.lines?.length || 0,
+        5
+      );
+    }
+  }, [currentLineIndex, activePackData?.id]);
 
   const handleCreateRoom = async (roomData) => {
     const hostName = roomData?.hostName || currentUser?.name || localStorage.getItem('dogdub_player_name') || 'นักพากย์';

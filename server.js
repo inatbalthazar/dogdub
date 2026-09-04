@@ -1224,6 +1224,247 @@ app.post('/api/packs/upload', (req, res) => {
   }
 });
 
+// Progressive Scene Pack Unpacker & Streaming Helpers
+const UNPACKED_DIR = path.join(CACHE_DIR, 'unpacked_packs');
+try {
+  if (!fs.existsSync(UNPACKED_DIR)) {
+    fs.mkdirSync(UNPACKED_DIR, { recursive: true });
+  }
+} catch (e) {}
+
+async function getOrUnpackPack(rawPackId) {
+  const packId = path.basename(decodeURIComponent(rawPackId)).replace(/\.zip$/i, '');
+  const targetDir = path.join(UNPACKED_DIR, packId);
+  const infoJsonPath = path.join(targetDir, 'info.json');
+
+  if (fs.existsSync(infoJsonPath)) {
+    try {
+      const info = JSON.parse(fs.readFileSync(infoJsonPath, 'utf8'));
+      return { targetDir, info };
+    } catch (e) {}
+  }
+
+  let zipPath = null;
+  const possibleZipNames = [
+    `${packId}.zip`,
+    `${encodeURIComponent(packId)}.zip`,
+    `${packId}`
+  ];
+
+  if (fs.existsSync(PACKS_DIR)) {
+    for (const name of possibleZipNames) {
+      const p = path.join(PACKS_DIR, name);
+      if (fs.existsSync(p)) {
+        zipPath = p;
+        break;
+      }
+    }
+  }
+
+  let zipBuf = null;
+  if (zipPath) {
+    zipBuf = fs.readFileSync(zipPath);
+  } else {
+    const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip`);
+    if (foundDefault && foundDefault.url) {
+      const downloadUrl = foundDefault.url.startsWith('http') ? foundDefault.url : `https://dogdub.codenat.me${foundDefault.url}`;
+      try {
+        const r = await fetch(downloadUrl);
+        if (r.ok) {
+          const arr = await r.arrayBuffer();
+          zipBuf = Buffer.from(arr);
+        }
+      } catch (e) {}
+    }
+  }
+
+  if (!zipBuf || !fflateModule) {
+    throw new Error(`Pack zip unavailable for unpacking: ${packId}`);
+  }
+
+  const unzipped = fflateModule.unzipSync(new Uint8Array(zipBuf));
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+  }
+
+  const linesDir = path.join(targetDir, 'lines');
+  if (!fs.existsSync(linesDir)) {
+    fs.mkdirSync(linesDir, { recursive: true });
+  }
+
+  let title = packId;
+  let author = 'Choicer Voicer';
+  let description = '';
+  let packVideoExt = null;
+  let isOgvVideo = false;
+  let hasBackingTrack = false;
+  const linesMap = new Map();
+  const characters = new Set();
+
+  for (const entryName in unzipped) {
+    const fileName = entryName.split('/').pop();
+    const lower = fileName.toLowerCase();
+    if (!fileName || lower.startsWith('.')) continue;
+
+    if (lower === 'dub_video.ogv' || lower === 'video.ogv' || lower.endsWith('_video.ogv')) {
+      fs.writeFileSync(path.join(targetDir, 'video.ogv'), Buffer.from(unzipped[entryName]));
+      packVideoExt = 'ogv';
+      isOgvVideo = true;
+    } else if (lower === 'dub_video.mp4' || lower === 'video.mp4' || lower.endsWith('_video.mp4')) {
+      fs.writeFileSync(path.join(targetDir, 'video.mp4'), Buffer.from(unzipped[entryName]));
+      packVideoExt = 'mp4';
+      isOgvVideo = false;
+    } else if (lower === 'dub_video.webm' || lower === 'video.webm') {
+      fs.writeFileSync(path.join(targetDir, 'video.webm'), Buffer.from(unzipped[entryName]));
+      packVideoExt = 'webm';
+      isOgvVideo = false;
+    }
+
+    if (lower.includes('backing') && (lower.endsWith('.ogg') || lower.endsWith('.mp3') || lower.endsWith('.wav'))) {
+      const ext = lower.split('.').pop();
+      fs.writeFileSync(path.join(targetDir, `backing.${ext}`), Buffer.from(unzipped[entryName]));
+      hasBackingTrack = true;
+    }
+  }
+
+  for (const entryName in unzipped) {
+    const fileName = entryName.split('/').pop();
+    const lower = fileName.toLowerCase();
+    if (!fileName || lower.startsWith('.')) continue;
+
+    if (lower.endsWith('_pack_info.txt') || lower.endsWith('_pack_info.ini') || lower.endsWith('pack.ini') || lower.endsWith('pack_info.txt')) {
+      const text = fflateModule.strFromU8(unzipped[entryName]);
+      for (const line of text.split('\n')) {
+        const [k, ...v] = line.split('=');
+        if (k && v.length) {
+          const key = k.trim().toLowerCase();
+          const val = v.join('=').trim().replace(/^["']|["']$/g, '');
+          if (key === 'title') title = val;
+          if (key === 'author' || key === 'authors' || key === 'credits') author = val;
+          if (key === 'description') description = val;
+        }
+      }
+      continue;
+    }
+
+    const match = fileName.match(/^(\d+)_?([^.]+)?\.(txt|ini|mp3|ogg|wav|png|jpg|webp)$/i);
+    if (match) {
+      const lineNum = parseInt(match[1], 10);
+      const namePart = match[2] ? match[2].trim() : 'VOICE';
+      const ext = match[3].toLowerCase();
+
+      if (!linesMap.has(lineNum)) {
+        linesMap.set(lineNum, {
+          id: lineNum,
+          speaker: namePart.toUpperCase(),
+          text: '',
+          audioExt: null,
+          timestamp: 0,
+        });
+      }
+
+      const item = linesMap.get(lineNum);
+      if (ext === 'txt' || ext === 'ini') {
+        const text = fflateModule.strFromU8(unzipped[entryName]).trim();
+        let captionText = '';
+        for (const line of text.split('\n')) {
+          const [k, ...v] = line.split('=');
+          if (k && v.length) {
+            const key = k.trim().toLowerCase();
+            const val = v.join('=').trim().replace(/^["']|["']$/g, '');
+            if (key === 'caption' || key === 'dialog' || key === 'text') {
+              captionText = val;
+            } else if (key === 'dub_characters' || key === 'character' || key === 'speaker') {
+              const cleanSpeaker = val.replace(/[\[\]"']/g, '').trim();
+              if (cleanSpeaker) {
+                item.speaker = cleanSpeaker.toUpperCase();
+                characters.add(item.speaker);
+              }
+            } else if (key === 'dub_timestamps' || key === 'timestamp' || key === 'time') {
+              const parsedTime = parseFloat(val.replace(/[\[\]"']/g, '').trim());
+              if (!isNaN(parsedTime)) item.timestamp = parsedTime;
+            }
+          }
+        }
+        item.text = captionText || text;
+      } else if (['mp3', 'ogg', 'wav'].includes(ext)) {
+        fs.writeFileSync(path.join(linesDir, `${lineNum}.${ext}`), Buffer.from(unzipped[entryName]));
+        item.audioExt = ext;
+      }
+    }
+  }
+
+  const sortedLines = Array.from(linesMap.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([idx, item]) => item);
+
+  const info = {
+    id: packId,
+    title,
+    author,
+    description,
+    linesCount: sortedLines.length,
+    characters: Array.from(characters),
+    packVideoExt,
+    isOgvVideo,
+    hasBackingTrack,
+    lines: sortedLines,
+  };
+
+  fs.writeFileSync(infoJsonPath, JSON.stringify(info, null, 2));
+  return { targetDir, info };
+}
+
+// Progressive Scene Pack API Endpoints
+app.get('/api/packs/:id/progressive/info', async (req, res) => {
+  try {
+    const { info } = await getOrUnpackPack(req.params.id);
+    res.json({ ok: true, info });
+  } catch (err) {
+    console.warn(`Progressive info failed for ${req.params.id}:`, err.message);
+    res.status(404).json({ ok: false, error: err.message });
+  }
+});
+
+app.get('/api/packs/:id/progressive/line/:index', async (req, res) => {
+  try {
+    const { targetDir, info } = await getOrUnpackPack(req.params.id);
+    const lineIdx = parseInt(req.params.index, 10);
+    const lineItem = info.lines && info.lines[lineIdx];
+    const ext = lineItem?.audioExt || 'ogg';
+
+    const linePath = path.join(targetDir, 'lines', `${lineIdx}.${ext}`);
+    if (fs.existsSync(linePath)) {
+      const mime = ext === 'ogg' ? 'audio/ogg' : ext === 'wav' ? 'audio/wav' : 'audio/mp3';
+      res.setHeader('Content-Type', mime);
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      return res.sendFile(linePath);
+    }
+    res.status(404).json({ error: 'Line audio not found' });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+});
+
+app.get('/api/packs/:id/progressive/video', async (req, res) => {
+  try {
+    const { targetDir, info } = await getOrUnpackPack(req.params.id);
+    const ext = info.packVideoExt || 'mp4';
+    const videoPath = path.join(targetDir, `video.${ext}`);
+
+    if (fs.existsSync(videoPath)) {
+      const mime = ext === 'ogv' ? 'video/ogg' : ext === 'webm' ? 'video/webm' : 'video/mp4';
+      res.setHeader('Content-Type', mime);
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      return res.sendFile(videoPath);
+    }
+    res.status(404).json({ error: 'Video file not found' });
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
+});
+
 // Explicit static serving for /packs & /vendor
 app.use('/packs', express.static(PACKS_DIR, {
   setHeaders: (res, filePath) => {
