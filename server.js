@@ -1334,11 +1334,13 @@ async function getOrUnpackPack(rawPackId) {
     const foundDefault = DEFAULT_PACKS.find(p => p.id === packId || p.filename === `${packId}.zip` || p.filename === packId);
     const filename = foundDefault?.filename || `${packId}.zip`;
 
-    const candidateUrls = [
+    const candidateUrls = Array.from(new Set([
+      `http://127.0.0.1:${PORT}/packs/${encodeURIComponent(filename)}`,
+      `http://127.0.0.1:${PORT}/packs/${filename}`,
       `${r2BaseUrl}/packs/${encodeURIComponent(filename)}`,
       `${r2BaseUrl}/packs/${filename}`,
       foundDefault?.url && foundDefault.url.startsWith('http') ? foundDefault.url : null
-    ].filter(Boolean);
+    ].filter(Boolean)));
 
     for (const downloadUrl of candidateUrls) {
       try {
